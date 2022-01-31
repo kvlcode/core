@@ -17,13 +17,12 @@ class Hero extends Bike {
 
 		function __construct(){
 
-			echo "Parent class is ". get_parent_class($this);
+			echo "Parent class is ". get_parent_class($this); //this points current class
 		}
 }
 
 $obj1 = new Hero();
 $obj2 = new Bike();
-
 
 
 echo "<br>";
@@ -271,7 +270,7 @@ foreach ($var_info as $key => $value) {
 
 echo "<br>";
 
-//14. is_sub_class() : accept two parameter and return true 1 if sub class is exists
+//14. is_subclass_of() : accept two parameter and return true 1 if sub class is exists
 //same working with interface.
 
 echo "14. is_subclass_of(object,'classname')"."<br>";
@@ -383,7 +382,6 @@ $dyno = new magic();
 
 $ksm =new trick();
 
-echo is_a($ksm,'w');
 
 if ($ksm) {
 
