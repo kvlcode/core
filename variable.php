@@ -13,9 +13,14 @@ $var_int = 30;
 echo($var_int);
 var_dump($var_int);
 
+$var_float = 32.45;
+var_dump ($var_float);
+
+
 $var_string = "Hello";
 echo($var_string);
 var_dump($var_string);
+
 
 $var_bool = true;
 echo($var_bool);
@@ -39,13 +44,9 @@ echo "<br>";
 // var_dump(var_dump($var_int));
 
 
-
 $x = null;
 
 echo($x);
-
-
-
 
 
 ?>	
