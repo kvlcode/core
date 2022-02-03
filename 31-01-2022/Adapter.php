@@ -29,18 +29,11 @@ class Adapter{
 
 	}
 
-	public function insert($id,$name,$price,$quantity,$created_at)
+	public function insert($query)
 	{
 		$conn = $this -> connection();
 		
-			// global $conn;
-
-			// $query = " insert into product values('1','mi','15000','5','2014-01-01') ";
-
-			$query = " insert into product					
-							values('$id','$name','$price','$quantity','$created_at') ";
-
-
+		
 			$run = mysqli_query($conn, $query);
 			
 			if ($run) {
@@ -59,13 +52,12 @@ class Adapter{
 	}
 
 
-	public function fetch()
+	public function fetch($query)
 	{
 		$conn = $this -> connection();
 
 
 		$data = array();
-		$query = "select * from product";
 
 		$run = mysqli_query($conn, $query);
 			
@@ -82,10 +74,9 @@ class Adapter{
 	}
 
 
-	public function update(){
+	public function update($query){
 		$conn = $this-> connection();
 
-		$query = "update product set price = '14000' where id = '1'";
 		$run = mysqli_query($conn, $query);
 
 		if ($run) {
@@ -96,11 +87,9 @@ class Adapter{
 		
 	}
 
-	public function delete(){
+	public function delete($query){
 
 		$conn = $this-> connection();
-
-		$query = "delete from product where id ='2'";
 
 		$run = mysqli_query($conn, $query);
 
@@ -112,36 +101,28 @@ class Adapter{
 		
 	}
 
-
-
 }
 
 
 	//Values for inserting in table:
-
-	$id = 3;
-	$name = 'Pen';
-	$price = 15;
-	$quantity = 20;
-	$created_at = '2010-02-01';
 
 	
 	$a1 = new Adapter();   //object of Adapater class
 
 	$a1->connection();			//Make Connection	
 
-	// $a1->insert($id,$name,$price,$quantity,$created_at);  //Insert data in table
+	$a1->insert("insert into product values('3','mixer','1500','2','2014-01-10')");  //Insert data in table
 
 	
-	// $a1->update();				//update data 
+	$a1->update("update product set price = '14000' where id = '1'");				//update data 
 
-	// $a1->delete();				//delete data
+	$a1->delete("delete from product where id ='2'");				//delete data
 
 
-	// $fetch_data = $a1->fetch();		//retrive data from table	
+	$fetch_data = $a1->fetch("select * from product");		//retrive data from table	
 	
-	// echo "Fetched data from table is:"."<br>";
-	// print_r($fetch_data);						//print retrived data	
+	echo "Fetched data from table is:"."<br>";
+	print_r($fetch_data);						//print retrived data	
 
 
 ?>
