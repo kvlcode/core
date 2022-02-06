@@ -1,52 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Form</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	<title>Product Add</title>
 </head>
-<body >
+<body>
 
-	<div class="container">
-		 <form id="product_form" method="post" action="product_save.php">
+	<form action="product.php?a=saveAction" method="POST">
+		<table border="1" width="100%" cellspacing="4">
+			
+			<tr>
+				<td colspan="2"><b>Add Product Information</b></td>
+			</tr>
 
-			<div class="mb-3">
-			  <label for="formGroupExampleInput" class="form-label">Product Name</label>
-			  <input type="text" class="form-control" id="formGroupExampleInput" name="name" placeholder="Enter Name">
-			</div>
+			<tr>
+				<td width="10%">Name</td>
+				<td><input type="text" name="product[name]"></td>
+			</tr>
 
-			<div class="mb-3">
-			  <label for="formGroupExampleInput2" class="form-label">Price</label>
-			  <input type="text" class="form-control" id="formGroupExampleInput2" name="price" placeholder="Enter Price">
-			</div>
+			<tr>
+				<td width="10%">Price</td>
+				<td><input type="text" name="product[price]"></td>
+			</tr>
+			
+			<tr>
+				<td width="10%">Quantity</td>
+				<td><input type="text" name="product[quantity]"></td>
+			</tr>
+			
+			<tr>
+				<td>Status</td>
+				<td width="10%">
+					<select name="product[status]">
+						<option value="1">Active</option>
+						<option value="2">Inactive</option>
+					</select>
+				</td>
+			</tr>
 
-			<div class="mb-3">
-			  <label for="formGroupExampleInput" class="form-label">Quantity</label>
-			  <input type="text" class="form-control" id="formGroupExampleInput" name="quantity" placeholder="Enter Quantity">
-			</div>
+			<tr>
+				<td width="10%">&nbsp;</td>
+				<td>
+					<input type="submit" name="submit">
+					<button type="button"><a href="product.php?a=gridAction"></a>Cancel</button> 
+				</td>
+			</tr>
+			
 
-			<div class="form-check">
-			  <label for="formGroupExampleInput" class="form-label">Status</label><br>		
-			  <input class="form-check-input" type="radio" name="status" id="flexRadioDefault1" value="1" checked>
-			  <label class="form-check-label" for="flexRadioDefault1">
-			    Active
-			  </label>
-			</div>
-			<div class="form-check">
-			  <input class="form-check-input" type="radio" name="status" id="flexRadioDefault2" value="2">
-			  <label class="form-check-label" for="flexRadioDefault2">
-			    Inactive
-			  </label>
-			</div>
-
-			<button type="submit" class="btn btn-primary">Add Product</button>
-
-		</form>
-	</div>
-
+		</table>
+	</form>
 
 </body>
 </html>
-

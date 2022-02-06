@@ -1,5 +1,6 @@
 <?php
 class Adapter{
+	
 	public $config=[
 		'host'=>'localhost',
 		'username'=>'root',
@@ -87,5 +88,4 @@ class Adapter{
 				}
 				return false;
 		}
-		
 }

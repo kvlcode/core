@@ -1,58 +1,75 @@
-<?php
+<?php  require_once('Adapter.php');  ?>
 
-include "Adapter.php";
+<?php 
 
-$id = $_GET["id"];
+$id = $_GET['id'];
+
+//echo $id;
 
 $adapter=new Adapter();
 
-$result = $adapter->fetchAll("select * from product_info where id =$id");
+$result = $adapter->fetchAll("SELECT * FROM product WHERE productId ='$id'");
 
-            foreach ($result as $row){
-                
-                echo "
-        				<form method='post' action ='product_save.php'>
-	        				<table>
-	            
-		           				<tr>
-					                <td>Id</td>
-					                <td><input type='number' name='id' value=".$row['id']."></td>
-					            </tr>
-
-
-					            <tr>
-					                <td>Name</td>
-					                <td><input type='text' name='name' value=".$row['name']."></td>
-					            </tr>
-
-					            <tr>
-					                <td>Price</td>
-					                <td><input type='number' name='price' value=".$row['price']."></td>
-					            </tr>   
-
-					          
-					            <tr>
-					                <td>Quantity</td>
-					                <td><input type='number' name='quantity' value=".$row['quantity']."></td>
-					            </tr>
-
-					             <tr>
-					                <td>Status</td>
-					                <td><input type='number' name='status' value=".$row['status']."></td>
-					            </tr>
-
-					            <tr>
-                
-                					<td><input type='hidden' name='hid' value=".$row['id']."></td>
-            					</tr>
-					           
-
-				        	</table>
-				        	  
-				        	<input type='submit' name='update' value ='Update'> 
-			    		</form>
-
-				";
-            } 
+	
 
 ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Product Edit Page</title>
+</head>
+<body>
+
+	<?php foreach ($result as $row): ?>
+
+
+	<form method="post" action="product.php?a=saveAction">
+		<table border="1" width="100%" cellspacing="4">
+
+			<tr>
+				<td colspan="2"><b>Edit Product Information</b></td>
+			</tr>
+
+			<tr>
+				<td width="10%">Product Name</td>
+				<td><input type="text" name="product[name]" value="<?php echo $row['name'] ?>"></td>
+			</tr>
+
+			<tr>
+				<td width="10%">Price</td>
+				<td><input type="text" name="product[price]" value="<?php echo $row['price'] ?>"></td>
+			</tr>
+			
+			<tr>
+				<td width="10%">Quantity</td>
+				<td><input type="text" name="product[quantity]" value="<?php echo $row['quantity'] ?>"></td>
+				<input type="hidden" name="hiddenId" value="<?php echo $row['productId'] ?>">
+			</tr>
+					
+			<tr>
+				<td>Status</td>
+				<td width="10%">
+					<select name="product[status]" value="<?php echo $row['status'] ?>" >
+						<option value="1">Active</option>
+						<option value="2">Inactive</option>
+					</select>
+				</td>
+			</tr>
+	<?php endforeach; ?>
+
+			<tr>
+				<td width="10%">&nbsp;</td>
+				<td>
+					<input type="submit" name="Save">
+					<button type="button"><a href="product.php?a=gridAction">Cancel</a></button> 
+
+				</td>
+			</tr>
+			
+
+		</table>
+	</form>
+
+</body>
+</html>
