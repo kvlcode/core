@@ -36,7 +36,7 @@
 				<td width="10%">Status</td>
 				<td>
 					<select name="customer[status]">
-						<option value="1">Active</option>
+						<option value="1" selected>Active</option>
 						<option value="2">Inactive</option>
 					</select>
 				</td>
@@ -67,14 +67,14 @@
 				<td><input type="text" name="address[country]"></td>
 			</tr>
 
-			<!-- <tr>
+			<tr>
 				<td width="10%">Address Type</td>
 				<td>
-					<input type="checkbox" name="billing" value="1"><label for="billing">Billing </label>
-					<input type="checkbox" name="shipping" value="1"><label for="shipping">Shipping </label>
+					<input type="checkbox" name="address[billing]" value="1">Billing
+					<input type="checkbox" name="address[shipping]" value="1">Shipping 
 				</td>
 			</tr>
- -->
+
 			<tr>
 				<td width="10%">&nbsp;</td>
 				<td>

@@ -50,9 +50,14 @@ $result = $adapter->fetchAll("SELECT * FROM product WHERE productId ='$id'");
 			<tr>
 				<td>Status</td>
 				<td width="10%">
-					<select name="product[status]" value="<?php echo $row['status'] ?>" >
-						<option value="1">Active</option>
+					<select name="product[status]">
+					<?php if ($row['status']==1):?>
+						<option value="1" selected>Active</option>
 						<option value="2">Inactive</option>
+					<?php else:?>
+						<option value="1">Active</option>
+						<option value="2" selected>Inactive</option>
+					<?php endif; ?>	
 					</select>
 				</td>
 			</tr>

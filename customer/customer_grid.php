@@ -30,7 +30,7 @@ $customer = $adapter->fetchAll("SELECT c.*,a.*
         <table border='1' class="table" width='100%' cellspacing="4">
                 
                 <tr>
-                    <td colspan="15"><b>Customer Information</b></td>
+                    <td colspan="17"><b>Customer Information</b></td>
                 </tr>
 
                 <tr>
@@ -45,6 +45,8 @@ $customer = $adapter->fetchAll("SELECT c.*,a.*
                     <th>City</th>
                     <th>State</th>
                     <th>Country</th>
+                    <th>Billing</th>
+                    <th>Shipping</th>
                     <th>Created Date</th>
                     <th>Updated Date</th>
                     <th>Edit</th>
@@ -52,7 +54,7 @@ $customer = $adapter->fetchAll("SELECT c.*,a.*
 
                 </tr>
                 <?php if (!$customer): ?>
-                    <tr><td colspan="13">No data</td></tr>
+                    <tr><td colspan="15">No data</td></tr>
                 <?php else:  ?>      
                     <?php foreach($customer as $row): ?>
                      
@@ -68,6 +70,8 @@ $customer = $adapter->fetchAll("SELECT c.*,a.*
                             <td><?php echo $row['city']       ?></td>
                             <td><?php echo $row['state']      ?></td>
                             <td><?php echo $row['country']    ?></td>
+                            <td><?php echo $row['billing']    ?></td>
+                            <td><?php echo $row['shipping']   ?></td>
                             <td><?php echo $row['createdDate']?></td>
                             <td><?php echo $row['updatedDate']?></td>
                             <td><a href="customer.php?a=editAction&id=<?php echo $row['customerId']?>">Edit</a></td>

@@ -2,7 +2,6 @@
 
 	date_default_timezone_set("Asia/Kolkata");
 
-
 ?>
 
 <?php 
@@ -21,7 +20,7 @@ class Customer{
 
 			$adapter = new Adapter();
 
-			$hiddenId = NULL;
+			// $hiddenId = NULL;
     		$hiddenId = $_POST["hiddenId"];
 
 			$firstName=$_POST['customer']['firstName'];
@@ -37,10 +36,32 @@ class Customer{
 			$city = $_POST['address']['city'];
 			$state = $_POST['address']['state'];
 			$country = $_POST['address']['country'];
+			$billing = $_POST['address']['billing'];
+			$shipping = $_POST['address']['shipping'];
 	
 			if ($hiddenId) {
 						
-				$update = $adapter->update("UPDATE customer SET firstName ='$firstName',lastName ='$lastName', email ='$email', mobile ='$mobile', status ='$status',updatedDate ='$date' WHERE customerId = '$hiddenId'"); 
+				$update = $adapter->update("UPDATE customer c
+													INNER JOIN  
+													address a
+													ON c.customerId = a.customerId
+													SET c.firstName ='$firstName',
+						 							 	c.lastName ='$lastName', 
+						 							 	c.email ='$email', 
+						 							 	c.mobile ='$mobile', 
+						 							 	c.status ='$status',
+						 							 	c.updatedDate ='$date', 
+						 							 	a.address ='$address',
+						 							 	a.postalCode ='$postalCode',
+						 							 	a.city ='$city',
+						 							 	a.state ='$state',
+						 							 	a.country ='$country',
+						 							 	a.billing = '$billing',
+						 							 	a.shipping = '$shipping'
+												
+					 							 	WHERE
+					 							 	  c.customerId = '$hiddenId'");
+
 				
 				if (!$update) {
 					throw new Exception("System can't update", 1);
@@ -56,14 +77,15 @@ class Customer{
 		        	
 		        }
 
-		        $insertAddress = $adapter->insert("INSERT INTO address(`customerId`, `address`, `postalCode`, `city`, `state`, `country`) VALUES ('$insertCustomer','$address','$postalCode','$city','$state','$country')");
+		        $insertAddress = $adapter->insert("INSERT INTO 
+		        									address(`customerId`, `address`, `postalCode`, `city`, `state`, `country`,`billing`,`shipping`) VALUES('$insertCustomer','$address','$postalCode','$city','$state','$country','$billing','$shipping')");
 
 	    	}
 		    	$this->redirect("customer.php?a=gridAction");
 	    
 	    }catch(Exception $e){
 	    	$this->redirect("customer.php?a=gridAction");
-	    	// echo $e->getMessage();
+	    	echo $e->getMessage();
 
 	    }
 	}    	
