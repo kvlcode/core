@@ -132,10 +132,10 @@ class Controller_Customer{
 			
 			$customerId = $this->saveCustomer();
 			$this->saveAddress($customerId);
-			$this->redirect("index.php?a=grid");
+			$this->redirect("index.php?a=grid&c=customer");
 
 	    }catch(Exception $e){
-	    	$this->redirect("index.php?a=grid");
+	    	$this->redirect("index.php?a=grid&c=customer");
 	    	echo $e->getMessage();
 
 	    }
@@ -159,10 +159,10 @@ class Controller_Customer{
 				throw new Exception("System can't delete record.", 1);
 										
 			}
-			$this->redirect('index.php?a=grid');	
+			$this->redirect('index.php?a=grid&c=customer');	
 				
 		} catch (Exception $e) {
-			$this->redirect('index.php?a=grid');	
+			$this->redirect('index.php?a=grid&c=customer');	
 			//echo $e->getMessage();
 		}
 

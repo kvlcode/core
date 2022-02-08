@@ -1,7 +1,6 @@
 <?php 
 
 $id = $_GET['id'];
-
 global $adapter;
 
 $result = $adapter->fetchAll("SELECT c.*,a.*
@@ -9,7 +8,6 @@ $result = $adapter->fetchAll("SELECT c.*,a.*
 	                            JOIN address a
 	                            ON a.customerId = c.customerId
 	                            WHERE c.customerId = $id");
-
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +19,7 @@ $result = $adapter->fetchAll("SELECT c.*,a.*
 
 	<?php foreach ($result as $row): ?>
 
-	<form method="Post" action="index.php?a=save">
+	<form method="Post" action="index.php?a=save&c=customer">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>
@@ -120,7 +118,7 @@ $result = $adapter->fetchAll("SELECT c.*,a.*
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="Save">
-					<button type="button"><a href="index.php?a=grid">Cancel</a></button> 
+					<button type="button"><a href="index.php?a=grid&c=customer">Cancel</a></button> 
 
 				</td>
 			</tr>

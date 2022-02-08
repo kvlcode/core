@@ -1,6 +1,5 @@
 <?php
-
-global $adapter
+global $adapter;
 
 $customer = $adapter->fetchAll("SELECT c.*,a.*
                             FROM customer c
@@ -22,7 +21,7 @@ $customer = $adapter->fetchAll("SELECT c.*,a.*
 <body>
                         
     <div>
-            <button name="Add"><a href="index.php?a=add">Add</a></button>
+            <button name="Add"><a href="index.php?a=add&c=customer">Add</a></button>
         
         <table border='1' class="table" width='100%' cellspacing="4">
                 
@@ -71,8 +70,8 @@ $customer = $adapter->fetchAll("SELECT c.*,a.*
                             <td><?php echo $row['shipping']   ?></td>
                             <td><?php echo $row['createdDate']?></td>
                             <td><?php echo $row['updatedDate']?></td>
-                            <td><a href="index.php?a=edit&id=<?php echo $row['customerId']?>">Edit</a></td>
-                            <td><a href="index.php?a=delete&id=<?php echo $row['customerId']?>">Delete</a></td>
+                            <td><a href="index.php?a=edit&c=customer&id=<?php echo $row['customerId']?>">Edit</a></td>
+                            <td><a href="index.php?a=delete&c=customer&id=<?php echo $row['customerId']?>">Delete</a></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>

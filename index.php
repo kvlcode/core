@@ -1,4 +1,4 @@
-<?php require_once('Model/Core/Adapter.php');  ?>
+<?php require_once('Model/Core/Adapter.php');?>
 <?php 
 
 class Ccc

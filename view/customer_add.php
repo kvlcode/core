@@ -7,7 +7,7 @@
 </head>
 <body>
 
-	<form action="index.php?a=save" method="post">
+	<form action="index.php?a=save&c=customer" method="post">
 		<table border="1" width="100%" cellspacing="4">
 
 
@@ -79,7 +79,7 @@
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="submit" value="Save">
-					<button type="button"><a href="index.php?a=grid"style ="text-decoration: none;" >Cancel</a></button> 
+					<button type="button"><a href="index.php?a=grid&c=customer"style ="text-decoration: none;" >Cancel</a></button> 
 				</td>
 			</tr>
 		</table>
