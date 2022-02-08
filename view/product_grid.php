@@ -1,9 +1,7 @@
 <?php 
-require_once ('Adapter.php');
-$adapter=new Adapter();
 
+global $adapter;
 $product = $adapter->fetchAll('SELECT * FROM product');
-
 
 ?>
 
@@ -13,7 +11,7 @@ $product = $adapter->fetchAll('SELECT * FROM product');
     <title>Product Grid</title>
 </head>
 <body>
-    <button type="button" name="addNew"><a href="product.php?a=addAction"> Add New </a></button>
+    <button type="button" name="addNew"><a href="index.php?a=add&c=product"> Add New </a></button>
     <table border="1" width="100%" cellspacing="4">
         <tr>
            <td colspan="9"><b>Product Information</b></td>
@@ -45,8 +43,8 @@ $product = $adapter->fetchAll('SELECT * FROM product');
                     <td><?php echo $row['status']; ?></td>
                     <td><?php echo $row['createdDate']; ?></td>
                     <td><?php echo $row['updatedDate']; ?></td>
-                    <td><a href="product.php?a=editAction&id=<?php echo $row['productId']; ?>">Edit</a></td>
-                    <td><a href="product.php?a=deleteAction&id=<?php echo $row['productId']; ?>">Delete</a></td>
+                    <td><a href="index.php?a=edit&c=product&id=<?php echo $row['productId']; ?>">Edit</a></td>
+                    <td><a href="index.php?a=delete&c=product&id=<?php echo $row['productId']; ?>">Delete</a></td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?> 

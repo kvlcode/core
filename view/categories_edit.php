@@ -1,8 +1,7 @@
 <?php
 
-require_once('Adapter.php');  
 $id = $_GET['id'];
-$adapter=new Adapter();
+global $adapter;
 
 $result = $adapter->fetchAll("SELECT * FROM categories WHERE categoryId='$id'");
 
@@ -18,7 +17,7 @@ $result = $adapter->fetchAll("SELECT * FROM categories WHERE categoryId='$id'");
 
 	<?php foreach ($result as $row): ?>
 
-	<form method="Post" action="categories.php?a=saveAction">
+	<form method="Post" action="index.php?a=save&c=categories">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>
@@ -43,7 +42,7 @@ $result = $adapter->fetchAll("SELECT * FROM categories WHERE categoryId='$id'");
 					<?php endif; ?>	
 					</select>
 				</td>
-				<input type="hidden" name="hiddenId" value="<?php echo $row['categoryId'] ?>">
+				<input type="hidden" name="category[hiddenId]" value="<?php echo $row['categoryId'] ?>">
 			</tr>
 	<?php endforeach; ?>
 
@@ -51,7 +50,7 @@ $result = $adapter->fetchAll("SELECT * FROM categories WHERE categoryId='$id'");
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="Save">
-					<button type="button"><a href="categories.php?a=gridAction">Cancel</a></button> 
+					<button type="button"><a href="index.php?a=grid&c=categories">Cancel</a></button> 
 
 				</td>
 			</tr>

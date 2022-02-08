@@ -5,7 +5,7 @@
 </head>
 <body>
 
-	<form action="product.php?a=saveAction" method="POST">
+	<form action="index.php?a=save&c=product" method="POST">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>
@@ -41,7 +41,7 @@
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="submit">
-					<button type="button"><a href="product.php?a=gridAction"></a>Cancel</button> 
+					<button type="button"><a href="index.php?a=grid&c=product"></a>Cancel</button> 
 				</td>
 			</tr>
 			

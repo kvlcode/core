@@ -1,25 +1,22 @@
-<?php 
-		require_once('Adapter.php'); 
-		date_default_timezone_set("Asia/Kolkata");
-?>
+<?php date_default_timezone_set("Asia/Kolkata");?>
 
 <?php 
 
-class Product{
+class Controller_Product{
 
 	public function gridAction()			
 	{
-		require_once 'product_grid.php';
+		require_once 'view\product_grid.php';
 	}
 
 	public function addAction()
 	{
-		require_once 'product_add.php';
+		require_once 'view\product_add.php';
 	}
 
 	public function editAction()
 	{
-		require 'product_edit.php';
+		require 'view\product_edit.php';
 	}
 
 	public function saveAction()
@@ -27,16 +24,17 @@ class Product{
 
 		try{
 
-		    $adapter = new Adapter();
-				
-			$hid=$_POST['hiddenId'];
-			$name=$_POST['product']['name'];
-			$price=$_POST['product']['price'];
-			$quantity=$_POST['product']['quantity'];
-			$status=$_POST['product']['status'];		 
+		    global $adapter; 
+			
+			$product = $_POST['product'];
+			$hiddenId = $product['hiddenId'];
+			$name = $product['name'];
+			$price = $product['price'];
+			$quantity = $product['quantity'];
+			$status = $product['status'];		 
 			$date = date('Y-m-d H:i:s');
 
-			if($hid){
+			if($hiddenId){
 			  		
 			  	$update = $adapter->update("UPDATE product 
 									SET name='$name',
@@ -44,7 +42,7 @@ class Product{
 								 		quantity='$quantity',
 								 		status='$status',
 								 		updatedDate='$date' 
-				 					WHERE productId='$hid'");
+				 					WHERE productId='$hiddenId'");
 			  	if (!$update) {
 					throw new Exception("System can't update", 1);
 				}	
@@ -68,14 +66,12 @@ class Product{
 
 			}	
 
-			$this->redirect("product.php?a=gridAction"); 				
+			$this->redirect("index.php?a=grid&c=product"); 				
 		}catch(Exception $e){
-	    	$this->redirect("product.php?a=gridAction");
+	    	$this->redirect("index.php?a=grid&c=product");
 	    	// echo $e->getMessage();
 
-	    }
-
-			
+	    }			
 
 	}
 
@@ -90,7 +86,7 @@ class Product{
 			}
 
 
-			$adapter=new Adapter();
+			global $adapter; 
 			
 			$id = $_GET["id"];
 
@@ -101,11 +97,11 @@ class Product{
 				throw new Exception("System can't delete record.", 1);
 										
 			}
-			$this->redirect("product.php?a=gridAction"); 
+			$this->redirect("index.php?a=grid&c=product"); 
 
 		}catch (Exception $e) {
 
-			$this->redirect('product.php?a=gridAction');	
+			$this->redirect('index.php?a=grid&c=product');	
 			//echo $e->getMessage();
 			}
 		
@@ -122,10 +118,5 @@ class Product{
 	}
 
 }
-
-$action=($_GET['a'] )? $_GET['a'] : 'errorAction';
-
-$product = new Product();
-$product->$action();
 
 ?>

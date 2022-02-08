@@ -1,10 +1,8 @@
-<?php  require_once('Adapter.php');  ?>
-
 <?php 
 
 $id = $_GET['id'];
 
-$adapter=new Adapter();
+global $adapter;
 
 $result = $adapter->fetchAll("SELECT c.*,a.*
 	                            FROM customer c
@@ -23,7 +21,7 @@ $result = $adapter->fetchAll("SELECT c.*,a.*
 
 	<?php foreach ($result as $row): ?>
 
-	<form method="Post" action="customer.php?a=saveAction">
+	<form method="Post" action="index.php?a=save">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>
@@ -48,7 +46,7 @@ $result = $adapter->fetchAll("SELECT c.*,a.*
 			<tr>
 				<td width="10%">Mobile</td>
 				<td><input type="text" name="customer[mobile]" value="<?php echo $row['mobile'] ?>"></td>
-				<input type="hidden" name="hiddenId" value="<?php echo $row['customerId'] ?>">
+				<input type="hidden" name="customer[hiddenId]" value="<?php echo $row['customerId'] ?>">
 			</tr>
 			
 			<tr>
@@ -122,7 +120,7 @@ $result = $adapter->fetchAll("SELECT c.*,a.*
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="Save">
-					<button type="button"><a href="customer.php?a=gridAction">Cancel</a></button> 
+					<button type="button"><a href="index.php?a=grid">Cancel</a></button> 
 
 				</td>
 			</tr>

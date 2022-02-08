@@ -1,7 +1,7 @@
 <?php 
-require_once ('Adapter.php');
-$adapter=new Adapter();
-$categories=$adapter->fetchAll('select * from categories');
+
+global $adapter;
+$categories=$adapter->fetchAll('SELECT * FROM categories');
 
 ?>
 
@@ -11,7 +11,7 @@ $categories=$adapter->fetchAll('select * from categories');
 	<title>Categories Grid</title>
 </head>
 <body>
-	<button type="button" name="addNew"><a href="categories.php?a=addAction"> Add New </a></button>
+	<button type="button" name="addNew"><a href="index.php?a=add&c=categories"> Add New </a></button>
 	<table border="1" width="100%" cellspacing="4">
 		<tr>
 			<th>CategoryId</th>
@@ -36,8 +36,8 @@ $categories=$adapter->fetchAll('select * from categories');
 					<td><?php echo $category['status']; ?></td>
 					<td><?php echo $category['createdDate']; ?></td>
 					<td><?php echo $category['updatedDate']; ?></td>
-					<td><a href="categories.php?a=editAction&id=<?php echo $category['categoryId']; ?>">Edit</a></td>
-					<td><a href="categories.php?a=deleteAction&id=<?php echo $category['categoryId']; ?>">Delete</a></td>
+					<td><a href="index.php?a=edit&c=categories&id=<?php echo $category['categoryId']; ?>">Edit</a></td>
+					<td><a href="index.php?a=delete&c=categories&id=<?php echo $category['categoryId']; ?>">Delete</a></td>
 				</tr>
 			<?php endforeach; ?>
 		<?php endif; ?>	

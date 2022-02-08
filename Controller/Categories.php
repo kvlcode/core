@@ -1,35 +1,33 @@
-<?php require_once 'Adapter.php'; ?>
-
-
+<?php date_default_timezone_set("Asia/Kolkata");?>
 <?php 
 
-class Categories{
+class Controller_Categories{
 
 	public function gridAction(){
 
-		require_once 'categories_grid.php';
+		require_once 'view\categories_grid.php';
 	}
 
 	public function addAction(){
 
-		require_once 'categories_add.php';
+		require_once 'view\categories_add.php';
 	}
 
 	public function saveAction()
 	{	
 		try{
 
-			$adapter = new Adapter();
-				
-			$h_id = $_POST["hiddenId"];	
-			$name = $_POST['category']['name'];
-			$status = $_POST['category']['status'];	
-				$date = date('Y-m-d H:i:s');
+			global $adapter; 
+			$category = $_POST['category'];
+			$hiddenId = $category['hiddenId'];	
+			$name = $category['name'];
+			$status = $category['status'];	
+			$date = date('Y-m-d H:i:s');
 				
 
-			if ($h_id){
+			if ($hiddenId){
 
-				$update = $adapter->update("UPDATE categories SET name='$name', status='$status',updatedDate='$date' WHERE categoryId=$h_id");
+				$update = $adapter->update("UPDATE categories SET name='$name', status='$status',updatedDate='$date' WHERE categoryId=$hiddenId");
 				
 				if (!$update) {
 					throw new Exception("System can't update", 1);
@@ -46,17 +44,17 @@ class Categories{
 				
 			}
 
-			$this->redirect("categories.php?a=gridAction"); 
+			$this->redirect("index.php?a=grid&c=categories"); 
 
 		}catch(Exception $e){
-	    	$this->redirect("categories.php?a=gridAction");
+	    	$this->redirect("index.php?a=grid&c=categories");
 	    	// echo $e->getMessage();
 	    }    
 	}
 
 	public function editAction()
 	{
-		require_once 'categories_edit.php';
+		require_once 'view\categories_edit.php';
 	}
 
 	public function deleteAction()
@@ -68,21 +66,21 @@ class Categories{
 				throw new Exception("Invalid Request.", 1);
 			}
 			
-			$adapter = new Adapter();
+			global $adapter; 
 			
 			$id=$_GET['id'];
 
-			$delete = $adapter->delete("delete from categories where categoryId=$id");
+			$delete = $adapter->delete("DELETE FROM categories WHERE categoryId=$id");
 			if(!$delete)
 			{
 				throw new Exception("System can't delete record.", 1);
 										
 			}
 
-			$this->redirect("categories.php?a=gridAction");
+			$this->redirect("index.php?a=grid&c=categories");
 		
 		}catch (Exception $e) {
-			$this->redirect('categories.php?a=gridAction');	
+			$this->redirect("index.php?a=grid&c=categories");	
 			//echo $e->getMessage();
 		}
 		
@@ -110,10 +108,5 @@ class Categories{
 
 
 }
-
-$action=($_GET['a'] )? $_GET['a'] : 'errorAction';
-
-$categories = new Categories();
-$categories->$action();
 
 ?>

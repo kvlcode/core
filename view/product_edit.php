@@ -1,16 +1,10 @@
-<?php  require_once('Adapter.php');  ?>
-
 <?php 
 
 $id = $_GET['id'];
 
-//echo $id;
-
-$adapter=new Adapter();
+global $adapter;
 
 $result = $adapter->fetchAll("SELECT * FROM product WHERE productId ='$id'");
-
-	
 
 ?>
 
@@ -24,7 +18,7 @@ $result = $adapter->fetchAll("SELECT * FROM product WHERE productId ='$id'");
 	<?php foreach ($result as $row): ?>
 
 
-	<form method="post" action="product.php?a=saveAction">
+	<form method="post" action="index.php?a=save&c=product">
 		<table border="1" width="100%" cellspacing="4">
 
 			<tr>
@@ -44,7 +38,7 @@ $result = $adapter->fetchAll("SELECT * FROM product WHERE productId ='$id'");
 			<tr>
 				<td width="10%">Quantity</td>
 				<td><input type="text" name="product[quantity]" value="<?php echo $row['quantity'] ?>"></td>
-				<input type="hidden" name="hiddenId" value="<?php echo $row['productId'] ?>">
+				<input type="hidden" name="product[hiddenId]" value="<?php echo $row['productId'] ?>">
 			</tr>
 					
 			<tr>
@@ -67,12 +61,10 @@ $result = $adapter->fetchAll("SELECT * FROM product WHERE productId ='$id'");
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="Save">
-					<button type="button"><a href="product.php?a=gridAction">Cancel</a></button> 
+					<button type="button"><a href="index.php?a=grid&c=product">Cancel</a></button> 
 
 				</td>
 			</tr>
-			
-
 		</table>
 	</form>
 

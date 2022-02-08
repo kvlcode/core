@@ -1,5 +1,6 @@
 <?php
-class Adapter{
+class Model_Customer{
+	
 	public $config=[
 		'host'=>'localhost',
 		'username'=>'root',
@@ -89,3 +90,7 @@ class Adapter{
 		}
 		
 }
+$adapter = new Model_Customer();
+
+
+?>

@@ -1,9 +1,6 @@
 <?php
 
-require_once('Adapter.php');
-$adapter=new Adapter();
-
-// $customer =$adapter->fetchAll("select*from customer");
+global $adapter
 
 $customer = $adapter->fetchAll("SELECT c.*,a.*
                             FROM customer c
@@ -25,7 +22,7 @@ $customer = $adapter->fetchAll("SELECT c.*,a.*
 <body>
                         
     <div>
-            <button name="Add"><a href="customer.php?a=addAction">Add</a></button>
+            <button name="Add"><a href="index.php?a=add">Add</a></button>
         
         <table border='1' class="table" width='100%' cellspacing="4">
                 
@@ -54,7 +51,7 @@ $customer = $adapter->fetchAll("SELECT c.*,a.*
 
                 </tr>
                 <?php if (!$customer): ?>
-                    <tr><td colspan="15">No data</td></tr>
+                    <tr><td colspan="17">No data</td></tr>
                 <?php else:  ?>      
                     <?php foreach($customer as $row): ?>
                      
@@ -74,8 +71,8 @@ $customer = $adapter->fetchAll("SELECT c.*,a.*
                             <td><?php echo $row['shipping']   ?></td>
                             <td><?php echo $row['createdDate']?></td>
                             <td><?php echo $row['updatedDate']?></td>
-                            <td><a href="customer.php?a=editAction&id=<?php echo $row['customerId']?>">Edit</a></td>
-                            <td><a href="customer.php?a=deleteAction&id=<?php echo $row['customerId']?>">Delete</a></td>
+                            <td><a href="index.php?a=edit&id=<?php echo $row['customerId']?>">Edit</a></td>
+                            <td><a href="index.php?a=delete&id=<?php echo $row['customerId']?>">Delete</a></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>

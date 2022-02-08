@@ -5,7 +5,7 @@
 </head>
 <body>
 
-	<form method="post" action="categories.php?a=saveAction">
+	<form method="post" action="index.php?a=save&c=categories">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>
@@ -31,7 +31,7 @@
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="submit">
-					<button type="button"><a href="categories.php?a=gridAction">Cancel</a></button> 
+					<button type="button"><a href="index.php?a=grid&c=categories">Cancel</a></button> 
 				</td>
 			</tr>
 			
