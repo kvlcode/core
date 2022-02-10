@@ -1,10 +1,47 @@
 <?php 
 
 global $adapter;
-$categories=$adapter->fetchAll('SELECT * FROM categories');
+// $categories=$adapter->fetchAll('SELECT * FROM categories');
+
+//$categories=$adapter->fetchAll('SELECT * FROM categories');
+
+try
+{
+
+	$categories = $adapter->fetchAll('SELECT * FROM categories');
+
+		if(!$categories)
+		{
+			throw new Exception("System Can't fetch", 1);
+		}
+}
+catch(Exception $e)
+{
+	throw new Exception("System Can't fetch", 1);
+}
+
+function path($categoryId,$array){
+
+	$length = count($array);
+
+	for($i = 0;$i< $length;$i++){
+
+		if($categoryId == $array[$i]["categoryId"]){
+		           
+		    if($array[$i]["parentId"] == null){
+		               
+		             return $array[$i]["name"];
+		            
+		    }
+		     return path($array[$i]["parentId"],$array)."=>".$array[$i]["name"];
+		}
+
+	}
+}
+	
+    
 
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,7 +69,7 @@ $categories=$adapter->fetchAll('SELECT * FROM categories');
 			<?php foreach ($categories as $category): ?>
 				<tr>
 					<td><?php echo $category['categoryId']; ?></td>
-					<td><?php echo $category['name']; ?></td>
+					<td><?php echo path($category['categoryId'],$categories); ?></td>
 					<td><?php echo $category['status']; ?></td>
 					<td><?php echo $category['createdDate']; ?></td>
 					<td><?php echo $category['updatedDate']; ?></td>
@@ -44,6 +81,6 @@ $categories=$adapter->fetchAll('SELECT * FROM categories');
 
 		
 	</table>
-
+ 
 </body>
 </html>

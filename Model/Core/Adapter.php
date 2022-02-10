@@ -88,6 +88,7 @@ class Model_Customer{
 				}
 				return false;
 		}
+
 		
 }
 $adapter = new Model_Customer();
