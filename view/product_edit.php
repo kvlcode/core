@@ -4,7 +4,7 @@ $id = $_GET['id'];
 
 global $adapter;
 
-$result = $adapter->fetchAll("SELECT * FROM product WHERE productId ='$id'");
+$row = $adapter->fetchRow("SELECT * FROM product WHERE productId ='$id'");
 
 ?>
 
@@ -14,9 +14,6 @@ $result = $adapter->fetchAll("SELECT * FROM product WHERE productId ='$id'");
 	<title>Product Edit Page</title>
 </head>
 <body>
-
-	<?php foreach ($result as $row): ?>
-
 
 	<form method="post" action="index.php?a=save&c=product">
 		<table border="1" width="100%" cellspacing="4">
@@ -55,7 +52,6 @@ $result = $adapter->fetchAll("SELECT * FROM product WHERE productId ='$id'");
 					</select>
 				</td>
 			</tr>
-	<?php endforeach; ?>
 
 			<tr>
 				<td width="10%">&nbsp;</td>

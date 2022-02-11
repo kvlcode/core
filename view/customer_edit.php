@@ -3,7 +3,7 @@
 $id = $_GET['id'];
 global $adapter;
 
-$result = $adapter->fetchAll("SELECT c.*,a.*
+$row = $adapter->fetchRow("SELECT c.*,a.*
 	                            FROM customer c
 	                            JOIN address a
 	                            ON a.customerId = c.customerId
@@ -16,8 +16,6 @@ $result = $adapter->fetchAll("SELECT c.*,a.*
 	<title>Customer Edit</title>
 </head>
 <body>
-
-	<?php foreach ($result as $row): ?>
 
 	<form method="Post" action="index.php?a=save&c=customer">
 		<table border="1" width="100%" cellspacing="4">
@@ -110,9 +108,6 @@ $result = $adapter->fetchAll("SELECT c.*,a.*
 
 				</td>
 			</tr>
-
-
-	<?php endforeach; ?>
 
 			<tr>
 				<td width="10%">&nbsp;</td>

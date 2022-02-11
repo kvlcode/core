@@ -9,8 +9,6 @@
 
 	<form action="index.php?a=save&c=customer" method="post">
 		<table border="1" width="100%" cellspacing="4">
-
-
 			<tr>
 				<td colspan="2"><b>Personal Information</b></td>
 			</tr>

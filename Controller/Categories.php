@@ -98,14 +98,31 @@ class Controller_Categories{
 		exit();
 	}
 
-	
-	// public function CurrentDate()
-	// {
-	// 	date_default_timezone_set("Asia/Kolkata");
-	// 	$date = date('Y-m-d H:i:s');
-	// 	return $date;
-	// }
 
+	public function testAction()
+	{
+		global $adapter;
+		$row=$_POST['category'];
+		$parentName = $row['parentName'];
+		$name= $row['name'];
+		$status=$row['status'];
+		$date=date('y-m-d h:m:s');
+		$query="INSERT INTO `categories` ( `name`, `status`, `createdDate`,`path`) VALUES ( '$name' , '$status', '$date' , '$parentName')";
+		$insert=$adapter->insert($query);
+		$path = $adapter->fetchRow("SELECT * FROM `categories` WHERE `name` = '$parentName' ");
+					//print_r($path);
+					//print_r($insert);
+					//$parentId = $path->fetch_array(MYSQLI_ASSOC);
+					$parentPath = $path['path']."/".$insert;
+					//print_r($parentPath);
+				
+					//exit();
+					$newPath = $adapter->update(" UPDATE `categories` SET `path` = '$parentPath' WHERE `categoryId` = '$insert' ");
+		// var_dump($update);
+	
+		//$result = $adapter->fetchPairs($fetchResult);
+		$adapter->redirect('index.php?a=grid&c=categories');
+	}
 
 }
 

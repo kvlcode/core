@@ -1,3 +1,10 @@
+<?php
+global $adapter;
+$categories = $adapter->fetchAll("SELECT name 
+									FROM categories");
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,12 +12,30 @@
 </head>
 <body>
 
-	<form method="post" action="index.php?a=save&c=categories">
+	<form method="post" action="index.php?a=test&c=categories">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>
 				<td colspan="2"><b>Categories Information</b></td>
 			</tr>
+
+			<tr>
+			    <td width="10%">Parent Id</td>
+			      <td>
+			      <select name="category[parentName]" class="form-control">
+			      <option value="0">Root</option>
+			        <?php
+			        if(!$categories): 
+			          echo 'No data';
+			        endif;
+			          foreach($categories as $category) :?>
+			            <?php
+			            echo "<option value='". $category['name'] ."'>" .$category['name'] ."</option>" ;
+			          endforeach;
+			        ?>
+			      </select>
+			    </td>
+			 </tr>
 
 			<tr>
 				<td width="10%">Name</td>
@@ -38,6 +63,8 @@
 
 		</table>
 	</form>
+
+
 
 </body>
 </html>

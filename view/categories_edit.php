@@ -3,8 +3,7 @@
 $id = $_GET['id'];
 global $adapter;
 
-$result = $adapter->fetchAll("SELECT * FROM categories WHERE categoryId='$id'");
-
+$row = $adapter->fetchRow("SELECT * FROM categories WHERE categoryId='$id'");
 
 ?>
 
@@ -14,8 +13,6 @@ $result = $adapter->fetchAll("SELECT * FROM categories WHERE categoryId='$id'");
 	<title>Category Edit</title>
 </head>
 <body>
-
-	<?php foreach ($result as $row): ?>
 
 	<form method="Post" action="index.php?a=save&c=categories">
 		<table border="1" width="100%" cellspacing="4">
@@ -44,8 +41,6 @@ $result = $adapter->fetchAll("SELECT * FROM categories WHERE categoryId='$id'");
 				</td>
 				<input type="hidden" name="category[hiddenId]" value="<?php echo $row['categoryId'] ?>">
 			</tr>
-	<?php endforeach; ?>
-
 			<tr>
 				<td width="10%">&nbsp;</td>
 				<td>
