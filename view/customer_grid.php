@@ -1,12 +1,4 @@
-<?php
-global $adapter;
-
-$customer = $adapter->fetchAll("SELECT c.*,a.*
-                            FROM customer c
-                            JOIN address a
-                            ON a.customerId = c.customerId");
-
-?>
+<?php $customer = $this->getData('customerGrid');?>
 
 <!doctype html>
 <html lang="en">

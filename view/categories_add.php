@@ -1,10 +1,4 @@
-<?php
-global $adapter;
-$categories = $adapter->fetchAll("SELECT name 
-									FROM categories");
-
-?>
-
+<?php $categories = $this->getData('categoriesAdd'); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +6,7 @@ $categories = $adapter->fetchAll("SELECT name
 </head>
 <body>
 
-	<form method="post" action="index.php?a=test&c=categories">
+	<form method="post" action="index.php?a=save&c=categories">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>
@@ -20,7 +14,7 @@ $categories = $adapter->fetchAll("SELECT name
 			</tr>
 
 			<tr>
-			    <td width="10%">Parent Id</td>
+			    <td width="10%">Parent</td>
 			      <td>
 			      <select name="category[parentName]" class="form-control">
 			      <option value="0">Root</option>
@@ -30,7 +24,7 @@ $categories = $adapter->fetchAll("SELECT name
 			        endif;
 			          foreach($categories as $category) :?>
 			            <?php
-			            echo "<option value='". $category['name'] ."'>" .$category['name'] ."</option>" ;
+			            echo "<option value='". $category['name'] ."'>" .$this->path($category['path']) ."</option>" ;
 			          endforeach;
 			        ?>
 			      </select>
@@ -63,8 +57,5 @@ $categories = $adapter->fetchAll("SELECT name
 
 		</table>
 	</form>
-
-
-
 </body>
 </html>

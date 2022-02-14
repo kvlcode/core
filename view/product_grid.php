@@ -1,10 +1,4 @@
-<?php 
-
-global $adapter;
-$product = $adapter->fetchAll('SELECT * FROM product');
-
-?>
-
+<?php $product = $this->getData('productGrid'); ?>
 <!DOCTYPE html>
 <html>
 <head>

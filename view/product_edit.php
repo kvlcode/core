@@ -1,13 +1,4 @@
-<?php 
-
-$id = $_GET['id'];
-
-global $adapter;
-
-$row = $adapter->fetchRow("SELECT * FROM product WHERE productId ='$id'");
-
-?>
-
+<?php $row = $this->getData('productEdit'); ?>
 <!DOCTYPE html>
 <html>
 <head>

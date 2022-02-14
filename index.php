@@ -1,4 +1,5 @@
 <?php require_once('Model/Core/Adapter.php');?>
+<?php date_default_timezone_set("Asia/Kolkata");?>
 <?php require_once('menu.php');?>
 <?php 
 

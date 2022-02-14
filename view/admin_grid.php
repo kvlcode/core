@@ -1,9 +1,4 @@
-<?php
-global $adapter;
-
-$admin = $adapter->fetchAll("SELECT * FROM admin");
-
-?>
+<?php $admin = $this->getData('adminGrid');?>
 
 <!doctype html>
 <html lang="en">

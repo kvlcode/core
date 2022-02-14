@@ -1,21 +1,37 @@
-<?php date_default_timezone_set("Asia/Kolkata"); ?>
 <?php 
+Ccc::loadClass('Controller_Core_Action');
 
-class Controller_Admin{
+class Controller_Admin extends Controller_Core_Action{
 
 	public function gridAction()
 	{
-		require_once 'view\admin_grid.php';
+		global $adapter;
+		$admin = $adapter->fetchAll("SELECT * FROM admin");
+		$view = $this->getView();
+		$view->setTemplate('view/admin_grid.php');
+		$view->addData('adminGrid', $admin);
+		$view->toHtml();
 	}
 
 	public function editAction()
-	{
-		require_once 'view\admin_edit.php';
+	{	
+		$id = $_GET['id'];
+		global $adapter;
+		$row = $adapter->fetchRow("SELECT *
+			                            FROM admin
+			                            WHERE adminId = $id");
+		$view = $this->getView();
+		$view->setTemplate('view/admin_edit.php');
+		$view->addData('adminEdit', $row);
+		$view->toHtml();
 	}
 
 	public function addAction()
 	{
-		require_once 'view\admin_add.php';
+		$view =$this->getView();
+		$view->setTemplate('view/admin_add.php');
+		$view->toHtml();
+		
 	}
 
 	public function saveAction()
@@ -102,13 +118,6 @@ class Controller_Admin{
 	{
 		echo "Error...";
 	}
-
-	public function redirect($url)
-	{
-			header("Location: $url");
-	}
-
-
 }
 
 ?>

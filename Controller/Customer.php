@@ -1,22 +1,43 @@
-<?php date_default_timezone_set("Asia/Kolkata");?>
-
 <?php 
+Ccc::loadClass('Controller_Core_Action');
 
-class Controller_Customer{
+class Controller_Customer extends Controller_Core_Action{
 
 	public function gridAction()
 	{
-		require_once 'view\customer_grid.php';
+		global $adapter;
+		$customer = $adapter->fetchAll("SELECT c.*,a.*
+			                            FROM customer c
+			                            JOIN address a
+			                            ON a.customerId = c.customerId");
+		$view = $this->getView();
+		$view->setTemplate('view/customer_grid.php');
+		$view->addData('customerGrid',$customer);
+		$view->toHtml();
 	}
 
 	public function editAction()
 	{
-		require_once 'view\customer_edit.php';
+		$id = $_GET['id'];
+		global $adapter;
+
+		$row = $adapter->fetchRow("SELECT c.*,a.*
+			                        FROM customer c
+			                        JOIN address a
+			                        ON a.customerId = c.customerId
+			                        WHERE c.customerId = $id");
+
+		$view =$this->getView();
+		$view->setTemplate('view/customer_edit.php');
+		$view->addData('customerEdit',$row);
+		$view->toHtml();
 	}
 
 	public function addAction()
-	{
-		require_once 'view\customer_add.php';
+	{	
+		$view = $this->getView();
+		$view->setTemplate('view/customer_add.php');
+		$view->toHtml();	
 	}
 
 	public function saveCustomer()
@@ -56,7 +77,6 @@ class Controller_Customer{
 					throw new Exception("System can't update", 1);
 				}	
 				
-
 		}else{
 			$customerId = $adapter->insert("INSERT INTO 
 											customer(`firstName`,`lastName`,`email`,`mobile`,`status`,`createdDate`)
@@ -172,12 +192,6 @@ class Controller_Customer{
 	{
 		echo "Error...";
 	}
-
-	public function redirect($url)
-	{
-			header("Location: $url");
-	}
-
 
 }
 

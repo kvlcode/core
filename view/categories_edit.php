@@ -1,12 +1,4 @@
-<?php
-
-$id = $_GET['id'];
-global $adapter;
-
-$row = $adapter->fetchRow("SELECT * FROM categories WHERE categoryId='$id'");
-
-?>
-
+<?php $row = $this->getData('categoriesEdit');?>
 <!DOCTYPE html>
 <html>
 <head>

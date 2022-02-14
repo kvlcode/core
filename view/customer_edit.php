@@ -1,15 +1,4 @@
-<?php 
-
-$id = $_GET['id'];
-global $adapter;
-
-$row = $adapter->fetchRow("SELECT c.*,a.*
-	                            FROM customer c
-	                            JOIN address a
-	                            ON a.customerId = c.customerId
-	                            WHERE c.customerId = $id");
-?>
-
+<?php $row = $this->getData('customerEdit');?>
 <!DOCTYPE html>
 <html>
 <head>

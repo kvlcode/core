@@ -1,12 +1,4 @@
-<?php 
-
-$id = $_GET['id'];
-global $adapter;
-
-$row = $adapter->fetchRow("SELECT *
-	                            FROM admin
-	                            WHERE adminId = $id");
-?>
+<?php $row = $this->getData('adminEdit');?>
 
 <!DOCTYPE html>
 <html>

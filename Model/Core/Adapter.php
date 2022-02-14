@@ -103,7 +103,6 @@ class Model_Customer{
 			$result = array_combine($keys, $values);
 			return $result;
 		}
-
 		
 }
 $adapter = new Model_Customer();

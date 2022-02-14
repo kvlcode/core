@@ -1,60 +1,64 @@
-<?php date_default_timezone_set("Asia/Kolkata");?>
 <?php 
+Ccc::loadClass('Controller_Core_Action');
 
-class Controller_Categories{
+class Controller_Categories extends Controller_Core_Action{
 
 	public function gridAction(){
+		global $adapter;
+		$categories = $adapter->fetchAll('SELECT * FROM categories');
 
-		require_once 'view\categories_grid.php';
+		$view = $this->getView();
+		$view->setTemplate('view/categories_grid.php');
+		$view->addData('categoriesGrid', $categories);
+		$view->toHtml();
 	}
 
 	public function addAction(){
+		global $adapter;
+		$categoriesAdd = $adapter->fetchAll("SELECT name, path FROM categories");
+		$view = $this->getView();
+		$view->setTemplate('view/categories_add.php');
+		$view->addData('categoriesAdd', $categoriesAdd);
+		$view->toHtml();
+	}
 
-		require_once 'view\categories_add.php';
+	public function editAction()
+	{	
+		$id = $_GET['id'];
+		global $adapter;
+		$row = $adapter->fetchRow("SELECT * FROM categories WHERE categoryId='$id'");
+		$view = $this->getView();
+		$view->setTemplate('view/categories_edit.php');
+		$view->addData('categoriesEdit', $row);
+		$view->toHtml();
 	}
 
 	public function saveAction()
 	{	
-		try{
+		global $adapter;
+		$row=$_POST['category'];
+		$parentName = $row['parentName'];
+		$name= $row['name'];
+		$status=$row['status'];
+		$date=date('y-m-d h:m:s');
+	
+		$insertId=$adapter->insert("INSERT INTO `categories` ( `name`, `status`, `createdDate`,`path`) VALUES ( '$name' , '$status', '$date' , '$parentName')");
+		$path = $adapter->fetchRow("SELECT * FROM `categories` WHERE `name` = '$parentName' ");
+		
+			if ($parentName == '0') {
+				$newPath = $adapter->update(" UPDATE `categories` SET `path` = '$insertId' WHERE `categoryId` = '$insertId';");	
 
-			global $adapter; 
-			$category = $_POST['category'];
-			$hiddenId = $category['hiddenId'];	
-			$name = $category['name'];
-			$status = $category['status'];	
-			$date = date('Y-m-d H:i:s');
-				
-
-			if ($hiddenId){
-
-				$update = $adapter->update("UPDATE categories SET name='$name', status='$status',updatedDate='$date' WHERE categoryId=$hiddenId");
-				
-				if (!$update) {
-					throw new Exception("System can't update", 1);
-				}
-				
-			}else{
-				
-		       	$insert = $adapter->insert("INSERT INTO `categories`(`name`, `status`, `createdDate`) VALUES ('$name','$status','$date')");
-				
-				if (!$insert){
-		         	throw new Exception("System can't insert", 1);
-		        	
-		        }
-				
 			}
-
-			$this->redirect("index.php?a=grid&c=categories"); 
-
-		}catch(Exception $e){
-	    	$this->redirect("index.php?a=grid&c=categories");
-	    	// echo $e->getMessage();
-	    }    
-	}
-
-	public function editAction()
-	{
-		require_once 'view\categories_edit.php';
+			else{
+				$parentPath = $path['path']."/".$insertId;
+				print_r($parentPath);
+				$path1 = explode("/", $path['path']);
+				$parentIdTable = array_pop($path1);
+				$newPath = $adapter->update(" UPDATE `categories` SET `path` = '$parentPath', `parentId`='$parentIdTable'  WHERE `categoryId` = '$insertId' ");
+			}
+			
+		$this->redirect('index.php?a=grid&c=categories');
+		
 	}
 
 	public function deleteAction()
@@ -92,37 +96,6 @@ class Controller_Categories{
 		echo "Error Ocurred!!";	
 	}
 
-	public function redirect($url)
-	{
-		header("Location: $url");
-		exit();
-	}
-
-
-	public function testAction()
-	{
-		global $adapter;
-		$row=$_POST['category'];
-		$parentName = $row['parentName'];
-		$name= $row['name'];
-		$status=$row['status'];
-		$date=date('y-m-d h:m:s');
-		$query="INSERT INTO `categories` ( `name`, `status`, `createdDate`,`path`) VALUES ( '$name' , '$status', '$date' , '$parentName')";
-		$insert=$adapter->insert($query);
-		$path = $adapter->fetchRow("SELECT * FROM `categories` WHERE `name` = '$parentName' ");
-					//print_r($path);
-					//print_r($insert);
-					//$parentId = $path->fetch_array(MYSQLI_ASSOC);
-					$parentPath = $path['path']."/".$insert;
-					//print_r($parentPath);
-				
-					//exit();
-					$newPath = $adapter->update(" UPDATE `categories` SET `path` = '$parentPath' WHERE `categoryId` = '$insert' ");
-		// var_dump($update);
-	
-		//$result = $adapter->fetchPairs($fetchResult);
-		$adapter->redirect('index.php?a=grid&c=categories');
-	}
 
 }
 

@@ -1,22 +1,40 @@
-<?php date_default_timezone_set("Asia/Kolkata");?>
-
 <?php 
+Ccc::loadClass('Controller_Core_Action');
 
-class Controller_Product{
+class Controller_Product extends Controller_Core_Action{
 
 	public function gridAction()			
-	{
-		require_once 'view\product_grid.php';
+	{	
+		global $adapter;
+		$product = $adapter->fetchAll('SELECT * FROM product');
+		$view = $this->getView();
+		$view->setTemplate('view/product_grid.php');
+		$view->addData('productGrid', $product);
+		$view->toHtml();
+		
 	}
 
 	public function addAction()
 	{
-		require_once 'view\product_add.php';
+		$view = $this->getView();
+		$view->setTemplate('view/product_add.php');
+		$view->toHtml();
+	
 	}
 
 	public function editAction()
 	{
-		require 'view\product_edit.php';
+
+		$id = $_GET['id'];
+		global $adapter;
+		$row = $adapter->fetchRow("SELECT * FROM product WHERE productId ='$id'");
+
+		$view = $this->getView();
+		$view->setTemplate('view/product_edit.php');
+		$view->addData('productEdit',$row);
+		$view->toHtml();
+
+		// require 'view\product_edit.php';
 	}
 
 	public function saveAction()
@@ -110,11 +128,6 @@ class Controller_Product{
 	public function errorAction()
 	{
 			echo "Error.";
-	}
-	public function redirect($url)
-	{
-		header("Location: $url");
-		exit();
 	}
 
 }

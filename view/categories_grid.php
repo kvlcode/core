@@ -1,23 +1,4 @@
-<?php 
-
-global $adapter;
-
-try
-{
-	$categories = $adapter->fetchAll('SELECT * FROM categories');
-
-		if(!$categories)
-		{
-			throw new Exception("System Can't fetch", 1);
-		}
-}
-catch(Exception $e)
-{
-	throw new Exception("System Can't fetch", 1);
-}
-
-	 
-?>
+<?php $categories = $this->getData('categoriesGrid'); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,7 +27,7 @@ catch(Exception $e)
 			<?php foreach ($categories as $category): ?>
 				<tr>
 					<td><?php echo $category['categoryId']; ?></td>
-					<td><?php echo $category['path']  ?></td>
+					<td><?php echo $this->path($category['path']);  ?></td>
 					<td><?php echo $category['name']  ?></td>
 					<td><?php echo $category['status']; ?></td>
 					<td><?php echo $category['createdDate']; ?></td>
@@ -56,9 +37,7 @@ catch(Exception $e)
 				</tr>
 			<?php endforeach; ?>
 		<?php endif; ?>	
-
 		
-	</table>
- 
+	</table> 
 </body>
 </html>
