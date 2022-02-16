@@ -1,5 +1,6 @@
 <?php 
 Ccc::loadClass('Controller_Core_Action');
+Ccc::loadClass('Model_Core_Request');
 
 class Controller_Product extends Controller_Core_Action{
 
@@ -25,9 +26,10 @@ class Controller_Product extends Controller_Core_Action{
 	public function editAction()
 	{
 
-		$id = $_GET['id'];
+		$request = new Model_Core_Request();
+		$id = $request->getRequest('id');
 		global $adapter;
-		$row = $adapter->fetchRow("SELECT * FROM product WHERE productId ='$id'");
+		$row = $adapter->fetchRow("SELECT * FROM product WHERE productId = '$id'");
 
 		$view = $this->getView();
 		$view->setTemplate('view/product_edit.php');
@@ -43,8 +45,8 @@ class Controller_Product extends Controller_Core_Action{
 		try{
 
 		    global $adapter; 
-			
-			$product = $_POST['product'];
+			$request = new Model_Core_Request();
+			$product = $request->getPost('product');
 			$hiddenId = $product['hiddenId'];
 			$name = $product['name'];
 			$price = $product['price'];
@@ -105,8 +107,8 @@ class Controller_Product extends Controller_Core_Action{
 
 
 			global $adapter; 
-			
-			$id = $_GET["id"];
+			$request = new Model_Core_Request();
+			$id = $request->getRequest('id');
 
 			$delete = $adapter->delete("DELETE FROM product WHERE productId = $id ");
 

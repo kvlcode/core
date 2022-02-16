@@ -89,10 +89,10 @@ class Model_Customer{
 				return false;
 		}
 
-		public function fetchPair()
+		public function fetchPair($query)
 		{
 			$result = $this->fetchAll($query,MYSQLI_NUM);
-			if(!result){
+			if(!$result){
 				return false;
 			}
 			$keys = array_column($result, "0");

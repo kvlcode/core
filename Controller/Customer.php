@@ -1,5 +1,6 @@
 <?php 
 Ccc::loadClass('Controller_Core_Action');
+Ccc::loadClass('Model_Core_Request');
 
 class Controller_Customer extends Controller_Core_Action{
 
@@ -18,7 +19,8 @@ class Controller_Customer extends Controller_Core_Action{
 
 	public function editAction()
 	{
-		$id = $_GET['id'];
+		$request = new Model_Core_Request();
+		$id = $request->getRequest('id');
 		global $adapter;
 
 		$row = $adapter->fetchRow("SELECT c.*,a.*
@@ -43,11 +45,11 @@ class Controller_Customer extends Controller_Core_Action{
 	public function saveCustomer()
 	{	
 		global $adapter; 
-		if (!isset($_POST['customer'])) {
+		$request = new Model_Core_Request();
+		$personalInfo = $request->getPost('customer');
+		if (!isset($personalInfo)) {
 			throw new Exception("Missing Customer data in request.", 1);
 		}
-
-		$personalInfo = $_POST['customer'];
 		$firstName = $personalInfo['firstName'];
 		$lastName = $personalInfo['lastName'];
 		$email = $personalInfo['email'];
@@ -94,12 +96,13 @@ class Controller_Customer extends Controller_Core_Action{
 	public function saveAddress($customerId)
 	{
 		global $adapter; 
+		
+		$request = new Model_Core_Request();
+		$addressInfo = $request->getPost('address');
 
-		if(!isset($_POST['address'])){
+		if(!isset($addressInfo)){
 			throw new Exception("Missing Address data in Request ", 1);	
 		}
-	
-		$addressInfo = $_POST['address'];
 		$address = $addressInfo['address'];
 		$postalCode = $addressInfo['postalCode'];
 		$city = $addressInfo['city'];
@@ -165,14 +168,15 @@ class Controller_Customer extends Controller_Core_Action{
 	{
 		
 		try {
+
+			$request = new Model_Core_Request();
+			$id = $request->getRequest('id');
 			
-			if (!isset($_GET['id'])) {
+			if (!isset($id)) {
 				throw new Exception("Invalid Request.", 1);
 			}
 			
 			global $adapter; 
-
-			$id=$_GET['id'];
 			$delete = $adapter->delete("DELETE FROM customer WHERE customerId = $id"); 
 			if(!$delete)
 			{

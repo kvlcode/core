@@ -11,7 +11,7 @@ class Model_Core_View{
 
 	public function setTemplate($template)
 	{
-		$this -> template = $template;
+		$this->template = $template;
 		return $this;
 	}
 

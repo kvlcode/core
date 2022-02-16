@@ -1,7 +1,31 @@
 <?php 
 Ccc::loadClass('Controller_Core_Action');
-
+Ccc::loadClass('Model_Core_Request');
 class Controller_Admin extends Controller_Core_Action{
+
+	// public function testAction()
+	// {
+	// 	$adminTable = new Model_Core_Table();
+	// 	$adminTable->setTable('admin');
+	// 	$adminTable->setPrimaryKey('adminId');
+	// 	$adminTable->insert([]);
+
+	// 	$adminTable->update([], 'adminId'=>5);
+	// 	$adminTable->delete(['adminId'=> 2]); // array of Id
+
+	// 	$adminTable->fetchRow($query);
+	// 	$adminTable->fetchAll($query);
+		
+	// 	$admin = $adminTable->createRow();
+	// 	$admin->set('firstName', 'Raj');
+	// 	$admin->set('lastName', 'Patel');
+	// 	$admin->set('email', 'raj@gmail.com');
+	// 	$admin->set('password', 'Raj');
+	// 	$admin->save();
+
+
+	// }
+
 
 	public function gridAction()
 	{
@@ -15,7 +39,8 @@ class Controller_Admin extends Controller_Core_Action{
 
 	public function editAction()
 	{	
-		$id = $_GET['id'];
+		$request = new Model_Core_Request();
+		$id = $request->getRequest('id');
 		global $adapter;
 		$row = $adapter->fetchRow("SELECT *
 			                            FROM admin
@@ -36,12 +61,13 @@ class Controller_Admin extends Controller_Core_Action{
 
 	public function saveAction()
 	{	
-		global $adapter; 
-		if (!isset($_POST['admin'])) {
+
+		$request = new Model_Core_Request();
+		$adminInfo = $request->getPost('admin');
+		if (!isset($adminInfo)) {
 			throw new Exception("Missing Admin data in request.", 1);
 		}
-
-		$adminInfo = $_POST['admin'];
+		global $adapter; 
 		$firstName = $adminInfo['firstName'];
 		$lastName = $adminInfo['lastName'];
 		$email = $adminInfo['email'];
@@ -91,14 +117,15 @@ class Controller_Admin extends Controller_Core_Action{
 	{
 		
 		try {
+
+			$request = new Model_Core_Request();
+			$id = $request->getRequest('id');
 			
-			if (!isset($_GET['id'])) {
+			if (!isset($id)) {
 				throw new Exception("Invalid Request.", 1);
 			}
-			
-			global $adapter; 
 
-			$id = $_GET['id'];
+			global $adapter; 
 			$delete = $adapter->delete("DELETE FROM admin WHERE adminId = $id"); 
 			if(!$delete)
 			{

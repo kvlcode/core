@@ -1,5 +1,6 @@
 <?php 
 Ccc::loadClass('Controller_Core_Action');
+Ccc::loadClass('Model_Core_Request');
 
 class Controller_Categories extends Controller_Core_Action{
 
@@ -15,7 +16,7 @@ class Controller_Categories extends Controller_Core_Action{
 
 	public function addAction(){
 		global $adapter;
-		$categoriesAdd = $adapter->fetchAll("SELECT name, path FROM categories");
+		$categoriesAdd = $adapter->fetchAll("SELECT name, path FROM categories ORDER BY path");
 		$view = $this->getView();
 		$view->setTemplate('view/categories_add.php');
 		$view->addData('categoriesAdd', $categoriesAdd);
@@ -24,7 +25,8 @@ class Controller_Categories extends Controller_Core_Action{
 
 	public function editAction()
 	{	
-		$id = $_GET['id'];
+		$request = new Model_Core_Request();
+		$id = $request->getRequest('id');
 		global $adapter;
 		$row = $adapter->fetchRow("SELECT * FROM categories WHERE categoryId='$id'");
 		$view = $this->getView();
@@ -36,7 +38,8 @@ class Controller_Categories extends Controller_Core_Action{
 	public function saveAction()
 	{	
 		global $adapter;
-		$row=$_POST['category'];
+		$request = new Model_Core_Request();
+		$row = $request->getPost('category');
 		$parentName = $row['parentName'];
 		$name= $row['name'];
 		$status=$row['status'];
@@ -65,15 +68,15 @@ class Controller_Categories extends Controller_Core_Action{
 	{
 
 		try{
+			$request = new Model_Core_Request();
+			$id = $request->getRequest('id');	
 
-			if (!isset($_GET['id'])) {
+			if (!isset($id)) {
 				throw new Exception("Invalid Request.", 1);
 			}
 			
 			global $adapter; 
 			
-			$id=$_GET['id'];
-
 			$delete = $adapter->delete("DELETE FROM categories WHERE categoryId=$id");
 			if(!$delete)
 			{

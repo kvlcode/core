@@ -6,10 +6,16 @@ class Controller_Core_Action {
 
 	public $view = null;
 
-	public function redirect($url)
+	public function getAdapter()
+	{		
+		global $adapter;
+		return $adapter;
+	}
+
+	public function setView($view)
 	{
-		header("Location: $url");
-		exit();
+		$this->view = $view;
+		return $this;
 	}
 
 	public function getView()
@@ -20,11 +26,12 @@ class Controller_Core_Action {
 		return $this->view;
 	}
 
-	public function setView($view)
+	public function redirect($url)
 	{
-		$this->view = $view;
-		return $this;
+		header("Location: $url");
+		exit();
 	}
+
 }
 
 ?>
