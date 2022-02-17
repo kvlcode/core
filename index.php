@@ -1,26 +1,26 @@
 <?php require_once('Model/Core/Adapter.php');?>
+<?php $adapter = new Model_Core_Adapter();?>
 <?php date_default_timezone_set("Asia/Kolkata");?>
 <?php require_once('menu.php');?>
 <?php 
 
 class Ccc{
 
-	public $front = null;
+	public static $front = null;
 
-	public function setFront($front)
+	public static function setFront($front)
 	{
-		$this->front = $front;
-		return $this;
+		self::$front = $front;	
 	}
 
-	public function getFront()
+	public static function getFront()
 	{		
 		Ccc::loadClass('Controller_Core_Front');
-		if(!$this->front){
+		if(!self::$front){
 			$front = new Controller_Core_Front();
-			$this->setFront($front);
+			self::setFront($front);
 		}
-		return $this->front;
+		return self::$front;
 	}
 	
 	public static function loadFile($path)
@@ -34,26 +34,19 @@ class Ccc{
 		Ccc::loadFile($path);
 	}
 
-	public function init()
+	public static function getModel($className)
 	{
-		//Ccc::loadClass('Controller_Core_Front');
-		//$front=new Controller_Core_Front();
-			$this->getFront()->init();
-		/*
-			$actionName=(isset($_GET['a'])) ? $_GET['a'] : 'error'; 
-			$actionName=$actionName."Action"; //gridAction
+		$className = 'Model_'.$className;
+		self::loadClass($className);
+		return new $className();
+	}
 
-			$controllerName=(isset($_GET['c'])) ? ucfirst($_GET['c']) : 'Customer'; //Customer
-			$controllerPath='Controller/'.$controllerName.'.php'; //Controller/Customer.php
-			$controllerClassName='Controller_'.$controllerName; // Controller_Customer
-
-			Ccc::loadClass($controllerClassName);
-			$controller = new $controllerClassName();
-			$controller->$actionName();*/
+	public static function init()
+	{
+			self::getFront()->init();
 	}	
 }
 
-$cc = new Ccc();
-$cc->getFront()->init();
+Ccc::init();
 
 ?>

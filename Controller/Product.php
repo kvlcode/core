@@ -25,18 +25,15 @@ class Controller_Product extends Controller_Core_Action{
 
 	public function editAction()
 	{
-
-		$request = new Model_Core_Request();
-		$id = $request->getRequest('id');
 		global $adapter;
+		global $ccc;
+		$id = $ccc->getFront()->getRequest()->getRequest('id');
 		$row = $adapter->fetchRow("SELECT * FROM product WHERE productId = '$id'");
 
 		$view = $this->getView();
 		$view->setTemplate('view/product_edit.php');
 		$view->addData('productEdit',$row);
 		$view->toHtml();
-
-		// require 'view\product_edit.php';
 	}
 
 	public function saveAction()
@@ -45,8 +42,8 @@ class Controller_Product extends Controller_Core_Action{
 		try{
 
 		    global $adapter; 
-			$request = new Model_Core_Request();
-			$product = $request->getPost('product');
+			global $ccc;
+			$product = $ccc->getFront()->getRequest()->getPost('product');
 			$hiddenId = $product['hiddenId'];
 			$name = $product['name'];
 			$price = $product['price'];
@@ -97,18 +94,17 @@ class Controller_Product extends Controller_Core_Action{
 
 	public function deleteAction()
 	{
-		
+		global $ccc;
+		$id = $ccc->getFront()->getRequest()->getRequest('id');
+
 		try{
 
-			if (!isset($_GET['id'])){
+			if (!isset($id)){
 				throw new Exception("Invalid Request", 1);
 				
 			}
 
-
 			global $adapter; 
-			$request = new Model_Core_Request();
-			$id = $request->getRequest('id');
 
 			$delete = $adapter->delete("DELETE FROM product WHERE productId = $id ");
 

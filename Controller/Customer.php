@@ -18,9 +18,9 @@ class Controller_Customer extends Controller_Core_Action{
 	}
 
 	public function editAction()
-	{
-		$request = new Model_Core_Request();
-		$id = $request->getRequest('id');
+	{	
+		global $ccc;
+		$id = $ccc->getFront()->getRequest()->getRequest('id');
 		global $adapter;
 
 		$row = $adapter->fetchRow("SELECT c.*,a.*
@@ -45,8 +45,8 @@ class Controller_Customer extends Controller_Core_Action{
 	public function saveCustomer()
 	{	
 		global $adapter; 
-		$request = new Model_Core_Request();
-		$personalInfo = $request->getPost('customer');
+		global $ccc;
+		$personalInfo = $ccc->getFront()->getRequest()->getPost('customer');
 		if (!isset($personalInfo)) {
 			throw new Exception("Missing Customer data in request.", 1);
 		}
@@ -96,9 +96,8 @@ class Controller_Customer extends Controller_Core_Action{
 	public function saveAddress($customerId)
 	{
 		global $adapter; 
-		
-		$request = new Model_Core_Request();
-		$addressInfo = $request->getPost('address');
+		global $ccc;
+		$address = $ccc->getFront()->getRequest()->getPost('address');
 
 		if(!isset($addressInfo)){
 			throw new Exception("Missing Address data in Request ", 1);	
@@ -168,10 +167,9 @@ class Controller_Customer extends Controller_Core_Action{
 	{
 		
 		try {
-
-			$request = new Model_Core_Request();
-			$id = $request->getRequest('id');
-			
+	
+			global $ccc;
+			$id = $ccc->getFront()->getRequest()->getRequest('id');
 			if (!isset($id)) {
 				throw new Exception("Invalid Request.", 1);
 			}

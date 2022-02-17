@@ -1,4 +1,5 @@
 <?php 
+
 class Controller_Core_Front{
 
 	protected $request = null;
@@ -15,21 +16,20 @@ class Controller_Core_Front{
 			$request = new Model_Core_Request();
 			$this->setRequest($request);
 		}
-		return $this->$request;
+		return $this->request;
 	}
 
 	public function init()
-	{
-			$actionName=(isset($_GET['a'])) ? $_GET['a'] : 'error'; 
-			$actionName=$actionName."Action"; //gridAction
+	{	
+		$actionName=(isset($_GET['a'])) ? $_GET['a'].'Action' : 'error'; 
 
-			$controllerName=$_GET['c'];
-			$controllerName = 'Controller_'.$controllerName;
-			$controllerClassName=$this->prepareClassName($controllerName); 
+		$controllerName=$_GET['c'];
+		$controllerName = 'Controller_'.$controllerName;
+		$controllerClassName=$this->prepareClassName($controllerName); 
 
-			Ccc::loadClass($controllerClassName);
-			$controller = new $controllerClassName();
-			$controller->$actionName();
+		Ccc::loadClass($controllerClassName);
+		$controller = new $controllerClassName();
+		$controller->$actionName();
 	}
 
 	public function prepareClassName($name)

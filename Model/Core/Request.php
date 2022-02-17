@@ -4,10 +4,6 @@ class Model_Core_Request
 {
 	public function getPost($key = null,$value = null)
 	{	
-		// if (!$this->isPost()) {
-		// 	return null;
-		// }
-
 		if ($key == null) {
 			return $_POST;
 		}
@@ -22,7 +18,8 @@ class Model_Core_Request
 	
 	public function getRequest($key =null,$value = null)
 	{
-			if ($key == null) {
+		
+		if($key == null) {
 			return $_REQUEST;
 		}
 		

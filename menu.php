@@ -15,12 +15,9 @@
       .nav{
         color: #f2f2f2;
         display: inline-block;
-        font-size: 25px;
+        font-size: 20px;
         padding: 10px 30px;
-        text-decoration: none;
-        font-weight: bold;
       }
-
 
     </style>
 </head>

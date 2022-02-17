@@ -25,8 +25,8 @@ class Controller_Categories extends Controller_Core_Action{
 
 	public function editAction()
 	{	
-		$request = new Model_Core_Request();
-		$id = $request->getRequest('id');
+		global $ccc;
+		$id = $ccc->getFront()->getRequest()->getRequest('id');
 		global $adapter;
 		$row = $adapter->fetchRow("SELECT * FROM categories WHERE categoryId='$id'");
 		$view = $this->getView();
@@ -38,8 +38,8 @@ class Controller_Categories extends Controller_Core_Action{
 	public function saveAction()
 	{	
 		global $adapter;
-		$request = new Model_Core_Request();
-		$row = $request->getPost('category');
+		global $ccc;
+		$row = $ccc->getFront()->getRequest()->getPost('category');
 		$parentName = $row['parentName'];
 		$name= $row['name'];
 		$status=$row['status'];
@@ -67,9 +67,9 @@ class Controller_Categories extends Controller_Core_Action{
 	public function deleteAction()
 	{
 
-		try{
-			$request = new Model_Core_Request();
-			$id = $request->getRequest('id');	
+		try{	
+			global $ccc;
+			$id = $ccc->getFront()->getRequest()->getRequest('id');
 
 			if (!isset($id)) {
 				throw new Exception("Invalid Request.", 1);
@@ -91,14 +91,12 @@ class Controller_Categories extends Controller_Core_Action{
 			//echo $e->getMessage();
 		}
 		
-
 	}
 
 	public function errorAction(){
 
 		echo "Error Ocurred!!";	
 	}
-
 
 }
 

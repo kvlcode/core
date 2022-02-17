@@ -1,5 +1,5 @@
 <?php
-class Model_Customer{
+class Model_Core_Adapter{
 	
 	public $config=[
 		'host'=>'localhost',
@@ -105,7 +105,5 @@ class Model_Customer{
 		}
 		
 }
-$adapter = new Model_Customer();
-
 
 ?>
