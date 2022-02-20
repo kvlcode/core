@@ -1,8 +1,11 @@
 <?php
+Ccc::loadClass('Controller_Core_Action');
 
 class Model_Core_View{
 	public $template = null;
 	public $data = [];
+
+	public $action = null;
 
 	public function getTemplate()
 	{
@@ -17,7 +20,7 @@ class Model_Core_View{
 
 	public function toHtml()
 	{
-		require($this->getTemplate());
+		require($this->getTemplate());    //View load here
 	}
 
 	public function getData($key = null)
@@ -28,7 +31,7 @@ class Model_Core_View{
 		if(array_key_exists($key, $this->data)) {
 			return $this->data[$key];	
 		}
-			return null;
+		return null;
 	}
 	
 	public function setData(array $data)
@@ -50,6 +53,22 @@ class Model_Core_View{
 		}
 		return $this;
 	}
+
+    // Functions for use of getUrl in template
+	public function setAction($action)
+	{
+		$this->action = $action;
+		return $this;
+	}
+
+	public function getAction()
+	{
+		if (!$this->action) {
+			$this->setAction(new Controller_Core_Action());
+		}
+		return $this->action;
+	}
+
 
 	public function path($path)
 	{	

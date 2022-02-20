@@ -1,5 +1,4 @@
-<?php $row = $this->getData('adminEdit');?>
-
+<?php $row = $this->getAdmin();?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +6,7 @@
 </head>
 <body>
 
-	<form method="POST" action="index.php?c=admin&a=save">
+	<form method="POST" action="<?php echo $this->getAction()->getUrl('admin','save')?>">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>
@@ -54,7 +53,7 @@
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="Save">
-					<button type="button"><a href="index.php?c=admin&a=grid">Cancel</a></button> 
+					<button type="button"><a href="<?php echo $this->getAction()->getUrl('admin','grid')?>">Cancel</a></button> 
 
 				</td>
 			</tr>

@@ -6,12 +6,6 @@ class Controller_Core_Action {
 
 	protected $view = null;
 
-	// public function getAdapter()
-	// {		
-	// 	global $adapter;
-	// 	return $adapter;
-	// }
-
 	public function setView($view)
 	{
 		$this->view = $view;
@@ -37,72 +31,39 @@ class Controller_Core_Action {
 		return Ccc::getFront()->getRequest();
 	}
 
-	public function getUrl($actionName = null, $controllerName = null, array $id = null)
+	public function getUrl($controllerName = null,$actionName = null, array $data = null, $reset = true)
 	{
-		$defaultPath = [
-			'a' => $_GET['a'],
-			'c' => $_GET['c'],
-			'id' => $_GET['id'],
-			'tab' => $_GET['menu']
-		];
-
-		$path =[
-			'a' => $actionName,
-			'c' => $controllerName,
-			'id' => $id['id'],
-			'tab' => $id['tab']
-		];
 		
-		echo "<pre>";
-		print_r($path);
-		$path2 = [];
-		foreach ($path as $key => $value) {
-			if ($value != null) {
-				print_r($value);
-				// $path2[$key] = $value;
-			}
-			else{
-				echo "---------";
-				print_r($value);
+		$defaultPath = $this->getRequest()->getRequest();	
+		$path =[];
 
-				// unset($path[$key]);
+		if ($controllerName) {
+			$path['c'] = $controllerName;
+		}
+
+		if ($actionName) {
+			$path['a'] = $actionName;
+		}
+
+		if (is_array($data)) {
+			foreach ($data as $key => $value) {
+				if ($value) {
+					$path[$key] = $value;
+				}
+			}
+		}
+		else{
+			foreach ($defaultPath as $key => $value) {
+				if ($key != 'c' && $key != 'a' ) {
+					unset($defaultPath[$key]);
+				}
 			}
 		}
 
-		$path3 = http_build_query($path2);
-		$finalPath = 'index.php?'.$path3;
-		print_r($finalPath);
-		exit();
-
-		$path3 = array_merge($defaultPath, $path2);
-
+		$finalElements = array_merge($defaultPath, $path);
+		$finalPath = 'index.php?'. http_build_query($finalElements);
+		return $finalPath;
 		
-		// if($actionName == null)
-		// {
-		// 	if ($controllerName == null) {
-		// 		if ($id['id'] == null && $id['tab'] == null) {
-		// 			print_r($defaultpath);
-		// 		}
-		// 	}
-		// 	else
-		// 	{			
-		// 	}
-		// }
-		// else
-		// {
-		// 	if ($controllerName == null) {
-		// 		// if ($id['']) {
-		// 		// 	// code...
-		// 		// }
-		// 	}
-		// 	else
-		// 	{		
-		// 	}
-		// }
-		// $elements =[
-		// 	'a'=
-		// 	'id' =
-		// ]
 	}
 
 }

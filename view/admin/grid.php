@@ -1,4 +1,4 @@
-<?php $admin = $this->getData('adminGrid');?>
+<?php $admin = $this->getAdmin();?>
 <!doctype html>
 <html lang="en">
 
@@ -11,7 +11,7 @@
 
 <body>               
     <div>    
-        <button name="Add"><a href="index.php?c=admin&a=add">Add</a></button>    
+        <button name="Add"><a href="<?php echo $this->getAction()->getUrl('admin','add')?>">Add</a></button>    
         <table border='1' class="table" width='100%' cellspacing="4">
                 
                 <tr>
@@ -45,8 +45,8 @@
                             <td><?php echo $row['status']     ?></td>
                             <td><?php echo $row['createdDate']?></td>
                             <td><?php echo $row['updatedDate']?></td>
-                            <td><a href="index.php?c=admin&a=edit&id=<?php echo $row['adminId']?>">Edit</a></td>
-                            <td><a href="index.php?c=admin&a=delete&id=<?php echo $row['adminId']?>">Delete</a></td>
+                            <td><a href="<?php echo $this->getAction()->getUrl('admin','edit',['id' => $row['adminId']])?>">Edit</a></td>
+                            <td><a href="<?php echo $this->getAction()->getUrl('admin','delete',['id' => $row['adminId']])?>">Delete</a></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>

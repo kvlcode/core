@@ -22,9 +22,8 @@ class Model_Core_Table
 		$tableName = $this->getTableName();
 
 		$query = "INSERT INTO `$tableName`($fields) VALUES ($fieldValues)";
-        // $insertId = $this->getAdapter()->insert($query);
-        global $adapter;
-        $insertId =$adapter->insert($query);
+        	global $adapter;
+        	$insertId =$adapter->insert($query);
 		return $insertId;
 	}
 
@@ -42,7 +41,6 @@ class Model_Core_Table
 		$tableName = $this->getTableName();
 
 		$query = "UPDATE `$tableName` SET $setString WHERE $key = $value";
-		print_r($query);
 		global $adapter;
 		$update = $adapter->update($query);
 		return $update;
@@ -59,27 +57,20 @@ class Model_Core_Table
 		global $adapter;
 		$delete = $adapter->delete($query);
 		return $delete;
+	} 
+
+	public function fetchAll($query)
+	{
+		global $adapter;
+		$allData = $adapter->fetchAll($query);
+		return $allData;
 	}
 
-	public function fetchRow(array $rowData)
+	public function fetchRow($query)
 	{
-		$columnName = key($rowData);
-        $value = $rowData[$columnName];
-		$tableName = $this->getTableName();
 		global $adapter;
-		$query = "SELECT * FROM `$tableName` WHERE $columnName = $value";
 		$row = $adapter->fetchRow($query);
 		return $row;
-	}
-
-	public function fetchAll()
-	{
-		$tableName = $this->getTableName();
-		$query = "SELECT * FROM `$tableName`";
-		// $fetch = $this->getAdapter()->fetchAll($query)
-		global $adapter;
-		$fetch = $adapter->fetchAll($query);
-		return $fetch;
 	}
 
 	public function setTableName($tableName)

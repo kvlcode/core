@@ -1,4 +1,5 @@
 <?php 
+Ccc::loadClass('Model_Core_Request');
 
 class Controller_Core_Front{
 
@@ -23,7 +24,7 @@ class Controller_Core_Front{
 	{	
 		$actionName=(isset($_GET['a'])) ? $_GET['a'].'Action' : 'error'; 
 
-		$controllerName=$_GET['c'];
+		$controllerName= (isset($_GET['c'])) ? ucfirst($_GET['c'] ) : 'Admin';
 		$controllerName = 'Controller_'.$controllerName;
 		$controllerClassName=$this->prepareClassName($controllerName); 
 
@@ -35,7 +36,6 @@ class Controller_Core_Front{
 	public function prepareClassName($name)
 	{
 		$name=ucwords($name,"_");
-		//echo $name;
 		return $name;
 	}
 }

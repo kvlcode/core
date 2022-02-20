@@ -1,45 +1,42 @@
 <?php 
 Ccc::loadClass('Controller_Core_Action');
-Ccc::loadClass('Model_Core_Request');
-Ccc::loadClass('Model_Admin');
+
 class Controller_Admin extends Controller_Core_Action{
-
-	public function testAction()
-	{
-		$controller = get_class();
-		// $this->getUrl($action, $controller, ['id' => 2, 'tab'=> 'menu']);
-		$this->getUrl('save','admin', ['id'=>2]);
-
-	}
 
 	public function gridAction()
 	{
-		
-		$adminTable = Ccc::getModel('Admin');           // Returrn Object of given Model
-		$admin = $adminTable->fetchAll();
-
-		$view = $this->getView();
-		$view->setTemplate('view/admin_grid.php');
-		$view->addData('adminGrid', $admin);
-		$view->toHtml();
-	}
-
-	public function editAction()
-	{	
-		$adminTable = Ccc::getModel('Admin');           // Returrn Object of given Model
-		$id =  $this->getRequest()->getRequest('id');
-		$row = $adminTable->fetchRow(['adminId'=> $id]);
-		$view = $this->getView();
-		$view->setTemplate('view/admin_edit.php');
-		$view->addData('adminEdit', $row);
-		$view->toHtml();
+		Ccc::getBlock('Admin_Grid')->toHtml();
 	}
 
 	public function addAction()
 	{
-		$view =$this->getView();
-		$view->setTemplate('view/admin_add.php');
-		$view->toHtml();
+		Ccc::getBlock('Admin_Add')->toHtml();	
+	}
+
+	public function editAction()
+	{	
+
+		try {
+			
+			$id = (int) $this->getRequest()->getRequest('id');
+			if (!$id) {
+				throw new Exception("Invalid Id", 1);
+				
+			}
+		
+			$adminTable =  Ccc::getModel('Admin');
+			$row = $adminTable->fetchRow("SELECT * FROM `admin` WHERE adminId = {$id}");	
+			
+			if (!$row) {
+				throw new Exception("Unable to Load", 1);	
+			}
+			
+			Ccc::getBlock('Admin_Edit')->addData('adminEdit', $row)->toHtml();	
+
+		} 
+		catch (Exception $e) {
+			echo $e->getMessage();
+		}
 		
 	}
 
@@ -80,7 +77,7 @@ class Controller_Admin extends Controller_Core_Action{
 		    }
 		        
 		}
-		$this->redirect('index.php?c=admin&a=grid');
+		$this->redirect($this->getUrl('admin','grid'));
 	
 	}
 	
@@ -97,18 +94,16 @@ class Controller_Admin extends Controller_Core_Action{
 
 			$adminTable = Ccc::getModel('Admin');
 			$delete = $adminTable->delete(['adminId'=> $id]);
-
-			// $delete = $adapter->delete("DELETE FROM admin WHERE adminId = $id"); 
 			
 			if(!$delete)
 			{
 				throw new Exception("System can't delete record.", 1);
 										
 			}
-			$this->redirect('index.php?c=admin&a=grid');	
+			$this->redirect($this->getUrl('admin','grid'));	
 				
 		} catch (Exception $e) {
-			$this->redirect('index.php?c=admin&a=grid');	
+			$this->redirect($this->getUrl('admin','grid'));	
 			//echo $e->getMessage();
 		}
 

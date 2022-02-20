@@ -1,4 +1,4 @@
-<?php $row = $this->getData('customerEdit');?>
+<?php $row = $this->getCustomer();?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +6,7 @@
 </head>
 <body>
 
-	<form method="Post" action="index.php?a=save&c=customer">
+	<form method="Post" action="<?php echo $this->getAction()->getUrl('customer','save')?>">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>
@@ -102,8 +102,7 @@
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="Save">
-					<button type="button"><a href="index.php?a=grid&c=customer">Cancel</a></button> 
-
+					<button type="button"><a href="<?php echo $this->getAction()->getUrl('customer','grid')?>">Cancel</a></button> 
 				</td>
 			</tr>
 			

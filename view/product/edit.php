@@ -1,4 +1,4 @@
-<?php $row = $this->getData('productEdit'); ?>
+<?php $row = $this->getProducts();?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +6,7 @@
 </head>
 <body>
 
-	<form method="post" action="index.php?a=save&c=product">
+	<form method="post" action="<?php echo $this->getAction()->getUrl('product','save')?>">
 		<table border="1" width="100%" cellspacing="4">
 
 			<tr>
@@ -48,7 +48,7 @@
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="Save">
-					<button type="button"><a href="index.php?a=grid&c=product">Cancel</a></button> 
+					<button type="button"><a href="<?php echo $this->getAction()->getUrl('product','grid')?>">Cancel</a></button> 
 
 				</td>
 			</tr>

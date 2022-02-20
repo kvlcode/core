@@ -1,12 +1,12 @@
-<?php $categories = $this->getData('categoriesAdd'); ?>
+<?php $categories = $this->getCategories(); ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Categories Add</title>
+	<title>Category Add</title>
 </head>
 <body>
 
-	<form method="post" action="index.php?a=save&c=categories">
+	<form method="post" action="<?php echo $this->getAction()->getUrl('category','save')?>">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>
@@ -50,7 +50,7 @@
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="submit">
-					<button type="button"><a href="index.php?a=grid&c=categories">Cancel</a></button> 
+					<button type="button"><a href="<?php echo $this->getAction()->getUrl('category','grid')?>">Cancel</a></button> 
 				</td>
 			</tr>
 			
