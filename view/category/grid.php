@@ -5,7 +5,7 @@
 	<title>Categories Grid</title>
 </head>
 <body>
-	<button type="button" name="addNew"><a href="<?php echo $this->getAction()->getUrl('category','add')?>"> Add New </a></button>
+	<button type="button" name="addNew"><a href="<?php echo $this->getUrl('category','add')?>"> Add New </a></button>
 	<table border="1" width="100%" cellspacing="4">
 		<tr>
 			<th>CategoryId</th>
@@ -32,8 +32,8 @@
 					<td><?php echo $category['status']; ?></td>
 					<td><?php echo $category['createdDate']; ?></td>
 					<td><?php echo $category['updatedDate']; ?></td>
-					<td><a href="<?php echo $this->getAction()->getUrl('category','edit',['id' => $category['categoryId']])?>">Edit</a></td>
-					<td><a href="<?php echo $this->getAction()->getUrl('category','delete',['id' => $category['categoryId']])?>">Delete</a></td>
+					<td><a href="<?php echo $this->getUrl('category','edit',['id' => $category['categoryId']])?>">Edit</a></td>
+					<td><a href="<?php echo $this->getUrl('category','delete',['id' => $category['categoryId']])?>">Delete</a></td>
 				</tr>
 			<?php endforeach; ?>
 		<?php endif; ?>	

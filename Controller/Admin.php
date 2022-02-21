@@ -42,43 +42,48 @@ class Controller_Admin extends Controller_Core_Action{
 
 	public function saveAction()
 	{	
-		$adminTable = Ccc::getModel('Admin');
-		$adminInfo = $this->getRequest()->getPost('admin');
+		try{
+			$adminTable = Ccc::getModel('Admin');
+			$adminInfo = $this->getRequest()->getPost('admin');
 
-		if (!isset($adminInfo)) {
-			throw new Exception("Missing Admin data in request.", 1);
-		}
-
-
-		if (array_key_exists('hiddenId', $adminInfo)) {
-			if (!(int)$adminInfo['hiddenId']) {
-				throw new Exception("Invalid Request", 1);
-				
+			if (!isset($adminInfo)) {
+				throw new Exception("Missing Admin data in request.", 1);
 			}
 
-			$hiddenId = $adminInfo['hiddenId'];
-			unset($adminInfo['hiddenId']);
-			$adminInfo['updatedDate'] = date('Y-m-d H:i:s');
-			$update = $adminTable->update($adminInfo, ['adminId' => $hiddenId]);
 
-			if (!$update) {
-					throw new Exception("System can't update", 1);
-			}	
-				
+			if (array_key_exists('hiddenId', $adminInfo)) {
+				if (!(int)$adminInfo['hiddenId']) {
+					throw new Exception("Invalid Request", 1);
+					
+				}
 
-		}else{
+				$hiddenId = $adminInfo['hiddenId'];
+				unset($adminInfo['hiddenId']);
+				$adminInfo['updatedDate'] = date('Y-m-d H:i:s');
+				$update = $adminTable->update($adminInfo, ['adminId' => $hiddenId]);
 
-			$adminInfo['createdDate'] = date('Y-m-d H:i:s');
-			$insertId = $adminTable->insert($adminInfo);
+				if (!$update) {
+						throw new Exception("System can't update", 1);
+				}	
+					
 
-			if (!$insertId) {
-		       	throw new Exception("System can't insert", 1);
-		        	
-		    }
-		        
+			}else{
+
+				$adminInfo['createdDate'] = date('Y-m-d H:i:s');
+				$insertId = $adminTable->insert($adminInfo);
+
+				if (!$insertId) {
+			       	throw new Exception("System can't insert", 1);
+			        	
+			    }
+			        
+			}
+			$this->redirect($this->getView()->getUrl('admin','grid'));
 		}
-		$this->redirect($this->getUrl('admin','grid'));
-	
+		catch (Exception $e) {
+			$this->redirect($this->getView()->getUrl('admin','grid'));
+		}
+
 	}
 	
 	public function deleteAction()
@@ -100,10 +105,10 @@ class Controller_Admin extends Controller_Core_Action{
 				throw new Exception("System can't delete record.", 1);
 										
 			}
-			$this->redirect($this->getUrl('admin','grid'));	
+			$this->redirect($this->getView()->getUrl('admin','grid'));	
 				
 		} catch (Exception $e) {
-			$this->redirect($this->getUrl('admin','grid'));	
+			$this->redirect($this->getView()->getUrl('admin','grid'));	
 			//echo $e->getMessage();
 		}
 

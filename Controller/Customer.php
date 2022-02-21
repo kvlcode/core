@@ -47,42 +47,42 @@ class Controller_Customer extends Controller_Core_Action{
 	public function saveCustomer()
 	{	
 		 
-		$customerTable = Ccc::getModel('Customer');
-		$customerInfo = $this->getRequest()->getPost('customer');
-		if (!isset($customerInfo)) {
-			throw new Exception("Missing Customer data in request.", 1);
-		}
-		
+			$customerTable = Ccc::getModel('Customer');
+			$customerInfo = $this->getRequest()->getPost('customer');
+			if (!isset($customerInfo)) {
+				throw new Exception("Missing Customer data in request.", 1);
+			}
+			
 
-		if (array_key_exists('hiddenId', $customerInfo)) {
-			if (!(int)$customerInfo['hiddenId']) {
-				throw new Exception("Invalid Request", 1);
+			if (array_key_exists('hiddenId', $customerInfo)) {
+				if (!(int)$customerInfo['hiddenId']) {
+					throw new Exception("Invalid Request", 1);
+					
+				}
+
+				$customerId = $customerInfo['hiddenId'];
+
+				unset($customerInfo['hiddenId']);
+				$customerInfo['updatedDate'] = date('Y-m-d H:i:s');
+				$updateId = $customerTable->update($customerInfo, ['customerId' => $customerId]);
+
+				if (!$updateId) {
+						throw new Exception("System can't update customer data", 1);
+					}	
+					
+			}else{
+
+				$customerInfo['createdDate'] = date('Y-m-d H:i:s');
+				$customerId = $customerTable->insert($customerInfo);
 				
+					if (!$customerId) {
+			         	throw new Exception("System can't insert customer data", 1);
+			        	
+			        }
+			        		
 			}
 
-			$customerId = $customerInfo['hiddenId'];
-
-			unset($customerInfo['hiddenId']);
-			$customerInfo['updatedDate'] = date('Y-m-d H:i:s');
-			$updateId = $customerTable->update($customerInfo, ['customerId' => $customerId]);
-
-			if (!$updateId) {
-					throw new Exception("System can't update customer data", 1);
-				}	
-				
-		}else{
-
-			$customerInfo['createdDate'] = date('Y-m-d H:i:s');
-			$customerId = $customerTable->insert($customerInfo);
-			
-				if (!$customerId) {
-		         	throw new Exception("System can't insert customer data", 1);
-		        	
-		        }
-		        		
-		}
-
-		return $customerId;
+			return $customerId;
 	}
 
 	public function saveAddress($customerId)
@@ -135,10 +135,10 @@ class Controller_Customer extends Controller_Core_Action{
 			
 			$customerId = $this->saveCustomer();
 			$this->saveAddress($customerId);
-			$this->redirect($this->getUrl('customer','grid'));
+			$this->redirect($this->getView()->getUrl('customer','grid'));
 
 	    }catch(Exception $e){
-	    	$this->redirect($this->getUrl('customer','grid'));
+	    	$this->redirect($this->getView()->getUrl('customer','grid'));
 	    	// echo $e->getMessage();
 
 	    }
@@ -163,10 +163,10 @@ class Controller_Customer extends Controller_Core_Action{
 				throw new Exception("System can't delete record.", 1);
 										
 			}
-			$this->redirect($this->getUrl('customer','grid'));	
+			$this->redirect($this->getView()->getUrl('customer','grid'));	
 				
 		} catch (Exception $e) {
-			$this->redirect($this->getUrl('customer','grid'));	
+			$this->redirect($this->getView()->getUrl('customer','grid'));	
 			//echo $e->getMessage();
 		}
 

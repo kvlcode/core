@@ -5,7 +5,7 @@
 </head>
 <body>
 
-	<form action="<?php echo $this->getAction()->getUrl('product','save')?>" method="POST">
+	<form action="<?php echo $this->getUrl('product','save')?>" method="POST">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>
@@ -41,7 +41,7 @@
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="submit">
-					<button type="button"><a href="<?php echo $this->getAction()->getUrl('product','grid')?>"></a>Cancel</button> 
+					<button type="button"><a href="<?php echo $this->getUrl('product','grid')?>"></a>Cancel</button> 
 				</td>
 			</tr>
 			

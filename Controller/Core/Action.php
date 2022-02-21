@@ -31,41 +31,6 @@ class Controller_Core_Action {
 		return Ccc::getFront()->getRequest();
 	}
 
-	public function getUrl($controllerName = null,$actionName = null, array $data = null, $reset = true)
-	{
-		
-		$defaultPath = $this->getRequest()->getRequest();	
-		$path =[];
-
-		if ($controllerName) {
-			$path['c'] = $controllerName;
-		}
-
-		if ($actionName) {
-			$path['a'] = $actionName;
-		}
-
-		if (is_array($data)) {
-			foreach ($data as $key => $value) {
-				if ($value) {
-					$path[$key] = $value;
-				}
-			}
-		}
-		else{
-			foreach ($defaultPath as $key => $value) {
-				if ($key != 'c' && $key != 'a' ) {
-					unset($defaultPath[$key]);
-				}
-			}
-		}
-
-		$finalElements = array_merge($defaultPath, $path);
-		$finalPath = 'index.php?'. http_build_query($finalElements);
-		return $finalPath;
-		
-	}
-
 }
 
 ?>

@@ -7,7 +7,7 @@
 </head>
 <body>
 
-	<form action="<?php echo $this->getAction()->getUrl('customer','save')?>" method="post">
+	<form action="<?php echo $this->getUrl('customer','save')?>" method="post">
 		<table border="1" width="100%" cellspacing="4">
 			<tr>
 				<td colspan="2"><b>Personal Information</b></td>
@@ -77,7 +77,7 @@
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="submit" value="Save">
-					<button type="button"><a href="<?php echo $this->getAction()->getUrl('customer','grid')?>"style ="text-decoration: none;" >Cancel</a></button> 
+					<button type="button"><a href="<?php echo $this->getUrl('customer','grid')?>"style ="text-decoration: none;" >Cancel</a></button> 
 				</td>
 			</tr>
 		</table>

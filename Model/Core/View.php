@@ -1,11 +1,8 @@
 <?php
-Ccc::loadClass('Controller_Core_Action');
 
 class Model_Core_View{
 	public $template = null;
 	public $data = [];
-
-	public $action = null;
 
 	public function getTemplate()
 	{
@@ -54,36 +51,39 @@ class Model_Core_View{
 		return $this;
 	}
 
-    // Functions for use of getUrl in template
-	public function setAction($action)
+	public function getUrl($controllerName = null,$actionName = null, array $data = null, $reset = true)
 	{
-		$this->action = $action;
-		return $this;
-	}
+		
+		$defaultPath = Ccc::getFront()->getRequest()->getRequest();	
+		$path =[];
 
-	public function getAction()
-	{
-		if (!$this->action) {
-			$this->setAction(new Controller_Core_Action());
+		if ($controllerName) {
+			$path['c'] = $controllerName;
 		}
-		return $this->action;
-	}
 
+		if ($actionName) {
+			$path['a'] = $actionName;
+		}
 
-	public function path($path)
-	{	
-		global $adapter;
-		$pathArray = explode("/", $path);
-		$temp1 = [];
-			foreach ($pathArray as $value) {
-				$temp2 = $adapter->fetchRow("SELECT name FROM categories WHERE categoryId = '$value'");
-				$temp1[] = $temp2['name'];
-
+		if (is_array($data)) {
+			foreach ($data as $key => $value) {
+				if ($value) {
+					$path[$key] = $value;
+				}
 			}
-			
-		$finalPath = implode("=>", $temp1); 	
-		return $finalPath;	
-				
+		}
+		else{
+			foreach ($defaultPath as $key => $value) {
+				if ($key != 'c' && $key != 'a' ) {
+					unset($defaultPath[$key]);
+				}
+			}
+		}
+
+		$finalElements = array_merge($defaultPath, $path);
+		$finalPath = 'index.php?'. http_build_query($finalElements);
+		return $finalPath;
+		
 	}
 
 }

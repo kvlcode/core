@@ -105,7 +105,7 @@ class Controller_Category extends Controller_Core_Action{
 			}
 		}
 			
-		$this->redirect($this->getUrl('category','grid'));
+		$this->redirect($this->getView()->getUrl('category','grid'));
 		
 	}
 
@@ -128,10 +128,10 @@ class Controller_Category extends Controller_Core_Action{
 										
 			}
 
-			$this->redirect($this->getUrl('category','grid'));
+			$this->redirect($this->getView()->getUrl('category','grid'));
 		
 		}catch (Exception $e) {
-			$this->redirect($this->getUrl('category','grid'));	
+			$this->redirect($this->getView()->getUrl('category','grid'));	
 			//echo $e->getMessage();
 		}
 		

@@ -80,10 +80,10 @@ class Controller_Product extends Controller_Core_Action{
 			        }
 
 			}	
-			$this->redirect($this->getUrl('product','grid')); 				
+			$this->redirect($this->getView()->getUrl('product','grid')); 				
 		
 		}catch(Exception $e){
-	    	$this->redirect($this->getUrl('product','grid'));
+	    	$this->redirect($this->getView()->getUrl('product','grid'));
 	    	// echo $e->getMessage();
 	    }			
 
@@ -106,11 +106,11 @@ class Controller_Product extends Controller_Core_Action{
 				throw new Exception("System can't delete record.", 1);
 										
 			}
-			$this->redirect($this->getUrl('product','grid')); 
+			$this->redirect($this->getView()->getUrl('product','grid')); 
 
 		}catch (Exception $e) {
 
-			$this->redirect($this->getUrl('product','grid'));	
+			$this->redirect($this->getView()->getUrl('product','grid'));	
 			//echo $e->getMessage();
 		}
 		

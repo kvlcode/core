@@ -8,7 +8,7 @@
 </head>
 <body>
 
-	<form method="Post" action="<?php echo $this->getAction()->getUrl('category','save')?>">
+	<form method="Post" action="<?php echo $this->getUrl('category','save')?>">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>
@@ -56,7 +56,7 @@
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="Save">
-					<button type="button"><a href="<?php echo $this->getAction()->getUrl('category','grid')?>">Cancel</a></button> 
+					<button type="button"><a href="<?php echo $this->getUrl('category','grid')?>">Cancel</a></button> 
 
 				</td>
 			</tr>
