@@ -31,7 +31,7 @@
 			<tr>
 				<td width="10%">Password</td>
 				<td><input type="text" name="admin[password]" value="<?php echo $row['password'] ?>"></td>
-				<input type="hidden" name="admin[hiddenId]" value="<?php echo $row['adminId'] ?>">
+				<input type="hidden" name="admin[adminId]" value="<?php echo $row['adminId'] ?>">
 			</tr>
 			
 			<tr>

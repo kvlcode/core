@@ -31,6 +31,12 @@ class Controller_Core_Action {
 		return Ccc::getFront()->getRequest();
 	}
 
+	public function getAdapter()
+	{
+		global $adapter;
+		return $adapter;
+	}
+
 }
 
 ?>

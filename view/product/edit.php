@@ -26,7 +26,7 @@
 			<tr>
 				<td width="10%">Quantity</td>
 				<td><input type="text" name="product[quantity]" value="<?php echo $row['quantity'] ?>"></td>
-				<input type="hidden" name="product[hiddenId]" value="<?php echo $row['productId'] ?>">
+				<input type="hidden" name="product[productId]" value="<?php echo $row['productId'] ?>">
 			</tr>
 					
 			<tr>

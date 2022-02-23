@@ -64,7 +64,7 @@ class Controller_Customer extends Controller_Core_Action{
 
 				unset($customerInfo['hiddenId']);
 				$customerInfo['updatedDate'] = date('Y-m-d H:i:s');
-				$updateId = $customerTable->update($customerInfo, ['customerId' => $customerId]);
+				$updateId = $customerTable->update($customerInfo, $customerId);
 
 				if (!$updateId) {
 						throw new Exception("System can't update customer data", 1);
@@ -110,7 +110,7 @@ class Controller_Customer extends Controller_Core_Action{
 		if ($addressInfo) {
 
 			$addressData['customerId'] = $customerId;
-			$update = $addressTable->update($addressData, ['customerId' => $customerId]);
+			$update = $addressTable->update($addressData, $customerId);
 		
 				if (!$update) {
 					throw new Exception("System can't update address", 1);
@@ -156,7 +156,7 @@ class Controller_Customer extends Controller_Core_Action{
 			}
 			
 			$addressTable = Ccc::getModel('Customer_Address');
-			$delete = $addressTable->delete(['customerId' => $id]); 
+			$delete = $addressTable->delete($id); 
 	
 			if(!$delete)
 			{

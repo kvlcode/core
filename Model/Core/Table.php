@@ -1,9 +1,27 @@
-<?php
-
+<?php Ccc::loadClass('Model_Core_Table_Row');
 class Model_Core_Table
 {
 	protected $tableName = NULL;
 	protected $primaryKey = NULL;
+	protected $row = NULL;
+	protected $rowClassName = NULL;
+
+	public function setRowClassName($rowClassName)
+	{
+		$this->rowClassName = $rowClassName;
+		return $this;
+	}
+
+	public function getRowClassName()
+	{
+		return $this->rowClassName;
+	}	
+
+	public function getRow()
+	{
+
+		return Ccc::getModel($this->getRowClassName());
+	}
 
 	public function insert(array $insertData)
 	{
@@ -20,40 +38,39 @@ class Model_Core_Table
 		$fieldValues = "'".$fieldValues."'";
 
 		$tableName = $this->getTableName();
-
-		$query = "INSERT INTO `$tableName`($fields) VALUES ($fieldValues)";
+		
+		$query = "INSERT INTO {$tableName}($fields) VALUES ($fieldValues)";
         	global $adapter;
         	$insertId =$adapter->insert($query);
 		return $insertId;
 	}
 
 	
-	public function update(array $updateData, array $hiddenId)
+	public function update(array $updateData, $hiddenId)
 	{
-		$key = key($hiddenId);
-		$value = $hiddenId[$key];
-	
+		
 		foreach ($updateData as $columnName => $data) {
 			$setValues[] = "$columnName = '$data'"; 
 		}
 
 		$setString = implode(",", $setValues);
 		$tableName = $this->getTableName();
+		$primaryKey = $this->getPrimaryKey();
 
-		$query = "UPDATE `$tableName` SET $setString WHERE $key = $value";
+		$query = "UPDATE `$tableName` SET $setString WHERE {$primaryKey} = {$hiddenId}";
 		global $adapter;
 		$update = $adapter->update($query);
 		return $update;
 
 	}
 
-	public function delete( array $deleteData)
+	public function delete($deleteId)
 	{	
-		$key = key($deleteData);
-		$value = $deleteData[$key];
 		$tableName = $this->getTableName();
-		$query = "DELETE FROM `$tableName` WHERE $key = $value ";
-		// $delete = $this->getAdapter()->delete($query);
+		$primaryKey = $this->getPrimaryKey();
+
+		$query = "DELETE FROM `$tableName` WHERE {$primaryKey} = {$deleteId}";
+	
 		global $adapter;
 		$delete = $adapter->delete($query);
 		return $delete;
@@ -94,6 +111,20 @@ class Model_Core_Table
 	{
 		return $this->primaryKey;
 	}
+
+	public function load($id)
+	{
+		$data = $this->fetchRow("SELECT * FROM {$this->getTableName()} WHERE {$this->getPrimaryKey()} = {$id}");
+		if (!$data) {
+			return false;
+		}
+	
+		$row = $this->getRow();
+		$row->setData($data);
+		return $row;
+	}
+
+
 }
 
 ?>

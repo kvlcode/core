@@ -23,7 +23,7 @@ class Controller_Product extends Controller_Core_Action{
 				throw new Exception("Invalid Id", 1);	
 			}
 
-			$productTable = Ccc::getModel('Product');
+			$productTable = Ccc::getModel('Product_Resource');
 			$row = $productTable->fetchRow("SELECT * FROM product WHERE productId = {$id}");
 
 			if (!$row) {
@@ -44,40 +44,49 @@ class Controller_Product extends Controller_Core_Action{
 
 		try{
  
-			$productTable = Ccc::getModel('Product');
-			$product = $this->getRequest()->getPost('product');
+			$productInfo = $this->getRequest()->getPost('product');
 
-			if (!isset($product)) {
+			if (!isset($productInfo)) {
 				throw new Exception("Missing product data in request.", 1);
 				
 			}
-			if (array_key_exists('hiddenId', $product)) {
+			$productModel = Ccc::getModel('Product_Resource');
+			$product = $productModel->getRow();
+			$date = date('Y-m-d H:i:s');
 
-				if (!(int)$product['hiddenId']) {
+
+			if (array_key_exists('productId', $productInfo)) {
+
+				if (!(int)$productInfo['productId']) {
 					throw new Exception("Invalid request", 1);
 					
 				}
 
-				$hiddenId = $product['hiddenId'];
-				unset($product['hiddenId']);
-				$product['updatedDate'] = date('Y-m-d H:i:s');
-				$update = $productTable->update($product, ['productId' => $hiddenId]);
+				$product = $productModel->load($productInfo['productId']);
+				$product->name = $productInfo['name'];
+				$product->price = $productInfo['price'];
+				$product->quantity = $productInfo['quantity'];
+				$product->status = $productInfo['status'];
+				$product->updatedDate = $date;
+				$update = $product->save();
 
 			  	if (!$update) {
 					throw new Exception("System can't update", 1);
 				
-				}
-					 
-				$date = date('Y-m-d H:i:s');	
+				}	
 			
 			}else{
 				
-				$product['createdDate'] = date('Y-m-d H:i:s');
-				$insertId =$productTable->insert($product);
+				$product->name = $productInfo['name'];
+				$product->price = $productInfo['price'];
+				$product->quantity = $productInfo['quantity'];
+				$product->status = $productInfo['status'];
+				$product->createdDate = $date;
+				$insertId = $product->save();
 
-				 	if (!$insertId) {
+				if (!$insertId) {
 			         	throw new Exception("System can't insert", 1);	
-			        }
+			    }
 
 			}	
 			$this->redirect($this->getView()->getUrl('product','grid')); 				
@@ -99,8 +108,8 @@ class Controller_Product extends Controller_Core_Action{
 				throw new Exception("Invalid Request", 1);
 			}
 
-			$productTable = Ccc::getModel('Product');
-			$delete = $productTable->delete(['productId' => $id]);
+			$productTable = Ccc::getModel('Product_Resource');
+			$delete = $productTable->delete($id);
 			if(!$delete)
 			{
 				throw new Exception("System can't delete record.", 1);
