@@ -1,15 +1,13 @@
 <?php
-Ccc::loadClass('Model_Core_Table');
-class Model_Admin_Resource extends Model_Core_Table
+Ccc::loadClass('Model_Core_Row_Resource');
+class Model_Admin_Resource extends Model_Core_Row_Resource
 {
-	protected $tableName = NULL;
+	protected $resourceName = NULL;
 	protected $primaryKey = NULL;
 
 	public function __construct()
 	{
-		$this->setTableName('admin');
+		$this->setResourceName('admin');
 		$this->setPrimaryKey('adminId');
-		$this->setRowClassName('Admin');
-
 	}
 }

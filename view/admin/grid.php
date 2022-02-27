@@ -11,7 +11,7 @@
 
 <body>               
     <div>    
-        <button name="Add"><a href="<?php echo $this->getUrl('admin','add')?>">Add</a></button>    
+        <button name="Add"><a href="<?php echo $this->getUrl('add', 'admin')?>">Add</a></button>    
         <table border='1' class="table" width='100%' cellspacing="4">
                 
                 <tr>
@@ -37,16 +37,16 @@
                     <?php foreach($admin as $row): ?>
                      
                         <tr>
-                            <td><?php echo $row['adminId']?></td>
-                            <td><?php echo $row['firstName']  ?></td>
-                            <td><?php echo $row['lastName']   ?></td>
-                            <td><?php echo $row['email']      ?></td>
-                            <td><?php echo $row['password']   ?></td>
-                            <td><?php echo $row['status']     ?></td>
-                            <td><?php echo $row['createdDate']?></td>
-                            <td><?php echo $row['updatedDate']?></td>
-                            <td><a href="<?php echo $this->getUrl('admin','edit',['id' => $row['adminId']])?>">Edit</a></td>
-                            <td><a href="<?php echo $this->getUrl('admin','delete',['id' => $row['adminId']])?>">Delete</a></td>
+                            <td><?php echo $row->adminId     ?></td>
+                            <td><?php echo $row->firstName   ?></td>
+                            <td><?php echo $row->lastName    ?></td>
+                            <td><?php echo $row->email       ?></td>
+                            <td><?php echo $row->password    ?></td>
+                            <td><?php echo $row->status      ?></td>
+                            <td><?php echo $row->createdDate ?></td>
+                            <td><?php echo $row->updatedDate ?></td>
+                            <td><a href="<?php echo $this->getUrl('edit','admin',['id' => $row->adminId])?>">Edit</a></td>
+                            <td><a href="<?php echo $this->getUrl('delete','admin',['id' => $row->adminId])?>">Delete</a></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>

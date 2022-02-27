@@ -1,13 +1,10 @@
 <?php
-Ccc::loadClass('Model_Core_Table');
-
-class Model_Customer_Address extends Model_Core_Table{
-
-	protected $tableName = NULL;
-	protected $primaryKey = NULL;
+Ccc::loadClass('Model_Core_Row');
+class Model_Customer_Address extends Model_Core_Row{
 
 	public function __construct()
-	{
-		$this->setTableName('address')->setPrimaryKey('addressId');
+	{	
+		$this->setResourceClassName('Customer_Address_Resource');
 	}
+
 }

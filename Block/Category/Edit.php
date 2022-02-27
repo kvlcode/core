@@ -14,7 +14,8 @@ class Block_Category_Edit extends Block_Core_Template
 
 	public function getParent()
 	{
-		return $this->getData('parent');	
+		$parentList = $categoryModel->fetchAll("SELECT path FROM categories WHERE path NOT LIKE '%$id%'");
+		return $parentList;	
 	}
 
 	public function path($path)

@@ -8,7 +8,7 @@
 </head>
 <body>
 
-	<form method="Post" action="<?php echo $this->getUrl('category','save')?>">
+	<form method="Post" action="<?php echo $this->getUrl('save', 'category')?>">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>
@@ -34,14 +34,14 @@
 
 			<tr>
 				<td width="10%">Name</td>
-				<td><input type="text" name="category[name]" value="<?php echo $row['name'] ?>"></td>
+				<td><input type="text" name="category[name]" value="<?php echo $row->name ?>"></td>
 			</tr>
 
 			<tr>
 				<td>Status</td>
 				<td width="10%">
 					<select name="category[status]">
-					<?php if ($row['status']==1):?>
+					<?php if ($row->status ==1):?>
 						<option value="1" selected>Active</option>
 						<option value="2">Inactive</option>
 					<?php else:?>
@@ -50,18 +50,17 @@
 					<?php endif; ?>	
 					</select>
 				</td>
-				<input type="hidden" name="category[hiddenId]" value="<?php echo $row['categoryId'] ?>">
+				<input type="hidden" name="category[categoryId]" value="<?php echo $row->categoryId ?>">
 			</tr>
 			<tr>
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="Save">
-					<button type="button"><a href="<?php echo $this->getUrl('category','grid')?>">Cancel</a></button> 
+					<button type="button"><a href="<?php echo $this->getUrl('grid', 'category')?>">Cancel</a></button> 
 
 				</td>
 			</tr>
-			
-
+	
 		</table>
 	</form>
 

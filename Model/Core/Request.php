@@ -1,5 +1,4 @@
 <?php 
-
 class Model_Core_Request
 {
 	public function getPost($key = null,$value = null)

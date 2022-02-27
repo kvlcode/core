@@ -13,7 +13,7 @@
 <body>
                         
     <div>
-            <button name="Add"><a href="<?php echo $this->getUrl('customer','add')?>">Add</a></button>
+            <button name="Add"><a href="<?php echo $this->getUrl('add','customer')?>">Add</a></button>
         
         <table border='1' class="table" width='100%' cellspacing="4">
                 
@@ -47,23 +47,23 @@
                     <?php foreach($customers as $customer): ?>
                      
                         <tr>
-                            <td><?php echo $customer['customerId']?></td>
-                            <td><?php echo $customer['firstName']  ?></td>
-                            <td><?php echo $customer['lastName']   ?></td>
-                            <td><?php echo $customer['email']      ?></td>
-                            <td><?php echo $customer['mobile']     ?></td>
-                            <td><?php echo $customer['status']     ?></td>
-                            <td><?php echo $customer['address']    ?></td>
-                            <td><?php echo $customer['postalCode'] ?></td>
-                            <td><?php echo $customer['city']       ?></td>
-                            <td><?php echo $customer['state']      ?></td>
-                            <td><?php echo $customer['country']    ?></td>
-                            <td><?php echo $customer['billing']    ?></td>
-                            <td><?php echo $customer['shipping']   ?></td>
-                            <td><?php echo $customer['createdDate']?></td>
-                            <td><?php echo $customer['updatedDate']?></td>
-                            <td><a href="<?php echo $this->getUrl('customer','edit',['id' => $customer['customerId']])?>">Edit</a></td>
-                            <td><a href="<?php echo $this->getUrl('customer','delete',['id' => $customer['customerId']])?>">Delete</a></td>
+                            <td><?php echo $customer->customerId?></td>
+                            <td><?php echo $customer->firstName  ?></td>
+                            <td><?php echo $customer->lastName   ?></td>
+                            <td><?php echo $customer->email      ?></td>
+                            <td><?php echo $customer->mobile     ?></td>
+                            <td><?php echo $customer->status     ?></td>
+                            <td><?php echo $customer->address    ?></td>
+                            <td><?php echo $customer->postalCode ?></td>
+                            <td><?php echo $customer->city       ?></td>
+                            <td><?php echo $customer->state      ?></td>
+                            <td><?php echo $customer->country    ?></td>
+                            <td><?php echo $customer->billing    ?></td>
+                            <td><?php echo $customer->shipping   ?></td>
+                            <td><?php echo $customer->createdDate?></td>
+                            <td><?php echo $customer->updatedDate?></td>
+                            <td><a href="<?php echo $this->getUrl('edit', 'customer',['id' => $customer->customerId])?>">Edit</a></td>
+                            <td><a href="<?php echo $this->getUrl('delete','customer',['id' => $customer->customerId])?>">Delete</a></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>

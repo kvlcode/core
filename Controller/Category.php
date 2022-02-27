@@ -10,9 +10,9 @@ class Controller_Category extends Controller_Core_Action{
 
 	public function addAction(){
 
-		$categoryTable = Ccc::getModel('Category');
-		$category = $categoryTable->fetchAll("SELECT name, path FROM categories ORDER BY path");
-		Ccc::getBlock('Category_Add')->addData('parentCategory', $category)->toHtml();
+		$category = Ccc::getModel('Category');
+		$category = $category->fetchAll("SELECT name, path FROM categories ORDER BY path");
+		Ccc::getBlock('Category_Add')->setData(['parentCategory' => $category])->toHtml();
 	
 	}
 
@@ -27,16 +27,14 @@ class Controller_Category extends Controller_Core_Action{
 				
 			}
 
-			$categoryTable = Ccc::getModel('Category');
-			$row = $categoryTable->fetchRow("SELECT * FROM categories WHERE categoryId='$id'");
+			$category = Ccc::getModel('Category')->load($id);
+			// $row = $categoryModel->fetchRow("SELECT * FROM categories WHERE categoryId='$id'");
 			
-			if (!$row) {
-					throw new Exception("Unable to Load Row", 1);	
+			if (!$category) {
+				throw new Exception("Unable to Load Row", 1);	
 			}
-
-			$parentList = $categoryTable->fetchAll("SELECT path FROM categories WHERE path NOT LIKE '%$id%'");
 				
-			Ccc::getBlock('Category_Edit')->addData('categoryRow', $row)->addData('parent', $parentList)->toHtml();
+			Ccc::getBlock('Category_Edit')->setData(['categoryRow' => $category])->toHtml();
 
 		}
 		catch (Exception $e) 
@@ -53,15 +51,15 @@ class Controller_Category extends Controller_Core_Action{
 		
 		$parentName = $category['parentName'];
 		$parentPath = $category['parentPath'];
-		$hiddenId = $category['hiddenId'];
-		$name= $category['name'];
-		$status=$category['status'];
-		$date=date('y-m-d h:m:s');
+		$categoryId = $category['categoryId'];
+		$name = $category['name'];
+		$status =$category['status'];
+		$date = date('y-m-d h:m:s');
 	
-		if(array_key_exists('hiddenId', $category)){
+		if(array_key_exists('categoryId', $category)){
 
 			$categoryTable = Ccc::getModel('Category');
-			$oldPath = $categoryTable->fetchRow("SELECT path FROM `categories` WHERE `categoryId` ='$hiddenId' ");
+			$oldPath = $categoryTable->fetchRow("SELECT path FROM `categories` WHERE `categoryId` ='$categoryId' ");
 			
 			$oldPathString = $oldPath['path'];
 
@@ -82,9 +80,9 @@ class Controller_Category extends Controller_Core_Action{
 
 			}
 
-			$newPath = $parentPath ."/".$hiddenId;	
+			$newPath = $parentPath ."/".$categoryId;	
 
-			$updateQuery = "UPDATE `categories` SET  `name` = '$name', `status`= '$status',`path`='$newPath', `updatedDate` = '$date' WHERE `categoryId` ={$hiddenId}";
+			$updateQuery = "UPDATE `categories` SET  `name` = '$name', `status`= '$status',`path`='$newPath', `updatedDate` = '$date' WHERE `categoryId` ={$categoryId}";
 
 			$updateId = $adapter->update($updateQuery);
 
@@ -105,7 +103,7 @@ class Controller_Category extends Controller_Core_Action{
 			}
 		}
 			
-		$this->redirect($this->getView()->getUrl('category','grid'));
+		$this->redirect($this->getView()->getUrl('grid', 'category'));
 		
 	}
 
@@ -128,10 +126,10 @@ class Controller_Category extends Controller_Core_Action{
 										
 			}
 
-			$this->redirect($this->getView()->getUrl('category','grid'));
+			$this->redirect($this->getView()->getUrl('grid', 'category'));
 		
 		}catch (Exception $e) {
-			$this->redirect($this->getView()->getUrl('category','grid'));	
+			$this->redirect($this->getView()->getUrl('grid', 'category'));	
 			//echo $e->getMessage();
 		}
 		

@@ -10,7 +10,8 @@ class Controller_Admin extends Controller_Core_Action{
 
 	public function addAction()
 	{
-		Ccc::getBlock('Admin_Add')->toHtml();	
+		$admin =  Ccc::getModel('Admin');
+		Ccc::getBlock('Admin_Edit')->setData(['adminEdit' => $admin])->toHtml();	
 	}
 
 	public function editAction()
@@ -24,14 +25,13 @@ class Controller_Admin extends Controller_Core_Action{
 				
 			}
 		
-			$adminTable =  Ccc::getModel('Admin_Resource');
-			$row = $adminTable->fetchRow("SELECT * FROM `admin` WHERE adminId = {$id}");	
+			$admin =  Ccc::getModel('Admin')->load($id);	
 			
-			if (!$row) {
+			if (!$admin) {
 				throw new Exception("Unable to Load", 1);	
 			}
 			
-			Ccc::getBlock('Admin_Edit')->addData('adminEdit', $row)->toHtml();	
+			Ccc::getBlock('Admin_Edit')->setData(['adminEdit' => $admin])->toHtml();	
 
 		} 
 		catch (Exception $e) {
@@ -43,57 +43,45 @@ class Controller_Admin extends Controller_Core_Action{
 	public function saveAction()
 	{	
 		try{
-			$adminInfo = $this->getRequest()->getPost('admin');
+			$adminData = $this->getRequest()->getPost('admin');
 
-			if (!isset($adminInfo)) {
+			if (!isset($adminData)) {
 				throw new Exception("Missing Admin data in request.", 1);
 			}
 
-			$adminModel = Ccc::getModel('Admin_Resource');
-			$admin = $adminModel->getRow();
-			$date = date('Y-m-d H:i:s');
+			$adminModel = Ccc::getModel('Admin');
+			$adminModel->setData($adminData);
+			
+			if ($adminData['adminId'] != null) {
 
-			if (array_key_exists('adminId', $adminInfo)) {
-				if (!(int)$adminInfo['adminId']) {
-					throw new Exception("Invalid Request", 1);
-					
+				if (!(int)$adminData['adminId']) {
+					throw new Exception("Invalid Request", 1);	
 				}
 				
-				$admin = $adminModel->load($adminInfo['adminId']);
-				$admin->firstName = $adminInfo['firstName'];
-				$admin->lastName = $adminInfo['lastName'];
-				$admin->email = $adminInfo['email'];
-				$admin->password = $adminInfo['password'];
-				$admin->status = $adminInfo['status'];
-				$admin->updatedDate = $date;
-				// $admin->unset('adminId');
-				$update = $admin->save();
-
+				$adminModel->updatedDate = date('Y-m-d H:i:s');
+				$update = $adminModel->save();
+			
 				if (!$update) {
 						throw new Exception("System can't update", 1);
 				}	
 					
 
 			}else{
-
-				$admin->firstName = $adminInfo['firstName'];
-				$admin->lastName = $adminInfo['lastName'];
-				$admin->email = $adminInfo['email'];
-				$admin->password = $adminInfo['password'];
-				$admin->status = $adminInfo['status'];
-				$admin->createdDate = $date;
-				$insertId = $admin->save();
-
+				
+				unset($adminModel->adminId);
+				$adminModel->createdDate = date('Y-m-d H:i:s');
+				$insertId = $adminModel->save();
+				
 				if (!$insertId) {
 			       	throw new Exception("System can't insert", 1);
 			        	
 			    }
 			        
 			}
-			$this->redirect($this->getView()->getUrl('admin','grid'));
+			$this->redirect($this->getView()->getUrl('grid','admin'));
 		}
 		catch (Exception $e) {
-			$this->redirect($this->getView()->getUrl('admin','grid'));
+			$this->redirect($this->getView()->getUrl('grid', 'admin'));
 		}
 
 	}
@@ -109,18 +97,18 @@ class Controller_Admin extends Controller_Core_Action{
 				throw new Exception("Invalid Request.", 1);
 			}
 
-			$adminTable = Ccc::getModel('Admin_Resource');
-			$delete = $adminTable->delete($id);
+			$adminModel = Ccc::getModel('Admin_Resource');
+			$delete = $adminModel->delete($id);
 			
 			if(!$delete)
 			{
 				throw new Exception("System can't delete record.", 1);
 										
 			}
-			$this->redirect($this->getView()->getUrl('admin','grid'));	
+			$this->redirect($this->getView()->getUrl('grid', 'admin'));	
 				
 		} catch (Exception $e) {
-			$this->redirect($this->getView()->getUrl('admin','grid'));	
+			$this->redirect($this->getView()->getUrl('grid', 'admin'));	
 			//echo $e->getMessage();
 		}
 

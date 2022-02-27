@@ -26,14 +26,14 @@
 			
 			<?php foreach ($categories as $category): ?>
 				<tr>
-					<td><?php echo $category['categoryId']; ?></td>
-					<td><?php echo $this->path($category['path']);  ?></td>
-					<td><?php echo $category['name']  ?></td>
-					<td><?php echo $category['status']; ?></td>
-					<td><?php echo $category['createdDate']; ?></td>
-					<td><?php echo $category['updatedDate']; ?></td>
-					<td><a href="<?php echo $this->getUrl('category','edit',['id' => $category['categoryId']])?>">Edit</a></td>
-					<td><a href="<?php echo $this->getUrl('category','delete',['id' => $category['categoryId']])?>">Delete</a></td>
+					<td><?php echo $category->categoryId ?></td>
+					<td><?php echo $this->path($category->path)  ?></td>
+					<td><?php echo $category->name  ?></td>
+					<td><?php echo $category->status ?></td>
+					<td><?php echo $category->createdDate ?></td>
+					<td><?php echo $category->updatedDate ?></td>
+					<td><a href="<?php echo $this->getUrl('category','edit',['id' => $category->categoryId])?>">Edit</a></td>
+					<td><a href="<?php echo $this->getUrl('category','delete',['id' => $category->categoryId])?>">Delete</a></td>
 				</tr>
 			<?php endforeach; ?>
 		<?php endif; ?>	

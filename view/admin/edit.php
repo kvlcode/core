@@ -1,4 +1,4 @@
-<?php $row = $this->getAdmin();?>
+<?php $admin = $this->getAdmin();?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +6,7 @@
 </head>
 <body>
 
-	<form method="POST" action="<?php echo $this->getUrl('admin','save')?>">
+	<form method="POST" action="<?php echo $this->getUrl('save', 'admin')?>">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>
@@ -15,37 +15,35 @@
 
 			<tr>
 				<td width="10%">First Name</td>
-				<td><input type="text" name="admin[firstName]" value="<?php echo $row['firstName'] ?>"></td>
+				<td><input type="text" name="admin[firstName]" value="<?php echo $admin->firstName ?>"></td>
 			</tr>
 
 			<tr>
 				<td width="10%">Last Name</td>
-				<td><input type="text" name="admin[lastName]" value="<?php echo $row['lastName'] ?>"></td>
+				<td><input type="text" name="admin[lastName]" value="<?php echo $admin->lastName ?>"></td>
 			</tr>
 			
 			<tr>
 				<td width="10%">Email</td>
-				<td><input type="text" name="admin[email]" value="<?php echo $row['email'] ?>"></td>
+				<td><input type="text" name="admin[email]" value="<?php echo $admin->email ?>"></td>
 			</tr>
 			
 			<tr>
 				<td width="10%">Password</td>
-				<td><input type="text" name="admin[password]" value="<?php echo $row['password'] ?>"></td>
-				<input type="hidden" name="admin[adminId]" value="<?php echo $row['adminId'] ?>">
+				<td><input type="text" name="admin[password]" value="<?php echo $admin->password ?>"></td>
+				<input type="hidden" name="admin[adminId]" value="<?php echo $admin->adminId ?>">
 			</tr>
 			
 			<tr>
 				<td>Status</td>
 				<td width="10%">
+
 					<select name="admin[status]">
-					<?php if ($row['status']==1):?>
-						<option value="1" selected>Active</option>
-						<option value="2">Inactive</option>
-					<?php else:?>
-						<option value="1">Active</option>
-						<option value="2" selected>Inactive</option>
-					<?php endif; ?>	
-					</select>
+					<?php foreach ($admin->getStatus() as $key => $value): ?>
+					<option value="<?php echo $key?>"<?php if($admin->status == $key){?> selected <?php }?>> <?php echo $value; ?> </option>
+					<?php endforeach; ?>
+					</select>					
+
 				</td>
 			</tr>
 
@@ -53,7 +51,7 @@
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="Save">
-					<button type="button"><a href="<?php echo $this->getUrl('admin','grid')?>">Cancel</a></button> 
+					<button type="button"><a href="<?php echo $this->getUrl('grid','admin')?>">Cancel</a></button> 
 
 				</td>
 			</tr>

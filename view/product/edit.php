@@ -1,4 +1,4 @@
-<?php $row = $this->getProducts();?>
+<?php $product = $this->getProduct();?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +6,7 @@
 </head>
 <body>
 
-	<form method="post" action="<?php echo $this->getUrl('product','save')?>">
+	<form method="post" action="<?php echo $this->getUrl('save', 'product')?>">
 		<table border="1" width="100%" cellspacing="4">
 
 			<tr>
@@ -15,32 +15,30 @@
 
 			<tr>
 				<td width="10%">Product Name</td>
-				<td><input type="text" name="product[name]" value="<?php echo $row['name'] ?>"></td>
+				<td><input type="text" name="product[name]" value="<?php echo $product->name ?>"></td>
 			</tr>
 
 			<tr>
 				<td width="10%">Price</td>
-				<td><input type="text" name="product[price]" value="<?php echo $row['price'] ?>"></td>
+				<td><input type="text" name="product[price]" value="<?php echo $product->price ?>"></td>
 			</tr>
 			
 			<tr>
 				<td width="10%">Quantity</td>
-				<td><input type="text" name="product[quantity]" value="<?php echo $row['quantity'] ?>"></td>
-				<input type="hidden" name="product[productId]" value="<?php echo $row['productId'] ?>">
+				<td><input type="text" name="product[quantity]" value="<?php echo $product->quantity ?>"></td>
+				<input type="hidden" name="product[productId]" value="<?php echo $product->productId ?>">
 			</tr>
 					
 			<tr>
 				<td>Status</td>
 				<td width="10%">
+
 					<select name="product[status]">
-					<?php if ($row['status']==1):?>
-						<option value="1" selected>Active</option>
-						<option value="2">Inactive</option>
-					<?php else:?>
-						<option value="1">Active</option>
-						<option value="2" selected>Inactive</option>
-					<?php endif; ?>	
-					</select>
+						<?php foreach ($product->getStatus() as $key => $value): ?>
+						<option value="<?php echo $key?>"<?php if($product->status == $key){?> selected <?php }?>> <?php echo $value; ?> </option>
+						<?php endforeach; ?>
+					</select>					
+
 				</td>
 			</tr>
 
@@ -48,7 +46,7 @@
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="Save">
-					<button type="button"><a href="<?php echo $this->getUrl('product','grid')?>">Cancel</a></button> 
+					<button type="button"><a href="<?php echo $this->getUrl('grid', 'product')?>">Cancel</a></button> 
 
 				</td>
 			</tr>

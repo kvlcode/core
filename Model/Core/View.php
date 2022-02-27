@@ -51,7 +51,7 @@ class Model_Core_View{
 		return $this;
 	}
 
-	public function getUrl($controllerName = null,$actionName = null, array $data = null, $reset = true)
+	public function getUrl($actionName = null, $controllerName = null, array $data = null, $reset = true)
 	{
 		
 		$defaultPath = Ccc::getFront()->getRequest()->getRequest();	
@@ -85,6 +85,15 @@ class Model_Core_View{
 		return $finalPath;
 		
 	}
+
+	// public function getSubUrl()
+	// {
+	// 	$url1 = "http://localhost/Cybercom/core";
+	// 	$url = $this->getUrl();
+	// 	$url = $url1.'/'.$url;
+	// 	return $url;
+		
+	// }
 
 }
 
