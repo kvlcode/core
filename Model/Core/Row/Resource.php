@@ -34,8 +34,6 @@ class Model_Core_Row_Resource
 
 		$setValues = implode(",", $setArray);
 		$query = "UPDATE {$this->getResourceName()} SET {$setValues} WHERE {$key} = {$value}";
-		print_r($query);
-		echo "<br>";
 		$update = $this->getAdapter()->update($query);
 		return $update;
 
@@ -47,7 +45,6 @@ class Model_Core_Row_Resource
 		$primaryKey = $this->getPrimaryKey();
 
 		$query = "DELETE FROM `$resourceName` WHERE {$primaryKey} = {$deleteId}";
-	
 		
 		$delete = $this->getAdapter()->delete($query);
 		return $delete;

@@ -46,43 +46,37 @@ class Controller_Category extends Controller_Core_Action{
 		
 		$categoryModel = Ccc::getModel('Category');
 		$categoryModel->setData($category);
-
-		// $parentName = $category['parentName'];
-		// $parentPath = $category['parentPath'];
-		// $categoryId = $category['categoryId'];
-		// $name = $category['name'];
-		// $status =$category['status'];
 		$date =date('y-m-d h:m:s');
 	
 		if(($category['categoryId'] != null)){
 
-			$categoryModel = Ccc::getModel('Category');
+			$categoryId = $categoryModel->categoryId;
 			$oldPath = $categoryModel->fetchRow("SELECT path FROM `categories` WHERE `categoryId` ='$categoryId' ");
-			
-			$oldPathString = $oldPath['path'];
+		
+			$oldPathString = $oldPath->path;
+			$samePath = $categoryModel->fetchAll("SELECT path, parentId FROM `categories` WHERE path LIKE '%$oldPathString/%'");
 
-			$samePath = $adapter->fetchAll("SELECT path, parentId FROM `categories` WHERE path LIKE '%$oldPathString/%'");
-			
 			foreach ($samePath as $key => $value) {
-				
-				$parentId = $value['parentId'];
-				
-				$samePath2 = explode("/", $value['path']);
+							
+				$parentId = $value->parentId;
+				$samePath2 = explode("/", $value->path);
 				unset($samePath2[0]);
 				$samePath3 = implode("/", $samePath2);
+				$finalPath = $categoryModel->parentPath ."/".$samePath3;
 
-				$finalPath = $parentPath ."/".$samePath3;
-				
-				$pathQuery = "UPDATE `categories` SET `path`='$finalPath' WHERE `parentId` ='$parentId'";
-				$adapter->update($pathQuery);
+				$categoryPathModel = Ccc::getModel('Category');
+				$categoryPathModel->parentId = $parentId;
+				$categoryPathModel->path = $finalPath;
+				$categoryModel->save('parentId');
 
 			}
 
-			$newPath = $parentPath ."/".$categoryId;	
-
-			$updateQuery = "UPDATE `categories` SET  `name` = '$name', `status`= '$status',`path`='$newPath', `updatedDate` = '$date' WHERE `categoryId` ={$categoryId}";
-
-			$updateId = $adapter->update($updateQuery);
+			echo "<pre>";
+			$newPath = $categoryModel->parentPath ."/".$categoryId;	
+			$categoryModel->path = $newPath;
+			$categoryModel->updatedDate = $date;
+			unset($categoryModel->parentPath);
+			$categoryModel->save();	
 
 		}
 		else
@@ -93,9 +87,7 @@ class Controller_Category extends Controller_Core_Action{
 			unset($categoryModel->categoryId);
 
 			$insertId = $categoryModel->save();
-			
 			$modelPath = Ccc::getModel('Category')->load($path, 'name');
-			
 			$categoryModel->categoryId = $insertId;
 			
 			if ($categoryModel->path == '0') {
@@ -104,13 +96,11 @@ class Controller_Category extends Controller_Core_Action{
 				$categoryModel->save();	
 			}
 			else{
-				
+
 				$categoryModel->path = $modelPath->path."/".$insertId;
 				$pathArray = explode("/", $modelPath->path);   			 
 				$categoryModel->parentId = array_pop($pathArray);    // parentId of new element
-
 				$categoryModel->save();
-
 
 			}
 		}

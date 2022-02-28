@@ -72,7 +72,8 @@ class Model_Core_View{
 				}
 			}
 		}
-		else{
+		else
+		{
 			foreach ($defaultPath as $key => $value) {
 				if ($key != 'c' && $key != 'a' ) {
 					unset($defaultPath[$key]);
