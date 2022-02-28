@@ -18,6 +18,7 @@ class Model_Core_Row_Resource
 		$fieldValues = "'".implode("','", $data)."'";
 		
 		$query = "INSERT INTO {$this->getResourceName()}($fields) VALUES ($fieldValues)";
+
         	$insertId = $this->getAdapter()->insert($query);
 		return $insertId;
 	}

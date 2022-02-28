@@ -8,13 +8,13 @@
 </head>
 <body>
 	<br><br>
-	<form method="POST" action="<?php echo $this->getUrl('save', 'product_media', ['id' => $id]);?>">
+	<form method="POST" action="<?php echo $this->getUrl('save', 'category_media', ['id' => $id]);?>">
 		<button type="submit" name="update"> Update </a></button>
-		<button type="button" name="cancel"><a href="<?php echo $this->getUrl('grid','product')?>"> Cancel </a></button>
+		<button type="button" name="cancel"><a href="<?php echo $this->getUrl('grid','category')?>"> Cancel </a></button>
 			<table border="1" width="100%" cellspacing="4">
 				<tr>
 					<th>Image Id</th>
-					<th>Product Id</th>
+					<th>Category Id</th>
 					<th>Name</th>
 					<th>Base</th>
 					<th>Thumbnail</th>
@@ -32,7 +32,7 @@
 					<?php foreach ($media as $row): ?>
 						<tr>
 							<td><?php echo $row->imageId  ?></td>
-							<td><?php echo $row->productId ?></td>
+							<td><?php echo $row->categoryId ?></td>
 							<td><?php echo $row->name  ?></td>
 							<td><input type="radio" name="image[base]" value= "<?php echo $row->imageId?>"<?php if ($row->base == 1):?> checked <?php endif;?> ></td>
 							<td><input type="radio" name="image[thumbnail]" value="<?php echo $row->imageId?>"<?php if ($row->thumbnail == 1):?> checked <?php endif;?> ></td>
@@ -47,7 +47,7 @@
 	</form>
 	<br>
 	
-	<form method="POST" action="<?php echo $this->getUrl('save', 'product_media', ['id' =>  $id]);?>" enctype="multipart/form-data">
+	<form method="POST" action="<?php echo $this->getUrl('save', 'category_media', ['id' =>  $id]);?>" enctype="multipart/form-data">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>

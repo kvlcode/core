@@ -7,7 +7,7 @@ class Model_Category_Resource extends Model_Core_Row_Resource{
 
 	public function __construct()
 	{
-		$this->setResourceName('category');
+		$this->setResourceName('categories');
 		$this->setPrimaryKey('categoryId');
 	}
 }

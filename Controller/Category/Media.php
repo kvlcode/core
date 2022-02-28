@@ -1,20 +1,17 @@
 <?php 
 Ccc::loadClass('Controller_Core_Action');
-class Controller_Product_Media extends Controller_Core_Action
+class Controller_Category_Media extends Controller_Core_Action
 {
 
 	public function gridAction()
 	{
-		
-		Ccc::getBlock('Product_Media_Grid')->toHtml();
-
+		Ccc::getBlock('Category_Media_Grid')->toHtml();
 	}
 
 	public function saveAction()
 	{
-
 		if ($_FILES['image']) {
-			
+		
 			$id = Ccc::getFront()->getRequest()->getRequest('id');
 			$file = $_FILES['image'];
 
@@ -31,25 +28,26 @@ class Controller_Product_Media extends Controller_Core_Action
 			$imageName = date('Y-m-d H:i:s');
 			$imageName = str_replace(array('-',':',' ') ,'', $imageName.".JPG");
 			$tempName = $file['tmp_name'];
-			move_uploaded_file($tempName, 'Media/Product/'.$imageName);
+			move_uploaded_file($tempName, 'Media/Category/'.$imageName);
 
-			$imageModel = Ccc::getModel('Product_Media');
-			$imageModel->productId = $id;
+			$imageModel = Ccc::getModel('Category_Media');
+			$imageModel->categoryId = $id;
 			$imageModel->name = $imageName;
 			$imageModel->save();
 		}
-		else{
+		else
+		{
 
 			$imageData = $this->getRequest()->getPost('image');
 			$id = Ccc::getFront()->getRequest()->getRequest('id');
 
-			$mediaModel = Ccc::getModel('Product_Media');
-			$mediaModel->productId = $id;
+			$mediaModel = Ccc::getModel('Category_Media');
+			$mediaModel->categoryId = $id;
 
 			foreach ($imageData as $key => $value) {
 				
 					$mediaModel->$key = 0;
-					$mediaModel->save('productId');
+					$mediaModel->save('categoryId');
 					unset($mediaModel->$key);	
 				
 			}
@@ -80,14 +78,11 @@ class Controller_Product_Media extends Controller_Core_Action
 						}
 						
 					}		
-				}
-
+				}	
 			}
-
 		}
 
-		$this->redirect($this->getView()->getUrl('grid','product_media',['id'=> $id]));
+		$this->redirect($this->getView()->getUrl('grid','category_media',['id'=> $id]));
 
-	}
-			
+	}			
 }

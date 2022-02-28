@@ -8,33 +8,28 @@ class Controller_Category extends Controller_Core_Action{
 		Ccc::getBlock('Category_Grid')->toHtml();
 	}
 
-	public function addAction(){
-
-		$category = Ccc::getModel('Category');
-		$category = $category->fetchAll("SELECT name, path FROM categories ORDER BY path");
-		Ccc::getBlock('Category_Add')->setData(['parentCategory' => $category])->toHtml();
-	
-	}
-
 	public function editAction()
 	{	
 
 		try {
-			
-			$id = (int) $this->getRequest()->getRequest('id');
-			if (!$id) {
-				throw new Exception("Invalid Id", 1);
+
+			if ((int) $this->getRequest()->getRequest('id')) {
 				
+				$id = (int) $this->getRequest()->getRequest('id');
+
+				$categoryRow = Ccc::getModel('Category')->fetchRow("SELECT * FROM categories WHERE categoryId='$id'");
+				
+				if (!$categoryRow) {
+						throw new Exception("Unable to Load Row", 1);	
+				}
+
+			}
+			else{
+
+				$categoryRow = Ccc::getModel('Category');
 			}
 
-			$category = Ccc::getModel('Category')->load($id);
-			// $row = $categoryModel->fetchRow("SELECT * FROM categories WHERE categoryId='$id'");
-			
-			if (!$category) {
-				throw new Exception("Unable to Load Row", 1);	
-			}
-				
-			Ccc::getBlock('Category_Edit')->setData(['categoryRow' => $category])->toHtml();
+			Ccc::getBlock('Category_Edit')->addData('categoryRow', $categoryRow)->toHtml();
 
 		}
 		catch (Exception $e) 
@@ -49,17 +44,20 @@ class Controller_Category extends Controller_Core_Action{
 		global $adapter;
 		$category = $this->getRequest()->getPost('category');
 		
-		$parentName = $category['parentName'];
-		$parentPath = $category['parentPath'];
-		$categoryId = $category['categoryId'];
-		$name = $category['name'];
-		$status =$category['status'];
-		$date = date('y-m-d h:m:s');
-	
-		if(array_key_exists('categoryId', $category)){
+		$categoryModel = Ccc::getModel('Category');
+		$categoryModel->setData($category);
 
-			$categoryTable = Ccc::getModel('Category');
-			$oldPath = $categoryTable->fetchRow("SELECT path FROM `categories` WHERE `categoryId` ='$categoryId' ");
+		// $parentName = $category['parentName'];
+		// $parentPath = $category['parentPath'];
+		// $categoryId = $category['categoryId'];
+		// $name = $category['name'];
+		// $status =$category['status'];
+		$date =date('y-m-d h:m:s');
+	
+		if(($category['categoryId'] != null)){
+
+			$categoryModel = Ccc::getModel('Category');
+			$oldPath = $categoryModel->fetchRow("SELECT path FROM `categories` WHERE `categoryId` ='$categoryId' ");
 			
 			$oldPathString = $oldPath['path'];
 
@@ -89,17 +87,31 @@ class Controller_Category extends Controller_Core_Action{
 		}
 		else
 		{
-			$insertId = $adapter->insert("INSERT INTO `categories` ( `name`, `status`, `createdDate`,`path`) VALUES ( '$name', '$status', '$date', '$parentName')");
-			$path = $adapter->fetchRow("SELECT * FROM `categories` WHERE `name` = '$parentName' ");
+
+			$categoryModel->createdDate = $date;
+			$path = $categoryModel->path;
+			unset($categoryModel->categoryId);
+
+			$insertId = $categoryModel->save();
 			
-			if ($parentName == '0') {
-				$newPath = $adapter->update(" UPDATE `categories` SET `path` = '$insertId' WHERE `categoryId` = '$insertId'");	
+			$modelPath = Ccc::getModel('Category')->load($path, 'name');
+			
+			$categoryModel->categoryId = $insertId;
+			
+			if ($categoryModel->path == '0') {
+
+				$categoryModel->path = $insertId;
+				$categoryModel->save();	
 			}
 			else{
-				$parentPath = $path['path']."/".$insertId;    // path of new element
-				$pathArray = explode("/", $path['path']);    
-				$parentIdTable = array_pop($pathArray);    // parentId of new element
-				$newPath = $adapter->update(" UPDATE `categories` SET `path` = '$parentPath', `parentId`='$parentIdTable'  WHERE `categoryId` = '$insertId' ");
+				
+				$categoryModel->path = $modelPath->path."/".$insertId;
+				$pathArray = explode("/", $modelPath->path);   			 
+				$categoryModel->parentId = array_pop($pathArray);    // parentId of new element
+
+				$categoryModel->save();
+
+
 			}
 		}
 			

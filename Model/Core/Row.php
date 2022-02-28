@@ -114,7 +114,7 @@ class Model_Core_Row{
 		if ($column == null) {
 			$column = $this->getResource()->getPrimaryKey();
 		}
-		return $this->fetchRow("SELECT * FROM {$this->getResource()->getResourceName()} WHERE {$column} = {$id}");
+		return $this->fetchRow("SELECT * FROM {$this->getResource()->getResourceName()} WHERE {$column} = '{$id}'");
 	}
 
 }

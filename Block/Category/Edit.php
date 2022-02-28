@@ -7,15 +7,24 @@ class Block_Category_Edit extends Block_Core_Template
 		$this->setTemplate('view/category/edit.php');
 	}
 
-	public function getCategory()
+	public function getCategories()   //Add
 	{
-		return $this->getData('categoryRow');	
+		$categoryModel = Ccc::getModel('Category');
+		$category = $categoryModel->fetchAll("SELECT name, path FROM categories ORDER BY path");
+		return $category;
 	}
 
-	public function getParent()
+	public function getCategory()   //Edit
 	{
-		$parentList = $categoryModel->fetchAll("SELECT path FROM categories WHERE path NOT LIKE '%$id%'");
-		return $parentList;	
+		return $this->getData('categoryRow');
+	}
+
+	public function getParent() //Edit
+	{
+
+		$id = $this->getCategory()->categoryId;
+		$parentList = Ccc::getModel('Category')->fetchAll("SELECT path FROM categories WHERE path NOT LIKE '%$id%'");
+		return $parentList;
 	}
 
 	public function path($path)
