@@ -5,13 +5,9 @@ class Controller_Admin extends Controller_Core_Action{
 
 	public function gridAction()
 	{
-		Ccc::getBlock('Admin_Grid')->toHtml();
-	}
+		Ccc::getBlock('Core_Layout')->toHtml();
 
-	public function addAction()
-	{
-		$admin =  Ccc::getModel('Admin');
-		Ccc::getBlock('Admin_Edit')->setData(['adminEdit' => $admin])->toHtml();	
+		// Ccc::getBlock('Admin_Grid')->toHtml();
 	}
 
 	public function editAction()
@@ -19,20 +15,22 @@ class Controller_Admin extends Controller_Core_Action{
 
 		try {
 			
-			$id = (int) $this->getRequest()->getRequest('id');
-			if (!$id) {
-				throw new Exception("Invalid Id", 1);
+			if ((int) $this->getRequest()->getRequest('id')) 
+			{
+				$id = (int) $this->getRequest()->getRequest('id');
+			
+				$admin =  Ccc::getModel('Admin')->load($id);	
 				
+				if (!$admin) {
+					throw new Exception("Unable to Load", 1);	
+				}
 			}
-		
-			$admin =  Ccc::getModel('Admin')->load($id);	
-			
-			if (!$admin) {
-				throw new Exception("Unable to Load", 1);	
+			else
+			{
+				$admin =  Ccc::getModel('Admin');
 			}
-			
-			Ccc::getBlock('Admin_Edit')->setData(['adminEdit' => $admin])->toHtml();	
 
+			Ccc::getBlock('Admin_Edit')->setData(['adminEdit' => $admin])->toHtml();	
 		} 
 		catch (Exception $e) {
 			echo $e->getMessage();
@@ -81,7 +79,8 @@ class Controller_Admin extends Controller_Core_Action{
 			$this->redirect($this->getView()->getUrl('grid','admin'));
 		}
 		catch (Exception $e) {
-			$this->redirect($this->getView()->getUrl('grid', 'admin'));
+
+			echo $e->getMessage();
 		}
 
 	}
@@ -107,9 +106,10 @@ class Controller_Admin extends Controller_Core_Action{
 			}
 			$this->redirect($this->getView()->getUrl('grid', 'admin'));	
 				
-		} catch (Exception $e) {
-			$this->redirect($this->getView()->getUrl('grid', 'admin'));	
-			//echo $e->getMessage();
+		}
+		catch (Exception $e) 
+		{
+			echo $e->getMessage();
 		}
 
 	}

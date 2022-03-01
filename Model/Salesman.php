@@ -1,6 +1,6 @@
 <?php
  Ccc::loadClass('Model_Core_Row');
-class Model_Admin extends Model_Core_Row{
+class Model_Salesman extends Model_Core_Row{
 
 	const STATUS_ENABLED = 1;
 	const STATUS_DISABLED = 2;
@@ -10,7 +10,7 @@ class Model_Admin extends Model_Core_Row{
 
 	public function __construct()
 	{	
-		$this->setResourceClassName('Admin_Resource');
+		$this->setResourceClassName('Salesman_Resource');
 	}
 
 	public function getStatus($key = NULL)

@@ -1,5 +1,4 @@
 <?php
-
 class Model_Core_View{
 	public $template = null;
 	public $data = [];

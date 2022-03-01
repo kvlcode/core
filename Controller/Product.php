@@ -8,27 +8,23 @@ class Controller_Product extends Controller_Core_Action{
 		Ccc::getBlock('Product_Grid')->toHtml();		
 	}
 
-	public function addAction()
-	{
-		$product = Ccc::getModel('Product');
-		Ccc::getBlock('Product_Edit')->setData(['productEdit' => $product])->toHtml();
-	}
-
 	public function editAction()
 	{
 		try {
 			
-			$id = (int) $this->getRequest()->getRequest('id');
+			if ((int) $this->getRequest()->getRequest('id')) {
 			
-			if (!$id) {
-				throw new Exception("Invalid Id", 1);	
-			}
+				$id = (int) $this->getRequest()->getRequest('id');
+				$product = Ccc::getModel('Product')->load($id);
 
-			$product = Ccc::getModel('Product')->load($id);
-
-			if (!$product) {
-				throw new Exception("Unable to Load", 1);	
+				if (!$product) {
+					throw new Exception("Unable to Load", 1);	
+				}
 			}
+			else
+			{
+				$product = Ccc::getModel('Product');
+			}	
 			Ccc::getBlock('Product_Edit')->setData(['productEdit' => $product])->toHtml();
 
 		} 
@@ -82,8 +78,7 @@ class Controller_Product extends Controller_Core_Action{
 			$this->redirect($this->getView()->getUrl('grid','product')); 				
 		
 		}catch(Exception $e){
-	    	$this->redirect($this->getView()->getUrl('grid','product'));
-	    	// echo $e->getMessage();
+	    	echo $e->getMessage();
 	    }			
 
 	}
@@ -108,9 +103,8 @@ class Controller_Product extends Controller_Core_Action{
 			$this->redirect($this->getView()->getUrl('grid','product')); 
 
 		}catch (Exception $e) {
-
-			$this->redirect($this->getView()->getUrl('grid','product'));	
-			//echo $e->getMessage();
+			
+			echo $e->getMessage();
 		}
 		
 	}

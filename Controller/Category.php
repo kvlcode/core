@@ -41,40 +41,42 @@ class Controller_Category extends Controller_Core_Action{
 
 	public function saveAction()
 	{	
-		global $adapter;
-		$category = $this->getRequest()->getPost('category');
 		
+		$category = $this->getRequest()->getPost('category');	
 		$categoryModel = Ccc::getModel('Category');
 		$categoryModel->setData($category);
+		
 		$date =date('y-m-d h:m:s');
-	
 		if(($category['categoryId'] != null)){
 
 			$categoryId = $categoryModel->categoryId;
 			$oldPath = $categoryModel->fetchRow("SELECT path FROM `categories` WHERE `categoryId` ='$categoryId' ");
 		
 			$oldPathString = $oldPath->path;
-			$samePath = $categoryModel->fetchAll("SELECT path, parentId FROM `categories` WHERE path LIKE '%$oldPathString/%'");
 
-			foreach ($samePath as $key => $value) {
-							
-				$parentId = $value->parentId;
-				$samePath2 = explode("/", $value->path);
-				unset($samePath2[0]);
-				$samePath3 = implode("/", $samePath2);
-				$finalPath = $categoryModel->parentPath ."/".$samePath3;
+			$samePath = $categoryModel->fetchAll("SELECT path, parentId FROM `categories` WHERE path LIKE '%$oldPathString%'");
 
-				$categoryPathModel = Ccc::getModel('Category');
-				$categoryPathModel->parentId = $parentId;
-				$categoryPathModel->path = $finalPath;
-				$categoryModel->save('parentId');
+			if ($samePath) {
+	
+				foreach ($samePath as $key => $value) {
+								
+					$parentId = $value->parentId;
+					$samePath2 = explode("/", $value->path);
+					unset($samePath2[0]);
+					$samePath3 = implode("/", $samePath2);
+					$finalPath = $categoryModel->parentPath ."/".$samePath3;
 
+					$categoryPathModel = Ccc::getModel('Category');
+					$categoryPathModel->parentId = $parentId;
+					$categoryPathModel->path = $finalPath;
+					$categoryPathModel->save('parentId');
+
+				}
 			}
 
-			echo "<pre>";
 			$newPath = $categoryModel->parentPath ."/".$categoryId;	
 			$categoryModel->path = $newPath;
-			$categoryModel->updatedDate = $date;
+			$categoryModel->updatedDate = date('Y-m-d H:i:s');
 			unset($categoryModel->parentPath);
 			$categoryModel->save();	
 
@@ -82,7 +84,7 @@ class Controller_Category extends Controller_Core_Action{
 		else
 		{
 
-			$categoryModel->createdDate = $date;
+			$categoryModel->createdDate = date('Y-m-d H:i:s');
 			$path = $categoryModel->path;
 			unset($categoryModel->categoryId);
 
@@ -105,8 +107,7 @@ class Controller_Category extends Controller_Core_Action{
 			}
 		}
 			
-		$this->redirect($this->getView()->getUrl('grid', 'category'));
-		
+		$this->redirect($this->getView()->getUrl('grid', 'category'));	
 	}
 
 	public function deleteAction()
@@ -120,8 +121,9 @@ class Controller_Category extends Controller_Core_Action{
 				throw new Exception("Invalid Request.", 1);
 			}
 			
-			global $adapter; 
-			$delete = $adapter->delete("DELETE FROM categories WHERE categoryId=$id");
+			$categoryModel = Ccc::getModel('Category');
+			$delete = $categoryModel->delete($id);
+		
 			if(!$delete)
 			{
 				throw new Exception("System can't delete record.", 1);
@@ -131,8 +133,8 @@ class Controller_Category extends Controller_Core_Action{
 			$this->redirect($this->getView()->getUrl('grid', 'category'));
 		
 		}catch (Exception $e) {
-			$this->redirect($this->getView()->getUrl('grid', 'category'));	
-			//echo $e->getMessage();
+				
+			echo $e->getMessage();
 		}
 		
 	}

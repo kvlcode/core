@@ -12,7 +12,7 @@ class Block_Customer_Grid extends Block_Core_Template
 		$customerModel = Ccc::getModel('Customer');
 		$customers = $customerModel->fetchAll("SELECT c.*,a.*
 					                            FROM customer c
-					                            JOIN address a
+					                            JOIN customer_address a
 					                            ON a.customerId = c.customerId");
 		return $customers;
 	}

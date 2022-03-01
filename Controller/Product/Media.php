@@ -4,10 +4,8 @@ class Controller_Product_Media extends Controller_Core_Action
 {
 
 	public function gridAction()
-	{
-		
+	{	
 		Ccc::getBlock('Product_Media_Grid')->toHtml();
-
 	}
 
 	public function saveAction()
@@ -21,18 +19,11 @@ class Controller_Product_Media extends Controller_Core_Action
 			$extention =$file['type']; 
 			$extention = explode("/", $extention);
 			$extention = array_pop($extention);
-			
-			if($extention != "jpg" && $extention != "png" && $extention != "jpeg") 
-			{
-				echo "Only JPG, JPEG, PNG  files are allowed.";
-				return false;
-			}
-
+	
 			$imageName = date('Y-m-d H:i:s');
 			$imageName = str_replace(array('-',':',' ') ,'', $imageName.".JPG");
 			$tempName = $file['tmp_name'];
 			move_uploaded_file($tempName, 'Media/Product/'.$imageName);
-
 			$imageModel = Ccc::getModel('Product_Media');
 			$imageModel->productId = $id;
 			$imageModel->name = $imageName;
@@ -77,17 +68,11 @@ class Controller_Product_Media extends Controller_Core_Action
 							$mediaModel->imageId = $value2;
 							$mediaModel->save();
 							unset($mediaModel->$key);
-						}
-						
+						}	
 					}		
 				}
-
 			}
-
 		}
-
 		$this->redirect($this->getView()->getUrl('grid','product_media',['id'=> $id]));
-
 	}
-			
 }

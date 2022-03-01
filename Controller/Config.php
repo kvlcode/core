@@ -3,34 +3,30 @@ Ccc::loadClass('Controller_Core_Action');
 
 class Controller_Config extends Controller_Core_Action{
 
-
 	public function gridAction()
 	{
 		Ccc::getBlock('Config_Grid')->toHtml();
 	}
 
-	public function addAction()
-	{
-		$config = Ccc::getModel('Config');
-		Ccc::getBlock('Config_Edit')->setData(['configEdit' => $config])->toHtml();
-	}
-
-
 	public function editAction()
 	{
 		try {
 			
-			$id = (int) $this->getRequest()->getRequest('id');
-			
-			if (!$id) {
-				throw new Exception("Invalid Id", 1);	
+			if ((int) $this->getRequest()->getRequest('id'))
+			{
+				
+				$id = (int) $this->getRequest()->getRequest('id');
+				$config = Ccc::getModel('Config')->load($id);
+				
+				if (!$config) {
+					throw new Exception("Unable to Load", 1);	
+				}
 			}
+			else
+			{
+				$config = Ccc::getModel('Config');
+			}	
 
-			$config = Ccc::getModel('Config')->load($id);
-			
-			if (!$config) {
-				throw new Exception("Unable to Load", 1);	
-			}
 			Ccc::getBlock('Config_Edit')->setData(['configEdit' => $config])->toHtml();
 
 		} 

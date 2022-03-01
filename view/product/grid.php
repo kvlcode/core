@@ -1,13 +1,11 @@
-<?php $products = $this->getProducts(); 
-      
-?>
+<?php $products = $this->getProducts();?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Product Grid</title>
 </head>
 <body>
-    <button type="button" name="addNew"><a href="<?php echo $this->getUrl('add','product')?>"> Add New </a></button>
+    <button type="button" name="addNew"><a href="<?php echo $this->getUrl('edit','product')?>"> Add New </a></button>
     <table border="1" width="100%" cellspacing="4">
         <tr>
            <td colspan="13"><b>Product Information</b></td>

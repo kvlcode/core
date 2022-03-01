@@ -8,33 +8,28 @@ class Controller_Customer extends Controller_Core_Action{
 		Ccc::getBlock('Customer_Grid')->toHtml();
 	}
 
-	public function addAction()
-	{	
-		$customer = Ccc::getModel('Customer');
-		Ccc::getBlock('Customer_Edit')->setData(['customerEdit' => $customer])->toHtml();
-	}
-
 	public function editAction()
 	{	
-
 		try {
 			
-			$id = (int) $this->getRequest()->getRequest('id');
-			if (!$id) {
-				throw new Exception("Invalid Id", 1);
-				
-			}
+			if ((int) $this->getRequest()->getRequest('id')) {
+					
+				$id = (int) $this->getRequest()->getRequest('id');
 		
-			$customerModel =  Ccc::getModel('Customer');
-			$customer = $customerModel->fetchRow("SELECT c.*,a.*
-						                        FROM customer c
-						                        JOIN address a
-						                        ON a.customerId = c.customerId
-						                        WHERE c.customerId = {$id}");
-			
-			if (!$customer) {
-				throw new Exception("Unable to Load", 1);	
+				$customerModel =  Ccc::getModel('Customer');
+				$customer = $customerModel->fetchRow("SELECT c.*,a.*
+							                        FROM customer c
+							                        JOIN customer_address a
+							                        ON a.customerId = c.customerId
+							                        WHERE c.customerId = {$id}");
+				if (!$customer) {
+					throw new Exception("Unable to Load", 1);	
+				}
 			}
+			else
+			{
+				$customer = Ccc::getModel('Customer');
+			}	
 			
 			Ccc::getBlock('Customer_Edit')->setData(['customerEdit' => $customer])->toHtml();	
 
@@ -64,7 +59,7 @@ class Controller_Customer extends Controller_Core_Action{
 
 			$customerId = $customerData['customerId'];
 
-			// unset($customerData['customerId']);
+		
 			$customerModel->updatedDate = date('Y-m-d H:i:s');
 			$update = $customerModel->save();
 
@@ -146,7 +141,7 @@ class Controller_Customer extends Controller_Core_Action{
 			$this->redirect($this->getView()->getUrl('grid', 'customer'));
 
 	    }catch(Exception $e){
-	    	// $this->redirect($this->getView()->getUrl('grid', 'customer'));
+	    	
 	    	echo $e->getMessage();
 
 	    }
@@ -162,8 +157,8 @@ class Controller_Customer extends Controller_Core_Action{
 				throw new Exception("Invalid Request.", 1);
 			}
 			
-			$addressModel = Ccc::getModel('Customer');
-			$delete = $addressModel->delete($id); 
+			$customerModel = Ccc::getModel('Customer');
+			$delete = $customerModel->delete($id); 
 	
 			if(!$delete)
 			{
@@ -173,7 +168,7 @@ class Controller_Customer extends Controller_Core_Action{
 				$this->redirect($this->getView()->getUrl('grid', 'customer'));	
 				
 		} catch (Exception $e) {
-			// $this->redirect($this->getView()->getUrl('grid', 'customer'));	
+				
 			echo $e->getMessage();
 		}
 

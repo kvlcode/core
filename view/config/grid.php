@@ -5,7 +5,7 @@
     <title>Config Grid</title>
 </head>
 <body>
-    <button type="button" name="addNew"><a href="<?php echo $this->getUrl('add', 'config')?>"> Add New </a></button>
+    <button type="button" name="addNew"><a href="<?php echo $this->getUrl('edit', 'config')?>"> Add New </a></button>
     <table border="1" width="100%" cellspacing="4">
         <tr>
            <td colspan="9"><b>Config Information</b></td>

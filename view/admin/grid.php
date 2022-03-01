@@ -11,7 +11,7 @@
 
 <body>               
     <div>    
-        <button name="Add"><a href="<?php echo $this->getUrl('add', 'admin')?>">Add</a></button>    
+        <button name="Add"><a href="<?php echo $this->getUrl('edit', 'admin')?>">Add</a></button>    
         <table border='1' class="table" width='100%' cellspacing="4">
                 
                 <tr>
