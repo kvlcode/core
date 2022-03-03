@@ -5,7 +5,11 @@ class Controller_Config extends Controller_Core_Action{
 
 	public function gridAction()
 	{
-		Ccc::getBlock('Config_Grid')->toHtml();
+		$pageGrid = Ccc::getBlock('Config_Grid');
+		$content = $this->getLayout()->getContent();
+		$content->addChild($pageGrid);
+		$this->getLayout()->getChild('content')->getChild('Block_Config_Grid');
+		$this->renderLayout();
 	}
 
 	public function editAction()
@@ -27,7 +31,11 @@ class Controller_Config extends Controller_Core_Action{
 				$config = Ccc::getModel('Config');
 			}	
 
-			Ccc::getBlock('Config_Edit')->setData(['configEdit' => $config])->toHtml();
+			$configEdit = Ccc::getBlock('Config_Edit')->setData(['configEdit' => $config]);
+			$content = $this->getLayout()->getContent();
+			$content->addChild($configEdit);
+			$this->getLayout()->getChild('content')->getChild('Block_Config_Edit');
+			$this->renderLayout();
 
 		} 
 		catch (Exception $e) {
@@ -77,11 +85,11 @@ class Controller_Config extends Controller_Core_Action{
 			    }
 
 			}	
-			$this->redirect($this->getView()->getUrl('grid','config')); 				
+			$this->redirect($this->getView()->getUrl(null, null, null, true)); 				
 		
 		}catch(Exception $e){
-	    	$this->redirect($this->getView()->getUrl('grid','config'));
-	    	// echo $e->getMessage();
+	    	
+	    	echo $e->getMessage();
 	    }			
 
 	}
@@ -105,12 +113,11 @@ class Controller_Config extends Controller_Core_Action{
 				throw new Exception("System can't delete record.", 1);
 										
 			}
-			$this->redirect($this->getView()->getUrl('grid','config')); 
+			$this->redirect($this->getView()->getUrl(null, null, null, true)); 
 
 		}catch (Exception $e) {
 
-			$this->redirect($this->getView()->getUrl('grid','config'));	
-			//echo $e->getMessage();
+			echo $e->getMessage();
 		}
 		
 	}

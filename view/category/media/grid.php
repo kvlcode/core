@@ -1,13 +1,6 @@
-<?php $media = $this->getMediaData(); 
-  $id = Ccc::getFront()->getRequest()->getRequest('id');
-  ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Media Grid</title>
-</head>
-<body>
-	<br><br>
+<?php $media = $this->getMediaData(); ?>
+<?php $id = Ccc::getFront()->getRequest()->getRequest('id');?>
+
 	<form method="POST" action="<?php echo $this->getUrl('save', 'category_media', ['id' => $id]);?>">
 		<button type="submit" name="update"> Update </a></button>
 		<button type="button" name="cancel"><a href="<?php echo $this->getUrl('grid','category')?>"> Cancel </a></button>
@@ -67,6 +60,3 @@
 			</tr>
 		</table>
 	</form>
-
-</body>
-</html>

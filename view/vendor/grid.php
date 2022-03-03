@@ -1,14 +1,6 @@
 <?php $vendors = $this->getVendors();?>
-<!doctype html>
-<html lang="en">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Vendor Grid</title>
-</head>
-<body>                       
-        <button name="Add"><a href="<?php echo $this->getUrl('edit','vendor')?>">Add</a></button>
+
+        <button name="Add"><a href="<?php echo $this->getUrl('edit')?>">Add</a></button>
         <table border='1' class="table" width='100%' cellspacing="4">
                 
             <tr>
@@ -44,7 +36,7 @@
                         <td><?php echo $vendor->lastName   ?></td>
                         <td><?php echo $vendor->email      ?></td>
                         <td><?php echo $vendor->mobile     ?></td>
-                        <td><?php echo $vendor->status     ?></td>
+                        <td><?php echo $vendor->getStatus($vendor->status) ?></td>
                         <td><?php echo $vendor->address    ?></td>
                         <td><?php echo $vendor->postalCode ?></td>
                         <td><?php echo $vendor->city       ?></td>
@@ -52,12 +44,10 @@
                         <td><?php echo $vendor->country    ?></td>
                         <td><?php echo $vendor->createdDate?></td>
                         <td><?php echo $vendor->updatedDate?></td>
-                        <td><a href="<?php echo $this->getUrl('edit', 'vendor',['id' => $vendor->vendorId])?>">Edit</a></td>
-                        <td><a href="<?php echo $this->getUrl('delete','vendor',['id' => $vendor->vendorId])?>">Delete</a></td>
+                        <td><a href="<?php echo $this->getUrl('edit', null, ['id' => $vendor->vendorId], true)?>">Edit</a></td>
+                        <td><a href="<?php echo $this->getUrl('delete', null, ['id' => $vendor->vendorId], true)?>">Delete</a></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
 
         </table>
-</body>
-</html>

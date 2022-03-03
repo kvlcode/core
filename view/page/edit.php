@@ -1,12 +1,5 @@
 <?php $page = $this->getPage();?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Edit Page</title>
-</head>
-<body>
-
-	<form method="post" action="<?php echo $this->getUrl('save', 'page')?>">
+	<form method="post" action="<?php echo $this->getUrl('save', null, null, true)?>">
 		<table border="1" width="100%" cellspacing="4">
 
 			<tr>
@@ -45,12 +38,9 @@
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="Save">
-					<button type="button"><a href="<?php echo $this->getUrl('grid', 'page')?>">Cancel</a></button> 
+					<button type="button"><a href="<?php echo $this->getUrl(null, null, null, true)?>">Cancel</a></button> 
 
 				</td>
 			</tr>
 		</table>
 	</form>
-
-</body>
-</html>

@@ -5,7 +5,11 @@ class Controller_Category extends Controller_Core_Action{
 
 	public function gridAction()
 	{
-		Ccc::getBlock('Category_Grid')->toHtml();
+		$categoryGrid = Ccc::getBlock('Category_Grid');
+		$content = $this->getLayout()->getContent();
+		$content->addChild($categoryGrid);
+		$this->getLayout()->getChild('content')->getChild('Block_Category_Grid');
+		$this->renderLayout();
 	}
 
 	public function editAction()
@@ -29,7 +33,11 @@ class Controller_Category extends Controller_Core_Action{
 				$categoryRow = Ccc::getModel('Category');
 			}
 
-			Ccc::getBlock('Category_Edit')->addData('categoryRow', $categoryRow)->toHtml();
+			$categoryEdit = Ccc::getBlock('Category_Edit')->addData('categoryRow', $categoryRow);
+			$content = $this->getLayout()->getContent();
+			$content->addChild($categoryEdit);
+			$this->getLayout()->getChild('content')->getChild('Block_Category_Edit');
+			$this->renderLayout();
 
 		}
 		catch (Exception $e) 
@@ -107,7 +115,7 @@ class Controller_Category extends Controller_Core_Action{
 			}
 		}
 			
-		$this->redirect($this->getView()->getUrl('grid', 'category'));	
+		$this->redirect($this->getView()->getUrl(null, null, null, true));	
 	}
 
 	public function deleteAction()
@@ -130,7 +138,7 @@ class Controller_Category extends Controller_Core_Action{
 										
 			}
 
-			$this->redirect($this->getView()->getUrl('grid', 'category'));
+			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		
 		}catch (Exception $e) {
 				

@@ -5,7 +5,11 @@ class Controller_Vendor extends Controller_Core_Action{
 
 	public function gridAction()
 	{
-		Ccc::getBlock('Vendor_Grid')->toHtml();
+		$vendorGrid = Ccc::getBlock('Vendor_Grid');
+		$content = $this->getLayout()->getContent();
+		$content->addChild($vendorGrid);
+		$this->getLayout()->getChild('content')->getChild('Block_Vendor_Grid');
+		$this->renderLayout();
 	}
 
 	public function editAction()
@@ -35,7 +39,11 @@ class Controller_Vendor extends Controller_Core_Action{
 				$vendor = Ccc::getModel('Vendor');	
 			}
 			
-			Ccc::getBlock('Vendor_Edit')->setData(['vendorEdit' => $vendor])->toHtml();	
+			$vendorEdit = Ccc::getBlock('Vendor_Edit')->setData(['vendorEdit' => $vendor]);
+			$content = $this->getLayout()->getContent();
+			$content->addChild($vendorEdit);
+			$this->getLayout()->getChild('content')->getChild('Block_Vendor_Edit');
+			$this->renderLayout();	
 
 		} 
 		catch (Exception $e) {
@@ -124,7 +132,7 @@ class Controller_Vendor extends Controller_Core_Action{
 			
 			$vendorId = $this->saveVendor();
 			$this->saveAddress($vendorId);
-			$this->redirect($this->getView()->getUrl('grid', 'vendor'));
+			$this->redirect($this->getView()->getUrl(null, null, null, true));
 
 	    }catch(Exception $e){
 	    	echo $e->getMessage();
@@ -150,7 +158,7 @@ class Controller_Vendor extends Controller_Core_Action{
 				throw new Exception("System can't delete record.", 1);
 										
 			}
-				$this->redirect($this->getView()->getUrl('grid', 'vendor'));	
+				$this->redirect($this->getView()->getUrl(null, null, null, true));	
 				
 		} catch (Exception $e) {
 				

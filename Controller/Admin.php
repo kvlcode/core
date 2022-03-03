@@ -5,9 +5,12 @@ class Controller_Admin extends Controller_Core_Action{
 
 	public function gridAction()
 	{
-		Ccc::getBlock('Core_Layout')->toHtml();
+		$content = $this->getLayout()->getContent();
+		$adminGrid = Ccc::getBlock('Admin_Grid');
+		$content->addChild($adminGrid);
+		$this->getLayout()->getChild('content')->getChild('Block_Admin_Grid');
+		$this->renderLayout();
 
-		// Ccc::getBlock('Admin_Grid')->toHtml();
 	}
 
 	public function editAction()
@@ -30,7 +33,12 @@ class Controller_Admin extends Controller_Core_Action{
 				$admin =  Ccc::getModel('Admin');
 			}
 
-			Ccc::getBlock('Admin_Edit')->setData(['adminEdit' => $admin])->toHtml();	
+			$adminEdit = Ccc::getBlock('Admin_Edit')->setAdmin($admin);
+			$content = $this->getLayout()->getContent();
+			$content->addChild($adminEdit);
+			$this->getLayout()->getChild('content')->getChild('Block_Admin_Edit');
+			$this->renderLayout();
+
 		} 
 		catch (Exception $e) {
 			echo $e->getMessage();
@@ -76,7 +84,7 @@ class Controller_Admin extends Controller_Core_Action{
 			    }
 			        
 			}
-			$this->redirect($this->getView()->getUrl('grid','admin'));
+			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}
 		catch (Exception $e) {
 
@@ -104,7 +112,7 @@ class Controller_Admin extends Controller_Core_Action{
 				throw new Exception("System can't delete record.", 1);
 										
 			}
-			$this->redirect($this->getView()->getUrl('grid', 'admin'));	
+			$this->redirect($this->getView()->getUrl(null, null, null, true));	
 				
 		}
 		catch (Exception $e) 

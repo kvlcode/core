@@ -50,51 +50,78 @@ class Model_Core_View{
 		return $this;
 	}
 
-	public function getUrl($actionName = null, $controllerName = null, array $data = null, $reset = true)
+	public function getUrl($actionName = null, $controllerName = null, array $array = null, $reset = false)
 	{
 		
-		$defaultPath = Ccc::getFront()->getRequest()->getRequest();	
-		$path =[];
+		$defaultUrl = Ccc::getFront()->getRequest()->getRequest();	
+		$url =[];
 
-		if ($controllerName) {
-			$path['c'] = $controllerName;
-		}
-
-		if ($actionName) {
-			$path['a'] = $actionName;
-		}
-
-		if (is_array($data)) {
-			foreach ($data as $key => $value) {
-				if ($value) {
-					$path[$key] = $value;
-				}
-			}
-		}
-		else
+		if ($reset == false) 
 		{
-			foreach ($defaultPath as $key => $value) {
+			
+			if ($actionName) {
+				$url['a'] = $actionName;
+			}
+			else{
+				$url['a'] = $defaultUrl['a'];
+			}
+
+			if ($controllerName) {
+				$url['c'] = $controllerName;
+			}
+			else{
+				$url['c'] = $defaultUrl['c'];
+			}
+
+			foreach ($defaultUrl as $key => $value) {
 				if ($key != 'c' && $key != 'a' ) {
-					unset($defaultPath[$key]);
+					$url[$key] = $defaultUrl[$key];
+							
+				}				
+			}
+
+			if (is_array($array)) {
+				foreach ($array as $key => $value) {
+	
+					$url[$key] = $value;
+				
+				}
+			}
+		}
+		else{
+
+			if ($actionName) {
+				$url['a'] = $actionName;
+			}
+			else{
+				$url['a'] = 'grid';
+			}
+
+			if ($controllerName) {
+				$url['c'] = $controllerName;
+			}
+			else{
+				$url['c'] = $defaultUrl['c'];
+			}
+
+			foreach ($defaultUrl as $key => $value) {
+				if ($key != 'c' && $key != 'a' ) {
+					unset($defaultUrl[$key]);
+				}
+			}
+			if (is_array($array)) {
+				foreach ($array as $key => $value) {
+					$url[$key] = $value;
+				
 				}
 			}
 		}
 
-		$finalElements = array_merge($defaultPath, $path);
-		$finalPath = 'index.php?'. http_build_query($finalElements);
-		return $finalPath;
+		$finalElements = array_merge($defaultUrl, $url);
+		$finalUrl = 'index.php?'. http_build_query($finalElements);
+		return $finalUrl;
 		
 	}
-
-	// public function getSubUrl()
-	// {
-	// 	$url1 = "http://localhost/Cybercom/core";
-	// 	$url = $this->getUrl();
-	// 	$url = $url1.'/'.$url;
-	// 	return $url;
-		
-	// }
-
 }
 
 ?>

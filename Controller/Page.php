@@ -3,10 +3,13 @@ Ccc:: loadClass('Controller_Core_Action');
 
 class Controller_Page extends Controller_Core_Action{
 
-
 	public function gridAction()
 	{
-		Ccc::getBlock('Page_Grid')->toHtml();
+		$content = $this->getLayout()->getContent();
+		$pageGrid = Ccc::getBlock('Page_Grid');
+		$content->addChild($pageGrid);
+		$this->getLayout()->getChild('content')->getChild('Block_Page_Grid');
+		$this->renderLayout();
 	}
 
 	public function editAction()
@@ -32,7 +35,11 @@ class Controller_Page extends Controller_Core_Action{
 				$page = Ccc::getModel('Page');
 			}
 
-			Ccc::getBlock('Page_Edit')->setData(['pageEdit' => $page])->toHtml();
+			$pageEdit = Ccc::getBlock('Page_Edit')->setData(['pageEdit' => $page]);
+			$content = $this->getLayout()->getContent();
+			$content->addChild($pageEdit);
+			$this->getLayout()->getChild('content')->getChild('Block_Page_Edit');
+			$this->renderLayout();
 
 		}
 		catch (Exception $e)
@@ -81,7 +88,7 @@ class Controller_Page extends Controller_Core_Action{
 				}
 			}
 
-			$this->redirect($this->getView()->getUrl('grid','page'));
+			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}
 		catch (Exception $e) 
 		{	
@@ -105,7 +112,7 @@ class Controller_Page extends Controller_Core_Action{
          	if (!$delete) {
          		throw new Exception("System can't delete.", 1);
          	}
-      		$this->redirect($this->getView()->getUrl('grid', 'page'));
+      		$this->redirect($this->getView()->getUrl(null, null, null, true));
 
 		} catch (Exception $e) {
 			echo $e->getMessage();

@@ -1,4 +1,4 @@
-<?php Ccc::loadClass('Model_Core_Row');
+<?php 
 class Model_Core_Row_Resource
 {
 	protected $resourceName = NULL;

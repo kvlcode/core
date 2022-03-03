@@ -5,7 +5,11 @@ class Controller_Product extends Controller_Core_Action{
 
 	public function gridAction()			
 	{	
-		Ccc::getBlock('Product_Grid')->toHtml();		
+		$productGrid = Ccc::getBlock('Product_Grid');
+		$content = $this->getLayout()->getContent();
+		$content->addChild($productGrid);
+		$this->getLayout()->getChild('content')->getChild('Block_Product_Grid');
+		$this->renderLayout();		
 	}
 
 	public function editAction()
@@ -25,8 +29,11 @@ class Controller_Product extends Controller_Core_Action{
 			{
 				$product = Ccc::getModel('Product');
 			}	
-			Ccc::getBlock('Product_Edit')->setData(['productEdit' => $product])->toHtml();
-
+			$productEdit = Ccc::getBlock('Product_Edit')->setData(['productEdit' => $product]);
+			$content = $this->getLayout()->getContent();
+			$content->addChild($productEdit);
+			$this->getLayout()->getChild('content')->getChild('Block_Product_Edit');
+			$this->renderLayout();
 		} 
 		catch (Exception $e) {
 
@@ -75,7 +82,7 @@ class Controller_Product extends Controller_Core_Action{
 			    }
 
 			}	
-			$this->redirect($this->getView()->getUrl('grid','product')); 				
+			$this->redirect($this->getView()->getUrl(null, null, null, true)); 				
 		
 		}catch(Exception $e){
 	    	echo $e->getMessage();
@@ -100,7 +107,7 @@ class Controller_Product extends Controller_Core_Action{
 				throw new Exception("System can't delete record.", 1);
 										
 			}
-			$this->redirect($this->getView()->getUrl('grid','product')); 
+			$this->redirect($this->getView()->getUrl(null, null, null, true)); 
 
 		}catch (Exception $e) {
 			

@@ -1,5 +1,6 @@
 <?php 
 Ccc::loadClass('Model_Core_View');
+Ccc::loadClass('Block_Core_Layout');
 
 class Controller_Core_Action {
 

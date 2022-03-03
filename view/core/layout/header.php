@@ -1,1 +1,1 @@
-<h1> This is Header </h1>
+<?php $this->getMenu();?>

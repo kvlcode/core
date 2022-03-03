@@ -1,11 +1,6 @@
 <?php $configs = $this->getConfigs(); ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Config Grid</title>
-</head>
-<body>
-    <button type="button" name="addNew"><a href="<?php echo $this->getUrl('edit', 'config')?>"> Add New </a></button>
+
+    <button type="button" name="addNew"><a href="<?php echo $this->getUrl('edit')?>"> Add New </a></button>
     <table border="1" width="100%" cellspacing="4">
         <tr>
            <td colspan="9"><b>Config Information</b></td>
@@ -33,15 +28,12 @@
                     <td><?php echo $config->name ?></td>
                     <td><?php echo $config->code ?></td>
                     <td><?php echo $config->value ?></td>
-                    <td><?php echo $config->status ?></td>
+                    <td><?php echo $config->getStatus($config->status) ?></td>
                     <td><?php echo $config->createdDate ?></td>
-                    <td><a href="<?php echo $this->getUrl('edit', 'config',['id' =>  $config->configId])?>">Edit</a></td>
-                    <td><a href="<?php echo $this->getUrl('delete', 'config',['id' => $config->configId]);?>">Delete</a></td>
+                    <td><a href="<?php echo $this->getUrl('edit', null, ['id' =>  $config->configId], true)?>">Edit</a></td>
+                    <td><a href="<?php echo $this->getUrl('delete', null, ['id' => $config->configId], true);?>">Delete</a></td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?> 
   
     </table>
-
-</body>
-</html>

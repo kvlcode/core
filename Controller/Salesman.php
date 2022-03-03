@@ -4,10 +4,13 @@ Ccc::loadClass('Controller_Core_Action');
 
 class Controller_Salesman extends Controller_Core_Action{
 
-
 	public function gridAction()
 	{
-		Ccc::getBlock('Salesman_Grid')->toHtml();
+		$salesmanGrid = Ccc::getBlock('Salesman_Grid');
+		$content = $this->getLayout()->getContent();
+		$content->addChild($salesmanGrid);
+		$this->getLayout()->getChild('content')->getChild('Block_Salesman_Grid');
+		$this->renderLayout();
 	}
 
 	public function editAction()
@@ -29,7 +32,11 @@ class Controller_Salesman extends Controller_Core_Action{
 				$salesman = Ccc::getModel('Salesman');
 			}
 
-			Ccc::getBlock('Salesman_Edit')->setData(['salesmanEdit' => $salesman])->toHtml();
+			$salesmanEdit = Ccc::getBlock('Salesman_Edit')->setData(['salesmanEdit' => $salesman]);
+			$content = $this->getLayout()->getContent();
+			$content->addChild($salesmanEdit);
+			$this->getLayout()->getChild('content')->getChild('Block_Salesman_Edit');
+			$this->renderLayout();
 
 		} 
 		catch (Exception $e) 
@@ -78,7 +85,7 @@ class Controller_Salesman extends Controller_Core_Action{
 					
 				}
 			}
-			$this->redirect($this->getView()->getUrl('grid', 'salesman'));
+			$this->redirect($this->getView()->getUrl(null, null, null, true));
 
 		} 
 		catch (Exception $e) 
@@ -102,7 +109,7 @@ class Controller_Salesman extends Controller_Core_Action{
 			if (!$delete) {
 				throw new Exception("System can't delete.", 1);
 			}
-			$this->redirect($this->getView()->getUrl('grid', 'salesman'));
+			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}
 		catch (Exception $e) 
 		{	

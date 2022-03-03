@@ -1,17 +1,6 @@
-<?php $admin = $this->getAdmin();?>
-<!doctype html>
-<html lang="en">
-
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Grid</title>
-</head>
-
-<body>               
-    <div>    
-        <button name="Add"><a href="<?php echo $this->getUrl('edit', 'admin')?>">Add</a></button>    
+<?php $admins = $this->getAdmins();?>
+   
+        <button name="Add"><a href="<?php echo $this->getUrl('edit')?>">Add</a></button>    
         <table border='1' class="table" width='100%' cellspacing="4">
                 
                 <tr>
@@ -31,28 +20,24 @@
                     <th>Delete</th>
                 </tr>
 
-                <?php if (!$admin): ?>
+                <?php if (!$admins): ?>
                     <tr><td colspan="8">No data</td></tr>
                 <?php else:  ?>      
-                    <?php foreach($admin as $row): ?>
+                    <?php foreach($admins as $admin): ?>
                      
                         <tr>
-                            <td><?php echo $row->adminId     ?></td>
-                            <td><?php echo $row->firstName   ?></td>
-                            <td><?php echo $row->lastName    ?></td>
-                            <td><?php echo $row->email       ?></td>
-                            <td><?php echo $row->password    ?></td>
-                            <td><?php echo $row->status      ?></td>
-                            <td><?php echo $row->createdDate ?></td>
-                            <td><?php echo $row->updatedDate ?></td>
-                            <td><a href="<?php echo $this->getUrl('edit','admin',['id' => $row->adminId])?>">Edit</a></td>
-                            <td><a href="<?php echo $this->getUrl('delete','admin',['id' => $row->adminId])?>">Delete</a></td>
+                            <td><?php echo $admin->adminId     ?></td>
+                            <td><?php echo $admin->firstName   ?></td>
+                            <td><?php echo $admin->lastName    ?></td>
+                            <td><?php echo $admin->email       ?></td>
+                            <td><?php echo $admin->password    ?></td>
+                            <td><?php echo $admin->getStatus($admin->status);?></td>
+                            <td><?php echo $admin->createdDate ?></td>
+                            <td><?php echo $admin->updatedDate ?></td>
+                            <td><a href="<?php echo $this->getUrl('edit', null, ['id' => $admin->adminId], true)?>">Edit</a></td>
+                            <td><a href="<?php echo $this->getUrl('delete', null, ['id' => $admin->adminId], true)?>">Delete</a></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>
 
         </table>
-    </div>
-
-</body>
-</html>

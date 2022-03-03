@@ -5,7 +5,11 @@ class Controller_Customer extends Controller_Core_Action{
 
 	public function gridAction()
 	{
-		Ccc::getBlock('Customer_Grid')->toHtml();
+		$customerGrid = Ccc::getBlock('Customer_Grid');
+		$content = $this->getLayout()->getContent();
+		$content->addChild($customerGrid);
+		$this->getLayout()->getChild('content')->getChild('Block_Customer_Grid');
+		$this->renderLayout();
 	}
 
 	public function editAction()
@@ -31,7 +35,11 @@ class Controller_Customer extends Controller_Core_Action{
 				$customer = Ccc::getModel('Customer');
 			}	
 			
-			Ccc::getBlock('Customer_Edit')->setData(['customerEdit' => $customer])->toHtml();	
+			$customerEdit = Ccc::getBlock('Customer_Edit')->setData(['customerEdit' => $customer]);
+			$content = $this->getLayout()->getContent();
+			$content->addChild($customerEdit);
+			$this->getLayout()->getChild('content')->getChild('Block_Customer_Edit');
+			$this->renderLayout();	
 
 		} 
 		catch (Exception $e) {
@@ -138,7 +146,7 @@ class Controller_Customer extends Controller_Core_Action{
 			
 			$customerId = $this->saveCustomer();
 			$this->saveAddress($customerId);
-			$this->redirect($this->getView()->getUrl('grid', 'customer'));
+			$this->redirect($this->getView()->getUrl(null, null, null, true));
 
 	    }catch(Exception $e){
 	    	
@@ -165,7 +173,7 @@ class Controller_Customer extends Controller_Core_Action{
 				throw new Exception("System can't delete record.", 1);
 										
 			}
-				$this->redirect($this->getView()->getUrl('grid', 'customer'));	
+				$this->redirect($this->getView()->getUrl(null, null, null, true));	
 				
 		} catch (Exception $e) {
 				

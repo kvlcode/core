@@ -1,12 +1,6 @@
 <?php $admin = $this->getAdmin();?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Admin Edit</title>
-</head>
-<body>
 
-	<form method="POST" action="<?php echo $this->getUrl('save', 'admin')?>">
+	<form method="POST" action="<?php echo $this->getUrl('save', null, null, true)?>">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>
@@ -51,12 +45,9 @@
 				<td width="10%">&nbsp;</td>
 				<td>
 					<input type="submit" name="Save">
-					<button type="button"><a href="<?php echo $this->getUrl('grid','admin')?>">Cancel</a></button> 
+					<button type="button"><a href="<?php echo $this->getUrl(null,null, null, true)?>">Cancel</a></button> 
 
 				</td>
 			</tr>
 		</table>
 	</form>
-
-</body>
-</html>

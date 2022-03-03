@@ -1,14 +1,6 @@
 <?php $customers = $this->getCustomers();?>
-<!doctype html>
-<html lang="en">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Customer Grid</title>
-</head>
-<body>                       
-        <button name="Add"><a href="<?php echo $this->getUrl('edit','customer')?>">Add</a></button>
+                      
+        <button name="Add"><a href="<?php echo $this->getUrl('edit')?>">Add</a></button>
         
         <table border='1' class="table" width='100%' cellspacing="4">
                 
@@ -47,7 +39,7 @@
                         <td><?php echo $customer->lastName   ?></td>
                         <td><?php echo $customer->email      ?></td>
                         <td><?php echo $customer->mobile     ?></td>
-                        <td><?php echo $customer->status     ?></td>
+                        <td><?php echo $customer->getStatus($customer->status) ?></td>
                         <td><?php echo $customer->address    ?></td>
                         <td><?php echo $customer->postalCode ?></td>
                         <td><?php echo $customer->city       ?></td>
@@ -57,12 +49,10 @@
                         <td><?php echo $customer->shipping   ?></td>
                         <td><?php echo $customer->createdDate?></td>
                         <td><?php echo $customer->updatedDate?></td>
-                        <td><a href="<?php echo $this->getUrl('edit', 'customer',['id' => $customer->customerId])?>">Edit</a></td>
-                        <td><a href="<?php echo $this->getUrl('delete','customer',['id' => $customer->customerId])?>">Delete</a></td>
+                        <td><a href="<?php echo $this->getUrl('edit', null, ['id' => $customer->customerId], true)?>">Edit</a></td>
+                        <td><a href="<?php echo $this->getUrl('delete', null, ['id' => $customer->customerId], true)?>">Delete</a></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
 
         </table>
-</body>
-</html>

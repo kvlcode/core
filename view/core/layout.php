@@ -3,21 +3,21 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Layout</title>
+	<title> </title>
 </head>
 <body>
-	<table>
-		<td>
-			<tr><?php $this->getHeader()->toHtml();?></tr>
-		</td>
+	<table border="1" cellspacing="4" width="100%">
+		<tr>
+			<td><?php $this->getHeader()->toHtml();?></td>
+		</tr>
 
-		<td>
-			<tr><?php $this->getFooter()->toHtml();?> </tr>
-		</td>
-
-		<td>
-			<tr><?php $this->getContent()->toHtml();?> </tr>
-		</td>
+		<tr>
+			<td><?php $this->getContent()->toHtml();?> </td>
+		</tr>
+		
+		<tr>
+			<td><?php $this->getFooter()->toHtml();?> </td>
+		</tr>
 	</table>
 </body>
 </html>
