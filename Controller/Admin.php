@@ -21,10 +21,10 @@ class Controller_Admin extends Controller_Core_Action{
 			if ((int) $this->getRequest()->getRequest('id')) 
 			{
 				$id = (int) $this->getRequest()->getRequest('id');
-			
 				$admin =  Ccc::getModel('Admin')->load($id);	
 				
 				if (!$admin) {
+					$this->getMessage()->addMessage("Unable to Load Data.", Model_Core_Message::ERROR);
 					throw new Exception("Unable to Load", 1);	
 				}
 			}
@@ -41,9 +41,9 @@ class Controller_Admin extends Controller_Core_Action{
 
 		} 
 		catch (Exception $e) {
-			echo $e->getMessage();
-		}
-		
+			$this->redirect($this->getView()->getUrl(null, null, null, true));
+			
+		}		
 	}
 
 	public function saveAction()
@@ -52,6 +52,7 @@ class Controller_Admin extends Controller_Core_Action{
 			$adminData = $this->getRequest()->getPost('admin');
 
 			if (!isset($adminData)) {
+				$this->getMessage()->addMessage("Missing Admin data in request.", Model_Core_Message::ERROR);
 				throw new Exception("Missing Admin data in request.", 1);
 			}
 
@@ -61,6 +62,7 @@ class Controller_Admin extends Controller_Core_Action{
 			if ($adminData['adminId'] != null) {
 
 				if (!(int)$adminData['adminId']) {
+					$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);
 					throw new Exception("Invalid Request", 1);	
 				}
 				
@@ -68,10 +70,11 @@ class Controller_Admin extends Controller_Core_Action{
 				$update = $adminModel->save();
 			
 				if (!$update) {
-						throw new Exception("System can't update", 1);
+					$this->getMessage()->addMessage("System can't update.", Model_Core_Message::ERROR);	
+					throw new Exception("System can't update", 1);
 				}	
+				$this->getMessage()->addMessage('Data Updated.', Model_Core_Message::SUCCESS);
 					
-
 			}else{
 				
 				unset($adminModel->adminId);
@@ -79,16 +82,17 @@ class Controller_Admin extends Controller_Core_Action{
 				$insertId = $adminModel->save();
 				
 				if (!$insertId) {
+					$this->getMessage()->addMessage("System can't insert.", Model_Core_Message::ERROR);	
 			       	throw new Exception("System can't insert", 1);
 			        	
-			    }
-			        
+			    }    
+				$this->getMessage()->addMessage('Data Inserted.', Model_Core_Message::SUCCESS);
 			}
 			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}
 		catch (Exception $e) {
 
-			echo $e->getMessage();
+			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}
 
 	}
@@ -101,6 +105,7 @@ class Controller_Admin extends Controller_Core_Action{
 			$id = $this->getRequest()->getRequest('id');
 			
 			if (!isset($id)) {
+				$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);	
 				throw new Exception("Invalid Request.", 1);
 			}
 
@@ -109,15 +114,17 @@ class Controller_Admin extends Controller_Core_Action{
 			
 			if(!$delete)
 			{
+				$this->getMessage()->addMessage("System can't delete record.", Model_Core_Message::ERROR);
 				throw new Exception("System can't delete record.", 1);
 										
 			}
+			$this->getMessage()->addMessage("Data Deleted.", Model_Core_Message::SUCCESS);
 			$this->redirect($this->getView()->getUrl(null, null, null, true));	
 				
 		}
 		catch (Exception $e) 
 		{
-			echo $e->getMessage();
+			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}
 
 	}

@@ -22,6 +22,7 @@ class Controller_Product extends Controller_Core_Action{
 				$product = Ccc::getModel('Product')->load($id);
 
 				if (!$product) {
+					$this->getMessage()->addMessage("Unable to Load.", Model_Core_Message::ERROR);	
 					throw new Exception("Unable to Load", 1);	
 				}
 			}
@@ -37,7 +38,7 @@ class Controller_Product extends Controller_Core_Action{
 		} 
 		catch (Exception $e) {
 
-			echo $e->getMessage();
+			$this->redirect($this->getView()->getUrl(null, null, null, true)); 
 			
 		}
 	}
@@ -50,6 +51,7 @@ class Controller_Product extends Controller_Core_Action{
 			$productData = $this->getRequest()->getPost('product');
 
 			if (!isset($productData)) {
+				$this->getMessage()->addMessage("Missing product data in request.", Model_Core_Message::ERROR);	
 				throw new Exception("Missing product data in request.", 1);
 				
 			}
@@ -59,7 +61,8 @@ class Controller_Product extends Controller_Core_Action{
 			if (!empty($productData['productId'])) {
 
 				if (!(int)$productData['productId']) {
-					throw new Exception("Invalid request", 1);
+					$this->getMessage()->addMessage("Invalid request.", Model_Core_Message::ERROR);	
+					throw new Exception("Invalid request.", 1);
 					
 				}
 
@@ -67,9 +70,10 @@ class Controller_Product extends Controller_Core_Action{
 				$update = $productModel->save();
 
 			  	if (!$update) {
-					throw new Exception("System can't update", 1);
-				
-				}	
+					$this->getMessage()->addMessage("System can't update.", Model_Core_Message::ERROR);	
+					throw new Exception("System can't update.", 1);
+				}
+				$this->getMessage()->addMessage('Data Updated.', Model_Core_Message::SUCCESS);	
 			
 			}else{
 				
@@ -78,14 +82,15 @@ class Controller_Product extends Controller_Core_Action{
 				$insertId = $productModel->save();
 
 				if (!$insertId) {
-			         	throw new Exception("System can't insert", 1);	
+					$this->getMessage()->addMessage("System can't insert.", Model_Core_Message::ERROR);	
+			        throw new Exception("System can't insert.", 1);	
 			    }
-
+			    $this->getMessage()->addMessage('Data Inserted.', Model_Core_Message::SUCCESS);
 			}	
 			$this->redirect($this->getView()->getUrl(null, null, null, true)); 				
 		
 		}catch(Exception $e){
-	    	echo $e->getMessage();
+	    	$this->redirect($this->getView()->getUrl(null, null, null, true)); 
 	    }			
 
 	}
@@ -97,21 +102,23 @@ class Controller_Product extends Controller_Core_Action{
 
 		try{
 			if (!isset($id)){
-				throw new Exception("Invalid Request", 1);
+				$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);	
+				throw new Exception("Invalid Request.", 1);
 			}
 
 			$productModel = Ccc::getModel('Product_Resource');
 			$delete = $productModel->delete($id);
 			if(!$delete)
-			{
+			{	
+				$this->getMessage()->addMessage("System can't delete record.", Model_Core_Message::ERROR);	
 				throw new Exception("System can't delete record.", 1);
-										
 			}
+			$this->getMessage()->addMessage('Data Deleted.', Model_Core_Message::SUCCESS);
 			$this->redirect($this->getView()->getUrl(null, null, null, true)); 
 
 		}catch (Exception $e) {
-			
-			echo $e->getMessage();
+
+			$this->redirect($this->getView()->getUrl(null, null, null, true)); 
 		}
 		
 	}

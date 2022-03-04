@@ -23,6 +23,7 @@ class Controller_Salesman extends Controller_Core_Action{
 				$salesman = Ccc::getModel('Salesman')->load($id);
 
 				if (!$salesman) {
+					$this->getMessage()->addMessage("Unable to load.", Model_Core_Message::ERROR);
 					throw new Exception("Unable to load.", 1);
 					
 				}			
@@ -41,7 +42,8 @@ class Controller_Salesman extends Controller_Core_Action{
 		} 
 		catch (Exception $e) 
 		{
-			echo $e->getMessage();
+			$this->redirect($this->getView()->getUrl(null, null, null, true));
+
 		}
 	}
 
@@ -52,6 +54,7 @@ class Controller_Salesman extends Controller_Core_Action{
 				
 			$salesmanData = $this->getRequest()->getPost('salesman');
 			if (!isset($salesmanData)) {
+				$this->getMessage()->addMessage("Unable to load.", Model_Core_Message::ERROR);
 				throw new Exception("Unable to load salesman data.", 1);
 				
 			}
@@ -62,6 +65,7 @@ class Controller_Salesman extends Controller_Core_Action{
 			if ($salesmanData['salesmanId'] != null) {
 				
 				if (!(int) $salesmanData['salesmanId']) {
+					$this->getMessage()->addMessage("Invalid request.", Model_Core_Message::ERROR);
 					throw new Exception("Invalid request.", 1);
 					
 				}
@@ -70,9 +74,11 @@ class Controller_Salesman extends Controller_Core_Action{
 				$update = $salesmanModel->save();
 
 				if (!$update) {
-					throw new Exception("System Can't update", 1);
-					
+					$this->getMessage()->addMessage("System Can't update.", Model_Core_Message::ERROR);
+					throw new Exception("System Can't update", 1);	
 				}
+				$this->getMessage()->addMessage('Data Updated.', Model_Core_Message::SUCCESS);
+
 			}
 			else
 			{
@@ -81,16 +87,19 @@ class Controller_Salesman extends Controller_Core_Action{
 				$insetId = $salesmanModel->save();
 
 				if (!$insetId) {
-					throw new Exception("System Can't update", 1);
-					
+					$this->getMessage()->addMessage("System Can't insert.", Model_Core_Message::ERROR);
+					throw new Exception("System Can't insert", 1);		
 				}
+				$this->getMessage()->addMessage('Data Inserted.', Model_Core_Message::SUCCESS);
+
 			}
 			$this->redirect($this->getView()->getUrl(null, null, null, true));
 
 		} 
 		catch (Exception $e) 
 		{	
-			echo $e->getMessage();
+			$this->redirect($this->getView()->getUrl(null, null, null, true));
+
 		}
 	}
 
@@ -101,19 +110,23 @@ class Controller_Salesman extends Controller_Core_Action{
 		{
 			$id = $this->getRequest()->getRequest('id');
 			if (!isset($id)) {
+				$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);
 				throw new Exception("Invalid Request.", 1);
 			}
 
 			$salesmanModel = Ccc::getModel('Salesman');
 			$delete = $salesmanModel->delete($id);
 			if (!$delete) {
+				$this->getMessage()->addMessage("System can't delete.", Model_Core_Message::ERROR);
 				throw new Exception("System can't delete.", 1);
 			}
+			$this->getMessage()->addMessage('Data Deleted.', Model_Core_Message::SUCCESS);
 			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}
 		catch (Exception $e) 
 		{	
-			echo $e->getMessage();
+			$this->redirect($this->getView()->getUrl(null, null, null, true));
+
 		}
 	}
 

@@ -17,4 +17,17 @@ class Block_Core_Layout_Header extends Block_Core_Template{
 		}
 		return $child;
 	}
+
+	public function getMessages()
+	{
+		$child = $this->getChild('message');
+		if (!$child) {
+			$child = Ccc::getBlock('Core_Layout_Header_Message');
+			$this->addChild($child, 'message');
+			$child->toHtml();
+		}
+		return $child;
+	}
+
+
 }

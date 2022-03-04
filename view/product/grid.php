@@ -36,9 +36,22 @@
                     <td><?php echo $product->getStatus($product->status) ?></td>
                     <td><?php echo $product->createdDate ?></td>
                     <td><?php echo $product->updatedDate ?></td>
-                    <td><?php echo $product->baseImage ?></td>
-                    <td><?php echo $product->thumbImage ?></td>
-                    <td><?php echo $product->smallImage ?></td>
+
+                    <td><?php if (!$product->baseImage): echo "No Image"?> 
+                        <?php else: ?>
+                            <img src="<?php echo 'Media/Product/'.$product->baseImage ?>" width = "50px" hieght = "50px">
+                        <?php endif; ?>
+                    </td>
+                    <td><?php if (!$product->thumbImage): echo "No Image"?> 
+                        <?php else: ?>
+                            <img src="<?php echo 'Media/Product/'.$product->thumbImage ?>" width = "50px" hieght = "50px">
+                        <?php endif; ?>
+                    </td>
+                    <td><?php if (!$product->smallImage): echo "No Image"?> 
+                        <?php else: ?>
+                            <img src="<?php echo 'Media/Product/'.$product->smallImage ?>" width = "50px" hieght = "50px">
+                        <?php endif; ?>
+                    </td>
                     <td><a href="<?php echo $this->getUrl('edit', null, ['id' =>  $product->productId], true)?>">Edit</a></td>
                     <td><a href="<?php echo $this->getUrl('delete', null, ['id' => $product->productId], true);?>">Delete</a></td>
                     <td><a href="<?php echo $this->getUrl('grid', 'product_media', ['id' => $product->productId]);?>">Media</a></td>

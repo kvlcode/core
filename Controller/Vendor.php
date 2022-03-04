@@ -21,7 +21,8 @@ class Controller_Vendor extends Controller_Core_Action{
 				
 				$id = (int) $this->getRequest()->getRequest('id');
 				if (!$id) {
-					throw new Exception("Invalid Id", 1);
+					$this->getMessage()->addMessage("Invalid Id.", Model_Core_Message::ERROR);
+					throw new Exception("Invalid Id.", 1);
 				}
 				$vendorModel =  Ccc::getModel('Vendor');
 				$vendor = $vendorModel->fetchRow("SELECT v.*,a.*
@@ -30,7 +31,8 @@ class Controller_Vendor extends Controller_Core_Action{
 							                        ON a.vendorId = v.vendorId
 							                        WHERE v.vendorId = {$id}");
 				if (!$vendor) {
-					throw new Exception("Unable to Load", 1);	
+					$this->getMessage()->addMessage("Unable to Load.", Model_Core_Message::ERROR);
+					throw new Exception("Unable to Load.", 1);	
 				}
 
 			}
@@ -47,7 +49,8 @@ class Controller_Vendor extends Controller_Core_Action{
 
 		} 
 		catch (Exception $e) {
-			echo $e->getMessage();
+			$this->redirect($this->getView()->getUrl(null, null, null, true));	
+
 		}
 
 	}
@@ -57,6 +60,7 @@ class Controller_Vendor extends Controller_Core_Action{
 		 
 		$vendorData = $this->getRequest()->getPost('vendor');
 		if (!isset($vendorData)) {
+			$this->getMessage()->addMessage("Missing Vendor data in request.", Model_Core_Message::ERROR);
 			throw new Exception("Missing Vendor data in request.", 1);
 		}
 		
@@ -65,7 +69,8 @@ class Controller_Vendor extends Controller_Core_Action{
 
 		if (!empty($vendorData['vendorId'])) {
 			if (!(int)$vendorData['vendorId']) {
-				throw new Exception("Invalid Request", 1);
+				$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);
+				throw new Exception("Invalid Request.", 1);
 				
 			}
 
@@ -75,7 +80,8 @@ class Controller_Vendor extends Controller_Core_Action{
 			$update = $vendorModel->save();
 
 			if (!$update) {
-					throw new Exception("System can't update vendor data", 1);
+				$this->getMessage()->addMessage("System can't update vendor data.", Model_Core_Message::ERROR);
+				throw new Exception("System can't update vendor data.", 1);
 			}	
 				
 		}else{
@@ -85,7 +91,8 @@ class Controller_Vendor extends Controller_Core_Action{
 			$vendorId = $vendorModel->save();
 			
 			if (!$vendorId) {
-		        throw new Exception("System can't insert vendor data", 1);
+				$this->getMessage()->addMessage("System can't insert vendor data.", Model_Core_Message::ERROR);
+		        throw new Exception("System can't insert vendor data.", 1);
 		        	
 		    }        		
 		}
@@ -99,7 +106,8 @@ class Controller_Vendor extends Controller_Core_Action{
 		$addressData = $this->getRequest()->getPost('address');
 		
 		if(!isset($addressData)){
-			throw new Exception("Missing Address data in Request ", 1);	
+			$this->getMessage()->addMessage("Missing Address data in Request.", Model_Core_Message::ERROR);
+			throw new Exception("Missing Address data in Request.", 1);	
 		}
 		
 		$addressModel->setData($addressData);
@@ -112,8 +120,10 @@ class Controller_Vendor extends Controller_Core_Action{
 			$update = $addressModel->save();
 		
 				if (!$update) {
-					throw new Exception("System can't update address", 1);
-				}	
+					$this->getMessage()->addMessage("System can't update address.", Model_Core_Message::ERROR);
+					throw new Exception("System can't update address.", 1);
+				}
+				$this->getMessage()->addMessage('Data Updated.', Model_Core_Message::SUCCESS);	
 
 		}else{
 
@@ -121,8 +131,11 @@ class Controller_Vendor extends Controller_Core_Action{
 			$insertId = $addressModel->save();
 
 			if (!$insertId) {
-		         	throw new Exception("System can't insert address", 1);       	
+				$this->getMessage()->addMessage("System can't insert address.", Model_Core_Message::ERROR);
+		        throw new Exception("System can't insert address", 1);       	
 		    }
+			$this->getMessage()->addMessage('Data Inserted.', Model_Core_Message::SUCCESS);
+
 		}
 	}
 
@@ -135,8 +148,7 @@ class Controller_Vendor extends Controller_Core_Action{
 			$this->redirect($this->getView()->getUrl(null, null, null, true));
 
 	    }catch(Exception $e){
-	    	echo $e->getMessage();
-
+	    	$this->redirect($this->getView()->getUrl(null, null, null, true));	
 	    }
 	}    	
 
@@ -147,6 +159,7 @@ class Controller_Vendor extends Controller_Core_Action{
 	
 			$id = $this->getRequest()->getRequest('id');
 			if (!isset($id)) {
+				$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);
 				throw new Exception("Invalid Request.", 1);
 			}
 			
@@ -155,14 +168,14 @@ class Controller_Vendor extends Controller_Core_Action{
 	
 			if(!$delete)
 			{
+				$this->getMessage()->addMessage("System can't delete record.", Model_Core_Message::ERROR);
 				throw new Exception("System can't delete record.", 1);
-										
 			}
-				$this->redirect($this->getView()->getUrl(null, null, null, true));	
+			$this->getMessage()->addMessage('Data Deleted.', Model_Core_Message::SUCCESS);
+			$this->redirect($this->getView()->getUrl(null, null, null, true));	
 				
-		} catch (Exception $e) {
-				
-			echo $e->getMessage();
+		} catch (Exception $e) {	
+			$this->redirect($this->getView()->getUrl(null, null, null, true));	
 		}
 
 	}

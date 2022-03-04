@@ -6,4 +6,5 @@ class Block_Core_Layout_Content extends Block_Core_Template{
 	{
 		$this->setTemplate('view/core/layout/content.php');
 	}
+
 }

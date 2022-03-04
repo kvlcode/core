@@ -6,6 +6,21 @@ class Controller_Core_Action {
 
 	protected $layout = null;
 	protected $view = null;
+	protected $message = null;
+
+	public function setMessage($message)
+	{
+		$this->message = $message;
+		return $this;
+	}
+
+	public function getMessage()
+	{
+		if (!$this->message) {
+			$this->setMessage(Ccc::getModel('Core_Message'));
+		}
+		return $this->message;
+	}
 
 	public function setLayout($layout)
 	{

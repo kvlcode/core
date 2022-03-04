@@ -21,13 +21,15 @@ class Controller_Page extends Controller_Core_Action{
 				$id = (int) $this->getRequest()->getRequest('id');
 
 				if (!$id) {
+					$this->getMessage()->addMessage("Invalid request.", Model_Core_Message::ERROR);
 					throw new Exception("Invalid request.", 1);
 				}
 
 				$page = Ccc::getModel('Page')->load($id);
 				
 				if (!$page) {
-					throw new Exception("Unable to load", 1);
+					$this->getMessage()->addMessage("Unable to load.", Model_Core_Message::ERROR);
+					throw new Exception("Unable to load.", 1);
 				}
 			}
 			else
@@ -44,7 +46,7 @@ class Controller_Page extends Controller_Core_Action{
 		}
 		catch (Exception $e)
 		{
-			echo $e->getMessage();	
+			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}
 	}
 
@@ -55,6 +57,7 @@ class Controller_Page extends Controller_Core_Action{
 			$pageData = $this->getRequest()->getPost('page');
 
 			if (!isset($pageData)) {
+				$this->getMessage()->addMessage("Unable to load data.", Model_Core_Message::ERROR);
 				throw new Exception("Unable to load data.", 1);
 				
 			}
@@ -65,6 +68,7 @@ class Controller_Page extends Controller_Core_Action{
 			if ($pageData['pageId'] != null) {
 				
 				if (!(int) $pageData['pageId']) {
+					$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);
 					throw new Exception("Invalid Request.", 1);
 					
 				}
@@ -73,9 +77,10 @@ class Controller_Page extends Controller_Core_Action{
 				$update = $pageModel->save();
 
 				if (!$update) {
-					throw new Exception("System can't update.", 1);
-					
+					$this->getMessage()->addMessage("System can't update.", Model_Core_Message::ERROR);
+					throw new Exception("System can't update.", 1);	
 				}
+				$this->getMessage()->addMessage('Data Updated.', Model_Core_Message::SUCCESS);
 			}
 			else
 			{
@@ -83,16 +88,17 @@ class Controller_Page extends Controller_Core_Action{
 				$pageModel->createdDate = date('Y-m-d H:i:s');
 				$insertId = $pageModel->save();
 				if (!$insertId) {
+					$this->getMessage()->addMessage("System can't insert.", Model_Core_Message::ERROR);
 					throw new Exception("Sustem can't'insert.", 1);
-					
 				}
+				$this->getMessage()->addMessage('Data Inserted.', Model_Core_Message::SUCCESS);
 			}
 
 			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}
 		catch (Exception $e) 
 		{	
-			echo $e->getMessage();
+			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}
 	}
 
@@ -103,6 +109,7 @@ class Controller_Page extends Controller_Core_Action{
 			
 			$id = $this->getRequest()->getRequest('id');
 			if (!$id) {
+				$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);
 				throw new Exception("Invalid Request.", 1);
 				
 			}
@@ -110,12 +117,14 @@ class Controller_Page extends Controller_Core_Action{
 			$pageModel = Ccc::getModel('Page');
 			$delete = $pageModel->delete($id);
          	if (!$delete) {
+				$this->getMessage()->addMessage("System can't delete.", Model_Core_Message::ERROR);
          		throw new Exception("System can't delete.", 1);
          	}
+         	$this->getMessage()->addMessage('Data Deleted.', Model_Core_Message::SUCCESS);
       		$this->redirect($this->getView()->getUrl(null, null, null, true));
 
 		} catch (Exception $e) {
-			echo $e->getMessage();
+			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}
 	}
 

@@ -8,7 +8,7 @@
 				<tr>
 					<th>Image Id</th>
 					<th>Product Id</th>
-					<th>Name</th>
+					<th>Image</th>
 					<th>Base</th>
 					<th>Thumbnail</th>
 					<th>Small</th>
@@ -26,7 +26,7 @@
 						<tr>
 							<td><?php echo $row->imageId  ?></td>
 							<td><?php echo $row->productId ?></td>
-							<td><?php echo $row->name  ?></td>
+							<td><img src="<?php echo 'Media/Product/'.$row->name ?>" width = "50px" hieght = "50px"></td>
 							<td><input type="radio" name="image[base]" value= "<?php echo $row->imageId?>"<?php if ($row->base == 1):?> checked <?php endif;?> ></td>
 							<td><input type="radio" name="image[thumbnail]" value="<?php echo $row->imageId?>"<?php if ($row->thumbnail == 1):?> checked <?php endif;?> ></td>
 							<td><input type="radio" name="image[small]" value="<?php echo $row->imageId?>"<?php if ($row->small == 1):?> checked <?php endif;?> ></td>
