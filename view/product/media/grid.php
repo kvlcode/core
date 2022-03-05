@@ -1,4 +1,4 @@
-<?php $media = $this->getMediaData(); ?>
+<?php $medias = $this->getMediaData(); ?>
 <?php $id = Ccc::getFront()->getRequest()->getRequest('id');?>
 
 	<form method="POST" action="<?php echo $this->getUrl('save', 'product_media', ['id' => $id]);?>">
@@ -16,23 +16,28 @@
 					<th>Status</th>
 					<th>Remove</th>	
 				</tr>
-					<?php if(!$media):?>
+					<?php if(!$medias):?>
 				<tr>
 					<td colspan="11">No record Available</td>
 				</tr>	
 				<?php else:?>
 					
-					<?php foreach ($media as $row): ?>
+					<?php foreach ($medias as $media): ?>
 						<tr>
-							<td><?php echo $row->imageId  ?></td>
-							<td><?php echo $row->productId ?></td>
-							<td><img src="<?php echo 'Media/Product/'.$row->name ?>" width = "50px" hieght = "50px"></td>
-							<td><input type="radio" name="image[base]" value= "<?php echo $row->imageId?>"<?php if ($row->base == 1):?> checked <?php endif;?> ></td>
-							<td><input type="radio" name="image[thumbnail]" value="<?php echo $row->imageId?>"<?php if ($row->thumbnail == 1):?> checked <?php endif;?> ></td>
-							<td><input type="radio" name="image[small]" value="<?php echo $row->imageId?>"<?php if ($row->small == 1):?> checked <?php endif;?> ></td>
-							<td><input type="checkbox" name="image[gallery][]" value="<?php echo $row->imageId?>" <?php if ($row->gallery == 1):?> checked <?php endif;?>></td>
-							<td><input type="checkbox" name="image[status][]" value="<?php echo $row->imageId?>"<?php if ($row->status == 1):?> checked <?php endif;?> ></td>
-							<td><input type="checkbox" name="image[remove][]" value="<?php echo $row->imageId?>"<?php if ($row->remove == 1):?> checked <?php endif;?>></td>
+							<td><?php echo $media->imageId  ?></td>
+							<td><?php echo $media->productId ?></td>
+							<td><?php  if($media->gallery == 1): ?>
+									<img src="<?php echo 'Media/Product/'.$media->name?>" width = "50px" hieght = "50px">
+								<?php else:?>
+									<?php echo "Image not found";?>
+								<?php endif;?>	
+							</td>
+							<td><input type="radio" name="image[base]" value= "<?php echo $media->imageId?>"<?php if ($media->base == 1):?> checked <?php endif;?> ></td>
+							<td><input type="radio" name="image[thumbnail]" value="<?php echo $media->imageId?>"<?php if ($media->thumbnail == 1):?> checked <?php endif;?> ></td>
+							<td><input type="radio" name="image[small]" value="<?php echo $media->imageId?>"<?php if ($media->small == 1):?> checked <?php endif;?> ></td>
+							<td><input type="checkbox" name="image[gallery][]" value="<?php echo $media->imageId?>" <?php if ($media->gallery == 1):?> checked <?php endif;?>></td>
+							<td><input type="checkbox" name="image[status][]" value="<?php echo $media->imageId?>"<?php if ($media->status == 1):?> checked <?php endif;?> ></td>
+							<td><input type="checkbox" name="image[remove][]" value="<?php echo $media->imageId?>"<?php if ($media->remove == 1):?> checked <?php endif;?>></td>
 						</tr>
 					<?php endforeach; ?>
 				<?php endif; ?>			

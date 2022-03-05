@@ -15,7 +15,7 @@ class Controller_Product extends Controller_Core_Action{
 	public function editAction()
 	{
 		try {
-			
+
 			if ((int) $this->getRequest()->getRequest('id')) {
 			
 				$id = (int) $this->getRequest()->getRequest('id');
@@ -30,7 +30,7 @@ class Controller_Product extends Controller_Core_Action{
 			{
 				$product = Ccc::getModel('Product');
 			}	
-			$productEdit = Ccc::getBlock('Product_Edit')->setData(['productEdit' => $product]);
+			$productEdit = Ccc::getBlock('Product_Edit')->setProduct($product);
 			$content = $this->getLayout()->getContent();
 			$content->addChild($productEdit);
 			$this->getLayout()->getChild('content')->getChild('Block_Product_Edit');

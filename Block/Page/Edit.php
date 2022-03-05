@@ -2,6 +2,8 @@
 Ccc::loadClass('Block_Core_Template');
 class Block_Page_Edit extends Block_Core_Template
 {
+	protected $page = null;
+
 	public function __construct()
 	{
 		$this->setTemplate('view/page/edit.php');
@@ -9,7 +11,13 @@ class Block_Page_Edit extends Block_Core_Template
 
 	public function getPage()
 	{
-		return $this->getData('pageEdit');
+		return $this->page;
+	}
+
+	public function setPage($page)
+	{
+		$this->page = $page;
+		return $this;
 	}
 
 }

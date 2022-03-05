@@ -2,6 +2,9 @@
 Ccc::loadClass('Block_Core_Template');
 class Block_Vendor_Edit extends Block_Core_Template
 {
+
+	protected $vendor = null;
+
 	public function __construct()
 	{
 		$this->setTemplate('view/vendor/edit.php');
@@ -9,7 +12,13 @@ class Block_Vendor_Edit extends Block_Core_Template
 
 	public function getVendor()
 	{
-		return $this->getData('vendorEdit');
+		return $this->vendor;
+	}
+
+	public function setVendor($vendor)
+	{
+		$this->vendor = $vendor;
+		return $this;
 	}
 	
 }

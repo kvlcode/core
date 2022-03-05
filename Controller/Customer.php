@@ -36,7 +36,7 @@ class Controller_Customer extends Controller_Core_Action{
 				$customer = Ccc::getModel('Customer');
 			}	
 			
-			$customerEdit = Ccc::getBlock('Customer_Edit')->setData(['customerEdit' => $customer]);
+			$customerEdit = Ccc::getBlock('Customer_Edit')->setCustomer($customer);
 			$content = $this->getLayout()->getContent();
 			$content->addChild($customerEdit);
 			$this->getLayout()->getChild('content')->getChild('Block_Customer_Edit');
@@ -93,7 +93,6 @@ class Controller_Customer extends Controller_Core_Action{
 
 	public function saveAddress($customerId)
 	{	
-
 		$addressModel = Ccc::getModel('Customer_Address');
 		$addressRow = $addressModel->load($customerId, 'customerId');
 		$addressData = $this->getRequest()->getPost('address');
@@ -117,9 +116,8 @@ class Controller_Customer extends Controller_Core_Action{
 		$addressModel->billing = $billing;
 		$addressModel->shipping = $shipping;
 
-		$addressInfo = $addressModel->fetchAll("SELECT * FROM address WHERE customerId = {$customerId}");		
 
-		if ($addressInfo) {
+		if ($addressRow) {
 
 			$addressModel->addressId = $addressRow->addressId;
 			$update = $addressModel->save();

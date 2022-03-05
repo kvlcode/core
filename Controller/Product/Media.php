@@ -15,68 +15,92 @@ class Controller_Product_Media extends Controller_Core_Action
 	public function saveAction()
 	{
 
-		if ($_FILES['image']) {
-			
-			$id = Ccc::getFront()->getRequest()->getRequest('id');
-			$file = $_FILES['image'];
+		try {
 
-			$extention =$file['type']; 
-			$extention = explode("/", $extention);
-			$extention = array_pop($extention);
-	
-			$imageName = date('Y-m-d H:i:s');
-			$imageName = str_replace(array('-',':',' ') ,'', $imageName.".JPG");
-			$tempName = $file['tmp_name'];
-			move_uploaded_file($tempName, 'Media/Product/'.$imageName);
-			$imageModel = Ccc::getModel('Product_Media');
-			$imageModel->productId = $id;
-			$imageModel->name = $imageName;
-			$imageModel->save();
-		}
-		else{
-
-			$imageData = $this->getRequest()->getPost('image');
-			$id = Ccc::getFront()->getRequest()->getRequest('id');
-
-			$mediaModel = Ccc::getModel('Product_Media');
-			$mediaModel->productId = $id;
-
-			foreach ($imageData as $key => $value) {
+			if ($_FILES['image']) {
 				
-					$mediaModel->$key = 0;
-					$mediaModel->save('productId');
-					unset($mediaModel->$key);	
-				
-			}
-
-			foreach ($imageData as $key => $value) 
-			{
-
-				if (!is_array($value)) {
-					$mediaModel->$key = 1;
-					$mediaModel->imageId = $value;
-					$mediaModel->save();
-					unset($mediaModel->$key);	
+				if (!$this->getRequest()->getRequest('id')) {
+					$this->getMessage()->addMessage("Invalid Request", Model_Core_Message::ERROR);
+					throw new Exception("Invalid Request", 1);
 				}
-				else
+				$id = $this->getRequest()->getRequest('id');
+				$file = $_FILES['image'];
+
+				$extention =$file['type']; 
+				$extention = explode("/", $extention);
+				$extention = array_pop($extention);
+
+				if($extention != "jpg" && $extention != "jpeg" && $extention != "png") 
 				{
-					foreach ($value as $key2 => $value2) 
-					{ 
-						if ($key == 'remove') 
-						{
-							$mediaModel->delete($value2);
-						}
-						else
-						{
-							$mediaModel->$key = 1;
-							$mediaModel->imageId = $value2;
-							$mediaModel->save();
-							unset($mediaModel->$key);
-						}	
-					}		
+					$this->getMessage()->addMessage("Invalid file extention.", Model_Core_Message::ERROR);
+					throw new Exception("Invalid file extention.", 1);		
 				}
+		
+				$imageName = date('Y-m-d H:i:s');
+				$imageName = str_replace(array('-',':',' ') ,'', $imageName.".jpg");
+				$tempName = $file['tmp_name'];
+				move_uploaded_file($tempName, 'Media/Product/'.$imageName);
+				$imageModel = Ccc::getModel('Product_Media');
+				$imageModel->productId = $id;
+				$imageModel->name = $imageName;
+				$upload = $imageModel->save();
+				if (!$upload) {
+					$this->getMessage()->addMessage("System can't upload", Model_Core_Message::ERROR);
+					throw new Exception("System can't upload", 1);	
+				}
+				$this->getMessage()->addMessage("Image Uploaded", Model_Core_Message::SUCCESS);
+
 			}
+			else{
+
+				$imageData = $this->getRequest()->getPost('image');
+				$id = Ccc::getFront()->getRequest()->getRequest('id');
+
+				$mediaModel = Ccc::getModel('Product_Media');
+				$mediaModel->productId = $id;
+
+				foreach ($imageData as $key => $value) {
+					
+						$mediaModel->$key = 0;
+						$mediaModel->save('productId');
+						unset($mediaModel->$key);	
+					
+				}
+
+				foreach ($imageData as $key => $value) 
+				{
+
+					if (!is_array($value)) {
+						$mediaModel->$key = 1;
+						$mediaModel->imageId = $value;
+						$mediaModel->save();
+						unset($mediaModel->$key);	
+					}
+					else
+					{
+						foreach ($value as $key2 => $value2) 
+						{ 
+							if ($key == 'remove') 
+							{
+								$mediaModel->delete($value2);
+							}
+							else
+							{
+								$mediaModel->$key = 1;
+								$mediaModel->imageId = $value2;
+								$mediaModel->save();
+								unset($mediaModel->$key);
+							}	
+						}		
+					}
+				}
+				$this->getMessage()->addMessage("Image Data updated", Model_Core_Message::SUCCESS);
+
+			}
+			$this->redirect($this->getView()->getUrl(null, null, ['id'=> $id], true));
+
+		} catch (Exception $e) {
+			$this->redirect($this->getView()->getUrl(null, null, ['id'=> $id], true));
 		}
-		$this->redirect($this->getView()->getUrl('grid','product_media',['id'=> $id]));
 	}
 }
