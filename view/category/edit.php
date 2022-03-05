@@ -1,13 +1,9 @@
-<?php $categoryRow = $this->getCategory();?>       <!-- For Edit -->		
-<?php if ($categoryRow->categoryId) {
-
-	$parentList = $this->getParent();
-} 
-else{
-
-	$category = $this->getCategories();
-}
-?>
+<?php $categoryRow = $this->getCategory();?>       		
+<?php if ($categoryRow->categoryId):?>
+	<?php $parentList = $this->getParent();?>
+<?php else: ?>
+	<?php $category = $this->getCategories();?>
+<?php endif;?>
 
 	<form method="Post" action="<?php echo $this->getUrl('save', null, null, true)?>">
 		<table border="1" width="100%" cellspacing="4">

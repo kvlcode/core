@@ -37,7 +37,7 @@ class Controller_Page extends Controller_Core_Action{
 				$page = Ccc::getModel('Page');
 			}
 
-			$pageEdit = Ccc::getBlock('Page_Edit')->setData(['pageEdit' => $page]);
+			$pageEdit = Ccc::getBlock('Page_Edit')->setPage($page);
 			$content = $this->getLayout()->getContent();
 			$content->addChild($pageEdit);
 			$this->getLayout()->getChild('content')->getChild('Block_Page_Edit');

@@ -2,6 +2,8 @@
 Ccc::loadClass('Block_Core_Template');
 class Block_Product_Edit extends Block_Core_Template
 {
+	protected $product = null;
+
 	public function __construct()
 	{
 		$this->setTemplate('view/product/edit.php');
@@ -9,8 +11,14 @@ class Block_Product_Edit extends Block_Core_Template
 
 	public function getProduct()
 	{
-		return $this->getData('productEdit');
+		return $this->product;
 
+	}
+
+	public function setProduct($product)
+	{
+		$this->product = $product;
+		return $this;
 	}
 
 }

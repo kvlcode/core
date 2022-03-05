@@ -41,7 +41,7 @@ class Controller_Vendor extends Controller_Core_Action{
 				$vendor = Ccc::getModel('Vendor');	
 			}
 			
-			$vendorEdit = Ccc::getBlock('Vendor_Edit')->setData(['vendorEdit' => $vendor]);
+			$vendorEdit = Ccc::getBlock('Vendor_Edit')->setVendor($vendor);
 			$content = $this->getLayout()->getContent();
 			$content->addChild($vendorEdit);
 			$this->getLayout()->getChild('content')->getChild('Block_Vendor_Edit');
@@ -110,11 +110,9 @@ class Controller_Vendor extends Controller_Core_Action{
 			throw new Exception("Missing Address data in Request.", 1);	
 		}
 		
-		$addressModel->setData($addressData);
+		$addressModel->setData($addressData);		
 
-		$addressInfo = $addressModel->fetchAll("SELECT * FROM vendor_address WHERE vendorId = {$vendorId}");		
-
-		if ($addressInfo) {
+		if ($addressRow) {
 
 			$addressModel->addressId = $addressRow->addressId;
 			$update = $addressModel->save();

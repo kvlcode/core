@@ -33,7 +33,7 @@ class Controller_Salesman extends Controller_Core_Action{
 				$salesman = Ccc::getModel('Salesman');
 			}
 
-			$salesmanEdit = Ccc::getBlock('Salesman_Edit')->setData(['salesmanEdit' => $salesman]);
+			$salesmanEdit = Ccc::getBlock('Salesman_Edit')->setSalesman($salesman);
 			$content = $this->getLayout()->getContent();
 			$content->addChild($salesmanEdit);
 			$this->getLayout()->getChild('content')->getChild('Block_Salesman_Edit');

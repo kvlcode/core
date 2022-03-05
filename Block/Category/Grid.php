@@ -11,9 +11,9 @@ class Block_Category_Grid extends Block_Core_Template
 	{
 		$categoryModel = Ccc::getModel('Category');
 		$categories = $categoryModel->fetchAll("SELECT c.*,
-													b.imageId AS baseImage, 
-													t.imageId AS thumbImage, 
-													s.imageId AS smallImage
+													b.name AS baseImage, 
+													t.name AS thumbImage, 
+													s.name AS smallImage
 													FROM 
 													categories c LEFT JOIN category_media b ON c.categoryId = b.categoryId AND (b.base = 1)
 													LEFT JOIN category_media t ON c.categoryId = t.categoryId AND (t.thumbnail = 1)

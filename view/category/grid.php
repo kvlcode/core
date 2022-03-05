@@ -31,9 +31,9 @@
 					<td><?php echo $category->getStatus($category->status) ?></td>
 					<td><?php echo $category->createdDate ?></td>
 					<td><?php echo $category->updatedDate ?></td>
-					<td><?php echo $category->baseImage ?></td>
-                    <td><?php echo $category->thumbImage ?></td>
-                    <td><?php echo $category->smallImage ?></td>
+					<td><img src="<?php echo 'Media/Category/'.$category->baseImage ?>" width = "50px" hieght = "50px" alt = "Image not found"></td>
+					<td><img src="<?php echo 'Media/Category/'.$category->thumbImage ?>" width = "50px" hieght = "50px" alt = "Image not found"></td>
+					<td><img src="<?php echo 'Media/Category/'.$category->smallImage ?>" width = "50px" hieght = "50px" alt = "Image not found"></td>
 					<td><a href="<?php echo $this->getUrl('edit', null, ['id' => $category->categoryId], true)?>">Edit</a></td>
 					<td><a href="<?php echo $this->getUrl('delete', null, ['id' => $category->categoryId], true)?>">Delete</a></td>
 					<td><a href="<?php echo $this->getUrl('grid', 'category_media', ['id' => $category->categoryId]);?>">Media</a></td>
