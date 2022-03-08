@@ -71,6 +71,9 @@ class Controller_Product extends Controller_Core_Action{
 				$productModel->updatedDate = date('Y-m-d H:i:s');
 				$update = $productModel->save();
 
+				global $adapter; 
+				$adapter->delete("DELETE FROM `category_product` WHERE productId = {$productData['productId']}");
+
 				$categoryProduct->productId = $productModel->productId;
 				foreach ($categoryData['categoryId'] as $key => $id) {
 					$categoryProduct->categoryId = $id;
