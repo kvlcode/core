@@ -15,9 +15,26 @@
 			</tr>
 
 			<tr>
+				<td width="10%">Sku</td>
+				<td><input type="text" name="product[sku]" value="<?php echo $product->sku ?>"></td>
+			</tr>
+
+			<tr>
+				<td width="10%">Map</td>
+				<td><input type="text" name="product[map]" value="<?php echo $product->map ?>"></td>
+			</tr>
+
+
+			<tr>
+				<td width="10%">Cost Price</td>
+				<td><input type="text" name="product[costPrice]" value="<?php echo $product->costPrice ?>"></td>
+			</tr>
+
+			<tr>
 				<td width="10%">Price</td>
 				<td><input type="text" name="product[price]" value="<?php echo $product->price ?>"></td>
 			</tr>
+
 			
 			<tr>
 				<td width="10%">Quantity</td>

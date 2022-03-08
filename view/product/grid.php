@@ -3,11 +3,14 @@
     <button type="button" name="addNew"><a href="<?php echo $this->getUrl('edit')?>"> Add New </a></button>
     <table border="1" width="100%" cellspacing="4">
         <tr>
-           <td colspan="13"><b>Product Information</b></td>
+           <td colspan="16"><b>Product Information</b></td>
         </tr>
         <tr>
             <th>Product Id</th>
             <th>Name</th>
+            <th>Sku</th>
+            <th>Map</th>
+            <th>Cost Price</th>
             <th>Price</th>
             <th>Quantity</th>
             <th>Status</th>
@@ -31,6 +34,9 @@
                 <tr>
                     <td><?php echo $product->productId  ?></td>
                     <td><?php echo $product->name       ?></td>
+                    <td><?php echo $product->sku        ?></td>
+                    <td><?php echo $product->map        ?></td>
+                    <td><?php echo $product->costPrice  ?></td>
                     <td><?php echo $product->price      ?></td>
                     <td><?php echo $product->quantity   ?></td>
                     <td><?php echo $product->getStatus($product->status) ?></td>
