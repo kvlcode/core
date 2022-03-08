@@ -1,4 +1,6 @@
 <?php $product = $this->getProduct();?>
+<?php $categories = $this->getCategories();?>
+<?php $selects = $this->getSelect();?>
 
 	<form method="post" action="<?php echo $this->getUrl('save', null, null, true)?>">
 		<table border="1" width="100%" cellspacing="4">
@@ -35,9 +37,32 @@
 
 				</td>
 			</tr>
-
 			<tr>
-				<td width="10%">&nbsp;</td>
+				<table border="1" width="100%" cellspacing="4">
+					<tr>
+						<td width="10%">CategoryId</td>
+						<td>CategoryName</td>
+						<td>Select</td>	
+					</tr>
+
+					<?php foreach ($categories as $category): ?>
+						<tr>
+							<td><input type="text" name="category[categoryId]" value="<?php echo $category->categoryId ?>" disabled></td>
+							<td><input type="text" name="category[path]" value="<?php echo $this->path($category->path) ?>" disabled></td>
+							<?php if($selects):?>
+								<td><input type="checkbox" name="category[categoryId][]" value="<?php echo $category->categoryId?>" 
+									<?php foreach ($selects as $select):?>
+										<?php if ($category->categoryId == $select->categoryId):?> checked <?php endif;?>
+									<?php endforeach;?>></td>
+							<?php else: ?>
+								<td><input type="checkbox" name="category[categoryId][]" value="<?php echo $category->categoryId?>"></td>
+							<?php endif; ?>			
+						</tr>
+					<?php endforeach;?>
+				</table>
+			</tr>
+
+			<tr>	
 				<td>
 					<input type="submit" name="Save">
 					<button type="button"><a href="<?php echo $this->getUrl(null, null, null, true)?>">Cancel</a></button> 
