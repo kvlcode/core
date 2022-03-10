@@ -51,30 +51,25 @@ class Controller_Product extends Controller_Core_Action{
 			$productData = $this->getRequest()->getPost('product');
 			$categoryData = $this->getRequest()->getPost('category');
 
-			if (!isset($productData)) {
+			if (!$productData) {
 				$this->getMessage()->addMessage("Missing product data in request.", Model_Core_Message::ERROR);	
-				throw new Exception("Missing product data in request.", 1);
-				
+				throw new Exception("Missing product data in request.", 1);	
 			}
+			
 			$productModel = Ccc::getModel('Product');
 			$productModel->setData($productData);
 			$categoryProduct = Ccc::getModel('Category_Product');
 
-			if (!empty($productData['productId'])) {
-
-				if (!(int)$productData['productId']) {
-					$this->getMessage()->addMessage("Invalid request.", Model_Core_Message::ERROR);	
-					throw new Exception("Invalid request.", 1);
-					
-				}
-
+			if (!(int)$this->getRequest()->getRequest('id')) 
+			{
+				$productId = $this->getRequest()->getRequest('id');
 				$productModel->updatedDate = date('Y-m-d H:i:s');
 				$update = $productModel->save();
 
 				global $adapter; 
-				$adapter->delete("DELETE FROM `category_product` WHERE productId = {$productData['productId']}");
+				$adapter->delete("DELETE FROM `category_product` WHERE `productId` = {$productId}");
 
-				$categoryProduct->productId = $productModel->productId;
+				$categoryProduct->productId = $productId;
 				foreach ($categoryData['categoryId'] as $key => $id) {
 					$categoryProduct->categoryId = $id;
 					$categoryProduct->save();
