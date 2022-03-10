@@ -4,7 +4,7 @@
     <table border='1' class="table" width='100%' cellspacing="4">
             
         <tr>
-            <td colspan="10"><b>Salesman Information</b></td>
+            <td colspan="11"><b>Salesman Information</b></td>
         </tr>
 
         <tr>
@@ -18,6 +18,7 @@
             <th>Updated Date</th>
             <th>Edit</th>
             <th>Delete</th>
+            <th>Assign Customer</th>
 
         </tr>
         <?php if (!$salesmen): ?>
@@ -34,8 +35,10 @@
                     <td><?php echo $salesman->getStatus($salesman->status) ?></td>
                     <td><?php echo $salesman->createdDate?></td>
                     <td><?php echo $salesman->updatedDate?></td>
+
                     <td><a href="<?php echo $this->getUrl('edit', null, ['id' => $salesman->salesmanId], true)?>">Edit</a></td>
                     <td><a href="<?php echo $this->getUrl('delete', null, ['id' => $salesman->salesmanId], true)?>">Delete</a></td>
+                    <td><a href="<?php echo $this->getUrl('grid', 'salesman_customer', ['id' => $salesman->salesmanId])?>">Assign</a></td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>

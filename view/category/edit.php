@@ -17,7 +17,6 @@
 				<td>
 					<?php if ($categoryRow->categoryId):?>
 						<select name="category[parentPath]" class="form-control">
-
 							<?php foreach ($parentList as $key => $value): ?>
 								<?php $path = $this->path($parentList[$key]->path);?>
 

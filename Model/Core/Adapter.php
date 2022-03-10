@@ -5,7 +5,7 @@ class Model_Core_Adapter{
 		'host'=>'localhost',
 		'username'=>'root',
 		'password'=>'',
-		'db_name'=>'demo'
+		'db_name'=>'project_kaval'
 	];
 
 	private $connect=NULL;
