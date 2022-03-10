@@ -67,6 +67,21 @@ class Controller_Core_Action {
 		return Ccc::getFront()->getRequest();
 	}
 
+	public function authenticate()
+    {
+        if($this->getRequest()->getRequest('a') != 'login' && $this->getRequest()->getRequest('a') != 'loginPost')
+        {
+        	print_r(Ccc::getModel('Admin_Message')->login);
+        	exit();
+            if(Ccc::getModel('Admin_Message')->login)
+            {
+                return true;
+            }
+            $this->redirect($this->getLayout()->getUrl('login','admin_login'));
+        }
+        return true;
+    }
+
 }
 
 ?>

@@ -3,6 +3,11 @@ Ccc::loadClass('Controller_Core_Action');
 
 class Controller_Admin extends Controller_Core_Action{
 
+	public function __construct()
+	{
+		$this->authenticate();
+	}
+
 	public function gridAction()
 	{
 		$content = $this->getLayout()->getContent();
@@ -79,6 +84,7 @@ class Controller_Admin extends Controller_Core_Action{
 				
 				unset($adminModel->adminId);
 				$adminModel->createdDate = date('Y-m-d H:i:s');
+				$adminModel->password = md5($adminModel->password);
 				$insertId = $adminModel->save();
 				
 				if (!$insertId) {
