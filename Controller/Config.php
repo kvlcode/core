@@ -22,7 +22,7 @@ class Controller_Config extends Controller_Core_Action{
 				$config = Ccc::getModel('Config')->load($id);
 				
 				if (!$config) {
-					$this->getMessage()->addMessage("Unable to Load Data.", Model_Core_Message::ERROR);
+					$this->getMessage()->addMessage("Unable to Load Data.", Model_Admin_Message::ERROR);
 					throw new Exception("Unable to Load Data", 1);	
 				}
 			}
@@ -50,7 +50,7 @@ class Controller_Config extends Controller_Core_Action{
 			$configData = $this->getRequest()->getPost('config');
 
 			if (!isset($configData)) {
-				$this->getMessage()->addMessage("Missing config data in request.", Model_Core_Message::ERROR);
+				$this->getMessage()->addMessage("Missing config data in request.", Model_Admin_Message::ERROR);
 				throw new Exception("Missing config data in request.", 1);	
 			}
 			$configModel = Ccc::getModel('Config');
@@ -59,17 +59,17 @@ class Controller_Config extends Controller_Core_Action{
 			if (!empty($configData['configId'])) {
 
 				if (!(int)$configData['configId']) {
-					$this->getMessage()->addMessage("Invalid request.", Model_Core_Message::ERROR);
+					$this->getMessage()->addMessage("Invalid request.", Model_Admin_Message::ERROR);
 					throw new Exception("Invalid request", 1);			
 				}
 
 				$update = $configModel->save();
 
 			  	if (!$update) {
-					$this->getMessage()->addMessage("System can't update.", Model_Core_Message::ERROR);
+					$this->getMessage()->addMessage("System can't update.", Model_Admin_Message::ERROR);
 					throw new Exception("System can't update.", 1);	
 				}
-				$this->getMessage()->addMessage("Data Updated.", Model_Core_Message::SUCCESS);	
+				$this->getMessage()->addMessage("Data Updated.");	
 			
 			}
 			else
@@ -82,7 +82,7 @@ class Controller_Config extends Controller_Core_Action{
 					$this->getMessage()->addMessage("System can't insert.", Model_Core_Message::ERROR); 
 			        throw new Exception("System can't insert.", 1);	
 			    }
-			    $this->getMessage()->addMessage("Data Inserted.", Model_Core_Message::SUCCESS);
+			    $this->getMessage()->addMessage("Data Inserted.");
 
 			}	
 			$this->redirect($this->getView()->getUrl(null, null, null, true)); 				
@@ -103,7 +103,7 @@ class Controller_Config extends Controller_Core_Action{
 
 		try{
 			if (!isset($id)){
-				$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);
+				$this->getMessage()->addMessage("Invalid Request.", Model_Admin_Message::ERROR);
 				throw new Exception("Invalid Request.", 1);
 			}
 
@@ -111,10 +111,10 @@ class Controller_Config extends Controller_Core_Action{
 			$delete = $configModel->delete($id);
 			if(!$delete)
 			{
-				$this->getMessage()->addMessage("System can't delete record.", Model_Core_Message::ERROR);
+				$this->getMessage()->addMessage("System can't delete record.", Model_Admin_Message::ERROR);
 				throw new Exception("System can't delete record.", 1);							
 			}
-			$this->getMessage()->addMessage("Data Deleted.", Model_Core_Message::SUCCESS);
+			$this->getMessage()->addMessage("Data Deleted.");
 			$this->redirect($this->getView()->getUrl(null, null, null, true)); 
 
 		}
@@ -123,11 +123,5 @@ class Controller_Config extends Controller_Core_Action{
 			$this->redirect($this->getView()->getUrl(null, null, null, true)); 
 		}	
 	}
-
-	public function errorAction()
-	{
-			echo "Error.";
-	}
-
 
 }
