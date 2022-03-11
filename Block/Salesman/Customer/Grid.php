@@ -22,7 +22,7 @@ class Block_Salesman_Customer_Grid extends Block_Core_Template
         $selectedValues = $customerModel->fetchAll("SELECT * FROM `customer` WHERE `salesmanId` = {$salesmanId} AND `customerId` = {$customerId}");
 
         if($selectedValues){
-            return "checked";
+            return "checked disabled";
         }
         return null;
     }

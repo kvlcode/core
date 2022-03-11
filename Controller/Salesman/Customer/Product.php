@@ -16,7 +16,6 @@ class Controller_Salesman_Customer_Product extends Controller_Core_Action{
 	{
 		try {
 			
-			echo "<pre>";
 			$product = $this->getRequest()->getPost('product');			
 			$customerId = $this->getRequest()->getRequest('id');
 

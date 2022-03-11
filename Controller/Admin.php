@@ -56,7 +56,7 @@ class Controller_Admin extends Controller_Core_Action{
 		try{
 			$adminData = $this->getRequest()->getPost('admin');
 
-			if (!isset($adminData)) {
+			if (!$adminData) {
 				$this->getMessage()->addMessage("Missing Admin data in request.", Model_Core_Message::ERROR);
 				throw new Exception("Missing Admin data in request.", 1);
 			}
@@ -64,13 +64,14 @@ class Controller_Admin extends Controller_Core_Action{
 			$adminModel = Ccc::getModel('Admin');
 			$adminModel->setData($adminData);
 			
-			if ($adminData['adminId'] != null) {
+			if ($this->getRequest()->getRequest('id')) {
 
-				if (!(int)$adminData['adminId']) {
+				if (!(int)$adminId) {
 					$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);
 					throw new Exception("Invalid Request", 1);	
 				}
-				
+
+				$adminId = $this->getRequest()->getRequest('id');	
 				$adminModel->updatedDate = date('Y-m-d H:i:s');
 				$update = $adminModel->save();
 			

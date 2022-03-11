@@ -71,8 +71,6 @@ class Controller_Core_Action {
     {
         if($this->getRequest()->getRequest('a') != 'login' && $this->getRequest()->getRequest('a') != 'loginPost')
         {
-        	print_r(Ccc::getModel('Admin_Message')->login);
-        	exit();
             if(Ccc::getModel('Admin_Message')->login)
             {
                 return true;

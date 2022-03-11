@@ -57,17 +57,24 @@ class Controller_Product extends Controller_Core_Action{
 			}
 			
 			$productModel = Ccc::getModel('Product');
-			$productModel->setData($productData);
 			$categoryProduct = Ccc::getModel('Category_Product');
 
-			if (!(int)$this->getRequest()->getRequest('id')) 
+			if ((int)$this->getRequest()->getRequest('id')) 
 			{
 				$productId = $this->getRequest()->getRequest('id');
-				$productModel->updatedDate = date('Y-m-d H:i:s');
-				$update = $productModel->save();
+				$productRow = $productModel->load($productId);
+				$productRow->setData($productData);
+				$productRow->productId = $productId;
+				$productRow->updatedDate = date('Y-m-d H:i:s');
+				$update = $productRow->save();
 
-				global $adapter; 
-				$adapter->delete("DELETE FROM `category_product` WHERE `productId` = {$productId}");
+				$CategoryProductRow = $categoryProduct->fetchAll("SELECT * FROM `category_product` WHERE `productId` = '{$productId}'");
+
+				foreach ($CategoryProductRow as $key => $value) 
+				{
+					$categoryModel = Ccc::getModel('category_product');
+					$categoryModel->delete($value->entityId);
+				}
 
 				$categoryProduct->productId = $productId;
 				foreach ($categoryData['categoryId'] as $key => $id) {
@@ -83,7 +90,6 @@ class Controller_Product extends Controller_Core_Action{
 			
 			}else{
 				
-				unset($productModel->productId);
 				$productModel->createdDate = date('Y-m-d H:i:s');
 				$insertId = $productModel->save();
 

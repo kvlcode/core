@@ -14,4 +14,22 @@ class Block_Salesman_Customer_Product_Grid extends Block_Core_Template
         return $products;
     }
 
+
+     public function getDiscount($salesmanId)
+    {
+        $salesmanModel = Ccc::getModel('Salesman');
+        $salesmen = $salesmanModel->fetchAll("SELECT `discount` FROM `salesman` WHERE `salesmanId` = '{$salesmanId}'");
+        foreach ($salesmen as $key => $value) 
+        {
+            return $value->discount;
+        }  
+        return false; 
+    }
+
+    public function getSalesmanPrice($price, $discount)
+    {
+        $salesmanPrice = $price - ($price * $discount / 100);
+        return $salesmanPrice;
+    }
+
 }
