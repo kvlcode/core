@@ -69,8 +69,6 @@ class Controller_Product extends Controller_Core_Action{
 				$productRow->updatedDate = date('Y-m-d H:i:s');
 				$update = $productRow->save();
 
-
-
 				$CategoryProductRow = $categoryProduct->fetchAll("SELECT * FROM `category_product` WHERE `productId` = '{$productId}'");
 
 				foreach ($CategoryProductRow as $key => $value) 
@@ -78,8 +76,6 @@ class Controller_Product extends Controller_Core_Action{
 					$categoryModel = Ccc::getModel('category_product');
 					$categoryModel->delete($value->entityId);
 				}
-
-
 				$categoryProduct->productId = $productId;
 				foreach ($categoryData['categoryId'] as $key => $id) {
 					$categoryProduct->categoryId = $id;
@@ -93,8 +89,7 @@ class Controller_Product extends Controller_Core_Action{
 				$this->getMessage()->addMessage('Data Updated.', Model_Core_Message::SUCCESS);	
 			
 			}else{
-	
-				$productModel->setData($productData);
+        
 				$productModel->createdDate = date('Y-m-d H:i:s');
 				$insertId = $productModel->save();
 

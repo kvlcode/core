@@ -3,6 +3,11 @@ Ccc::loadClass('Controller_Core_Action');
 
 class Controller_Admin extends Controller_Core_Action{
 
+	// public function __construct()
+	// {
+	// 	$this->authenticate();
+	// }
+
 	public function gridAction()
 	{
 		$content = $this->getLayout()->getContent();
@@ -50,45 +55,31 @@ class Controller_Admin extends Controller_Core_Action{
 	{	
 		try{
 			$adminData = $this->getRequest()->getPost('admin');
-
-			if (!isset($adminData)) {
-				$this->getMessage()->addMessage("Missing Admin data in request.", Model_Admin_Message::ERROR);
+			if (!$adminData) {
+				$this->getMessage()->addMessage("Missing Admin data in request.", Model_Core_Message::ERROR);
 				throw new Exception("Missing Admin data in request.", 1);
 			}
 
 			$adminModel = Ccc::getModel('Admin');
 			$adminModel->setData($adminData);
+			$adminModel->password = md5($adminModel->password);
 			
-			if ($adminData['adminId'] != null) {
-
-				if (!(int)$adminData['adminId']) {
-					$this->getMessage()->addMessage("Invalid Request.", Model_Admin_Message::ERROR);
-					throw new Exception("Invalid Request", 1);	
-				}
-				
-				$adminModel->updatedDate = date('Y-m-d H:i:s');
-				$update = $adminModel->save();
-			
-				if (!$update) {
-					$this->getMessage()->addMessage("System can't update.", Model_Admin_Message::ERROR);	
-					throw new Exception("System can't update", 1);
-				}	
-				$this->getMessage()->addMessage('Data Updated.');
-					
-			}else{
-				
-				unset($adminModel->adminId);
-				$adminModel->createdDate = date('Y-m-d H:i:s');
-				$adminModel->password = md5($adminModel->password);
-				$insertId = $adminModel->save();
-				
-				if (!$insertId) {
-					$this->getMessage()->addMessage("System can't insert.", Model_Admin_Message::ERROR);	
-			       	throw new Exception("System can't insert", 1);
-			        	
-			    }    
-				$this->getMessage()->addMessage('Data Inserted.');
+			if ($this->getRequest()->getRequest('id')) {
+				$adminModel->adminId = $this->getRequest()->getRequest('id');
+				$adminModel->updatedDate = date('Y-m-d H:i:s');		
 			}
+			else
+			{
+				$adminModel->createdDate = date('Y-m-d H:i:s');	
+			}
+
+			$saveId = $adminModel->save();
+			if (!$saveId)
+			{
+				$this->getMessage()->addMessage("System can't save admin data.", Model_Core_Message::ERROR);	
+		       	throw new Exception("System can't save admin data", 1);   	
+		    }    
+			$this->getMessage()->addMessage('Data saved successfully.', Model_Core_Message::SUCCESS);
 			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}
 		catch (Exception $e) {
@@ -104,9 +95,8 @@ class Controller_Admin extends Controller_Core_Action{
 		try {
 
 			$id = $this->getRequest()->getRequest('id');
-			
-			if (!isset($id)) {
-				$this->getMessage()->addMessage("Invalid Request.", Model_Admin_Message::ERROR);	
+			if (!$id) {
+				$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);	
 				throw new Exception("Invalid Request.", 1);
 			}
 

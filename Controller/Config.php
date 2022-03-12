@@ -16,9 +16,9 @@ class Controller_Config extends Controller_Core_Action{
 	{
 		try {
 			
-			if ((int) $this->getRequest()->getRequest('id'))
+			if ((int)$this->getRequest()->getRequest('id'))
 			{
-				$id = (int) $this->getRequest()->getRequest('id');
+				$id = (int)$this->getRequest()->getRequest('id');
 				$config = Ccc::getModel('Config')->load($id);
 				
 				if (!$config) {
@@ -49,42 +49,31 @@ class Controller_Config extends Controller_Core_Action{
  
 			$configData = $this->getRequest()->getPost('config');
 
-			if (!isset($configData)) {
-				$this->getMessage()->addMessage("Missing config data in request.", Model_Admin_Message::ERROR);
+
+			if (!$configData) {
+				$this->getMessage()->addMessage("Missing config data in request.", Model_Core_Message::ERROR);
 				throw new Exception("Missing config data in request.", 1);	
 			}
+
 			$configModel = Ccc::getModel('Config');
 			$configModel->setData($configData);
 
-			if (!empty($configData['configId'])) {
 
-				if (!(int)$configData['configId']) {
-					$this->getMessage()->addMessage("Invalid request.", Model_Admin_Message::ERROR);
-					throw new Exception("Invalid request", 1);			
-				}
+			$configId = (int)$this->getRequest()->getRequest('id');
 
-				$update = $configModel->save();
-
-			  	if (!$update) {
-					$this->getMessage()->addMessage("System can't update.", Model_Admin_Message::ERROR);
-					throw new Exception("System can't update.", 1);	
-				}
-				$this->getMessage()->addMessage("Data Updated.");	
-			
+			if ($configId) {
+				$configModel->configId = $configId;
 			}
 			else
 			{
-				unset($configModel->configId);
 				$configModel->createdDate = date('Y-m-d H:i:s');
-				$insertId = $configModel->save();
-
-				if (!$insertId) {
-					$this->getMessage()->addMessage("System can't insert.", Model_Core_Message::ERROR); 
-			        throw new Exception("System can't insert.", 1);	
-			    }
-			    $this->getMessage()->addMessage("Data Inserted.");
-
-			}	
+			}
+			$saveId = $configModel->save();
+			if (!$saveId) {
+				$this->getMessage()->addMessage("System can't saved config data.", Model_Core_Message::ERROR); 
+		        throw new Exception("System can't saved config data.", 1);	
+		    }
+		    $this->getMessage()->addMessage("Data saved successfully.", Model_Core_Message::SUCCESS);
 			$this->redirect($this->getView()->getUrl(null, null, null, true)); 				
 		
 		}
@@ -92,9 +81,7 @@ class Controller_Config extends Controller_Core_Action{
 		{	
 	    	$this->redirect($this->getView()->getUrl(null, null, null, true)); 				
 	    }			
-
 	}
-
 
 	public function deleteAction()
 	{
@@ -102,8 +89,9 @@ class Controller_Config extends Controller_Core_Action{
 		$id = $this->getRequest()->getRequest('id');
 
 		try{
-			if (!isset($id)){
-				$this->getMessage()->addMessage("Invalid Request.", Model_Admin_Message::ERROR);
+
+			if (!$id){
+				$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);
 				throw new Exception("Invalid Request.", 1);
 			}
 
@@ -123,5 +111,4 @@ class Controller_Config extends Controller_Core_Action{
 			$this->redirect($this->getView()->getUrl(null, null, null, true)); 
 		}	
 	}
-
 }

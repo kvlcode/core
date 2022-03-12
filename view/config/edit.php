@@ -1,6 +1,6 @@
 <?php $config = $this->getConfig();?>
 
-	<form method="post" action="<?php echo $this->getUrl('save', null, null, true)?>">
+	<form method="post" action="<?php echo $this->getUrl('save', null, ['id'=> $config->configId], true)?>">
 		<table border="1" width="100%" cellspacing="4">
 
 			<tr>
@@ -20,7 +20,6 @@
 			<tr>
 				<td width="10%">Value</td>
 				<td><input type="text" name="config[value]" value="<?php echo $config->value ?>"></td>
-				<input type="hidden" name="config[configId]" value="<?php echo $config->configId ?>">
 			</tr>
 					
 			<tr>

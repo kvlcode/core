@@ -1,6 +1,6 @@
 <?php $admin = $this->getAdmin();?>
 
-	<form method="POST" action="<?php echo $this->getUrl('save', null, null, true)?>">
+	<form method="POST" action="<?php echo $this->getUrl('save', null, ['id'=> $admin->adminId], true)?>">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>
@@ -24,8 +24,8 @@
 			
 			<tr>
 				<td width="10%">Password</td>
-				<td><input type="text" name="admin[password]" value="<?php echo $admin->password ?>"></td>
-				<input type="hidden" name="admin[adminId]" value="<?php echo $admin->adminId ?>">
+				<td><input type="text" name="admin[password]"></td>
+				
 			</tr>
 			
 			<tr>

@@ -19,7 +19,7 @@ class Controller_Vendor extends Controller_Core_Action{
 
 			if ((int) $this->getRequest()->getRequest('id')) {
 				
-				$id = (int) $this->getRequest()->getRequest('id');
+				$id = (int)$this->getRequest()->getRequest('id');
 				if (!$id) {
 					$this->getMessage()->addMessage("Invalid Id.", Model_Core_Message::ERROR);
 					throw new Exception("Invalid Id.", 1);
@@ -56,44 +56,33 @@ class Controller_Vendor extends Controller_Core_Action{
 	}
 
 	public function saveVendor()
-	{	
-		 
+	{		 
 		$vendorData = $this->getRequest()->getPost('vendor');
-		if (!isset($vendorData)) {
+		if (!$vendorData) {
 			$this->getMessage()->addMessage("Missing Vendor data in request.", Model_Core_Message::ERROR);
 			throw new Exception("Missing Vendor data in request.", 1);
 		}
 		
 		$vendorModel = Ccc::getModel('Vendor');
 		$vendorModel->setData($vendorData);
-
-		if (!empty($vendorData['vendorId'])) {
-			if (!(int)$vendorData['vendorId']) {
-				$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);
-				throw new Exception("Invalid Request.", 1);
-				
-			}
-
-			$vendorId = $vendorData['vendorId'];
-
+		$vendorId = (int)$this->getRequest()->getRequest('id');
+		if ($vendorId) 
+		{
 			$vendorModel->updatedDate = date('Y-m-d H:i:s');
+			$vendorModel->vendorId = $vendorId;	
 			$update = $vendorModel->save();
-
 			if (!$update) {
 				$this->getMessage()->addMessage("System can't update vendor data.", Model_Core_Message::ERROR);
-				throw new Exception("System can't update vendor data.", 1);
-			}	
-				
-		}else{
-
-			unset($vendorModel->vendorId);
+		        throw new Exception("System can't update vendor data.", 1);    	
+		    }    
+		}
+		else
+		{
 			$vendorModel->createdDate = date('Y-m-d H:i:s');
 			$vendorId = $vendorModel->save();
-			
 			if (!$vendorId) {
-				$this->getMessage()->addMessage("System can't insert vendor data.", Model_Core_Message::ERROR);
-		        throw new Exception("System can't insert vendor data.", 1);
-		        	
+				$this->getMessage()->addMessage("System can't save vendor data.", Model_Core_Message::ERROR);
+		        throw new Exception("System can't save vendor data.", 1);    	
 		    }        		
 		}
 		return $vendorId;
@@ -105,36 +94,28 @@ class Controller_Vendor extends Controller_Core_Action{
 		$addressRow = $addressModel->load($vendorId, 'vendorId');
 		$addressData = $this->getRequest()->getPost('address');
 		
-		if(!isset($addressData)){
+		if(!$addressData){
 			$this->getMessage()->addMessage("Missing Address data in Request.", Model_Core_Message::ERROR);
 			throw new Exception("Missing Address data in Request.", 1);	
 		}
 		
-		$addressModel->setData($addressData);		
-
-		if ($addressRow) {
-
-			$addressModel->addressId = $addressRow->addressId;
-			$update = $addressModel->save();
-		
-				if (!$update) {
-					$this->getMessage()->addMessage("System can't update address.", Model_Core_Message::ERROR);
-					throw new Exception("System can't update address.", 1);
-				}
-				$this->getMessage()->addMessage('Data Updated.', Model_Core_Message::SUCCESS);	
-
-		}else{
-
-			$addressModel->vendorId = $vendorId;
-			$insertId = $addressModel->save();
-
-			if (!$insertId) {
-				$this->getMessage()->addMessage("System can't insert address.", Model_Core_Message::ERROR);
-		        throw new Exception("System can't insert address", 1);       	
-		    }
-			$this->getMessage()->addMessage('Data Inserted.', Model_Core_Message::SUCCESS);
-
+		$addressModel->setData($addressData);	
+	
+		if ($addressRow) 
+		{
+			$addressModel->addressId = $addressRow->addressId;	
 		}
+		else
+		{
+			$addressModel->vendorId = $vendorId;
+		}
+
+		$saveId = $addressModel->save();
+		if (!$saveId) {
+			$this->getMessage()->addMessage("System can't save address.", Model_Core_Message::ERROR);
+	        throw new Exception("System can't save address", 1);       	
+	    }
+		$this->getMessage()->addMessage('Data saved successfully.');
 	}
 
 	public function saveAction()

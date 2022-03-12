@@ -1,6 +1,6 @@
 <?php $customer = $this->getCustomer();	?>
 
-	<form method="Post" action="<?php echo $this->getUrl('save', null, null, true)?>">
+	<form method="Post" action="<?php echo $this->getUrl('save', null, ['id' => $customer->customerId], true)?>">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>
@@ -25,7 +25,6 @@
 			<tr>
 				<td width="10%">Mobile</td>
 				<td><input type="text" name="customer[mobile]" value="<?php echo $customer->mobile ?>"></td>
-				<input type="hidden" name="customer[customerId]" value="<?php echo $customer->customerId ?>">
 			</tr>
 			
 			<tr>

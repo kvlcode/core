@@ -1,6 +1,6 @@
 <?php $customers = $this->getCustomers();?>
-<?php $id = Ccc::getFront()->getRequest()->getRequest('id');?>
-<form action="<?php echo $this->getUrl('save','salesman_customer',['id'=> $id]) ?>" method="post">
+<?php $salesmanId = Ccc::getFront()->getRequest()->getRequest('id');?>
+<form action="<?php echo $this->getUrl('save','salesman_customer',['id'=> $salesmanId]) ?>" method="post">
     
     <table border="1" width="100%">
         <tr>
@@ -21,7 +21,7 @@
                     <td><?php echo $customer->customerId; ?></td>
                     <td><?php echo $customer->firstName; ?></td>
                     <td><?php echo $customer->lastName; ?></td>
-                    <td><a href="<?php echo $this->getUrl('grid', 'salesman_customer_product', ['id' => $customer->customerId]);?>">set price</a></td>
+                    <td><a href="<?php echo $this->getUrl('grid', 'salesman_customer_product', ['id' => $customer->customerId, 'salesmanId' => $salesmanId]);?>">set price</a></td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>
