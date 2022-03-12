@@ -18,6 +18,7 @@ class Controller_Salesman_Customer_Product extends Controller_Core_Action{
 			
 			$product = $this->getRequest()->getPost('product');			
 			$customerId = $this->getRequest()->getRequest('id');
+			$salesmanId = $this->getRequest()->getRequest('salesmanId');
 
 			foreach ($product as $key => $value) {				
 				$customerPrice = Ccc::getModel('Customer_Price');	
@@ -47,10 +48,10 @@ class Controller_Salesman_Customer_Product extends Controller_Core_Action{
 				throw new Exception("System can't save.", 1);
 			}
 			$this->getMessage()->addMessage('Data Saved.', Model_Core_Message::SUCCESS);
-			$this->redirect($this->getView()->getUrl(null, null, ['id' => $customerId], true));
+			$this->redirect($this->getView()->getUrl(null, null, ['id' => $customerId, 'salesmanId' => $salesmanId], true));
 
 		} catch (Exception $e) {
-			$this->redirect($this->getView()->getUrl(null, null, ['id' => $customerId], true));
+			$this->redirect($this->getView()->getUrl(null, null, ['id' => $customerId, 'salesmanId' => $salesmanId], true));
 								
 		}
 	}

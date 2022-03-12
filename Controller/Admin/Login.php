@@ -22,7 +22,7 @@ class Controller_Admin_Login extends Controller_Core_Action{
 			}
 			
 			$email = $login['email'];
-			$password = $login['password'];
+			$password = md5($login['password']);
 
 			if ($email == NULL || $password == NULL) {
 			

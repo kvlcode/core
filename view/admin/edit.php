@@ -24,7 +24,7 @@
 			
 			<tr>
 				<td width="10%">Password</td>
-				<td><input type="text" name="admin[password]" value="<?php echo $admin->password ?>"></td>
+				<td><input type="text" name="admin[password]"></td>
 				
 			</tr>
 			
