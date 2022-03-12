@@ -80,7 +80,7 @@ class Controller_Admin extends Controller_Core_Action{
 				$this->getMessage()->addMessage("System can't save admin data.", Model_Core_Message::ERROR);	
 		       	throw new Exception("System can't save admin data", 1);   	
 		    }    
-			$this->getMessage()->addMessage('Data Inserted.', Model_Core_Message::SUCCESS);
+			$this->getMessage()->addMessage('Data saved successfully.', Model_Core_Message::SUCCESS);
 			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}
 		catch (Exception $e) {

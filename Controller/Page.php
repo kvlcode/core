@@ -18,7 +18,7 @@ class Controller_Page extends Controller_Core_Action{
 			
 			if ((int) $this->getRequest()->getRequest('id')) {
 
-				$id = (int) $this->getRequest()->getRequest('id');
+				$id = (int)$this->getRequest()->getRequest('id');
 
 				if (!$id) {
 					$this->getMessage()->addMessage("Invalid request.", Model_Core_Message::ERROR);
@@ -64,35 +64,24 @@ class Controller_Page extends Controller_Core_Action{
 
 			$pageModel = Ccc::getModel('Page');
 			$pageModel->setData($pageData);
+			$pageId = (int)$this->getRequest()->getRequest('id');
 
-			if ($pageData['pageId'] != null) {
-				
-				if (!(int) $pageData['pageId']) {
-					$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);
-					throw new Exception("Invalid Request.", 1);
-					
-				}
-
+			if ($pageId) 
+			{
 				$pageModel->updatedDate =  date('Y-m-d H:i:s');
-				$update = $pageModel->save();
-
-				if (!$update) {
-					$this->getMessage()->addMessage("System can't update.", Model_Core_Message::ERROR);
-					throw new Exception("System can't update.", 1);	
-				}
-				$this->getMessage()->addMessage('Data Updated.', Model_Core_Message::SUCCESS);
+				$pageModel->pageId = $pageId;
 			}
 			else
 			{
-				unset($pageModel->pageId);
 				$pageModel->createdDate = date('Y-m-d H:i:s');
-				$insertId = $pageModel->save();
-				if (!$insertId) {
-					$this->getMessage()->addMessage("System can't insert.", Model_Core_Message::ERROR);
-					throw new Exception("Sustem can't'insert.", 1);
-				}
-				$this->getMessage()->addMessage('Data Inserted.', Model_Core_Message::SUCCESS);
 			}
+
+			$saveId = $pageModel->save();
+			if (!$saveId) {
+				$this->getMessage()->addMessage("System can't save data.", Model_Core_Message::ERROR);
+				throw new Exception("Sustem can't' save data.", 1);
+			}
+			$this->getMessage()->addMessage('Data Saved successfully.');
 
 			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}

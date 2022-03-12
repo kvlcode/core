@@ -14,6 +14,4 @@ class Block_Page_Grid extends Block_Core_Template{
 		$pages = $pageModel->fetchAll("SELECT * FROM `page`");
 		return $pages;
 	}
-
-
 }

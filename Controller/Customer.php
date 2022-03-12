@@ -52,36 +52,28 @@ class Controller_Customer extends Controller_Core_Action{
 	{	
 		 
 		$customerData = $this->getRequest()->getPost('customer');
-		if (!isset($customerData)) {
+		if (!$customerData) {
 			$this->getMessage()->addMessage("Missing Customer data in request.", Model_Core_Message::ERROR);
 			throw new Exception("Missing Customer data in request.", 1);
 		}
 		
 		$customerModel = Ccc::getModel('Customer');
 		$customerModel->setData($customerData);
-
-		if (!empty($customerData['customerId'])) {
-			if (!(int)$customerData['customerId']) {
-				$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);
-				throw new Exception("Invalid Request", 1);
-				
-			}
-
-			$customerId = $customerData['customerId'];
+		$customerId = (int) $this->getRequest()->getRequest('id');
+		if ($customerId) 
+		{
 			$customerModel->updatedDate = date('Y-m-d H:i:s');
+			$customerModel->customerId = $customerId;
 			$update = $customerModel->save();
-
 			if (!$update) {
 				$this->getMessage()->addMessage("System can't update customer data.", Model_Core_Message::ERROR);
 				throw new Exception("System can't update customer data", 1);
-			}
-				
-		}else{
-
-			unset($customerModel->customerId);
+			}		
+		}
+		else
+		{
 			$customerModel->createdDate = date('Y-m-d H:i:s');
 			$customerId = $customerModel->save();
-			
 			if (!$customerId) {
 				$this->getMessage()->addMessage("System can't insert customer data.", Model_Core_Message::ERROR);
 		        throw new Exception("System can't insert customer data", 1);   	
@@ -97,11 +89,14 @@ class Controller_Customer extends Controller_Core_Action{
 		$addressRow = $addressModel->load($customerId, 'customerId');
 		$addressData = $this->getRequest()->getPost('address');
 		
-		if(!isset($addressData)){
+		if(!$addressData){
 			$this->getMessage()->addMessage("Missing Address data in Request.", Model_Core_Message::ERROR);
 			throw new Exception("Missing Address data in Request.", 1);	
 		}
-		
+
+		echo "<pre>";
+		print_r($addressRow);
+
 		$addressModel->setData($addressData);
 
 		$billing = 0;
@@ -115,30 +110,23 @@ class Controller_Customer extends Controller_Core_Action{
 
 		$addressModel->billing = $billing;
 		$addressModel->shipping = $shipping;
-
-
-		if ($addressRow) {
-
+		if ($addressRow) 
+		{
 			$addressModel->addressId = $addressRow->addressId;
-			$update = $addressModel->save();
-		
-				if (!$update) {
-					$this->getMessage()->addMessage("System can't update address.", Model_Core_Message::ERROR);
-					throw new Exception("System can't update address.", 1);
-				}	
-				$this->getMessage()->addMessage("Data Updated.", Model_Core_Message::SUCCESS);
-
-		}else{
-
-			$addressModel->customerId = $customerId;
-			$insertId = $addressModel->save();
-
-			if (!$insertId) {
-				$this->getMessage()->addMessage("System can't insert address.", Model_Core_Message::ERROR);
-		        throw new Exception("System can't insert address.", 1);   	
-		    }
-			$this->getMessage()->addMessage("Data Inserted.", Model_Core_Message::SUCCESS);    
 		}
+		else
+		{
+			$addressModel->customerId = $customerId;
+		}
+
+		$saveId = $addressModel->save();
+
+		if (!$saveId) 
+		{
+			$this->getMessage()->addMessage("System can't save address.", Model_Core_Message::ERROR);
+	        throw new Exception("System can't save address.", 1);   	
+	    }
+		$this->getMessage()->addMessage("Data saved successfully.");    
 	}
 
 	public function saveAction()
@@ -173,7 +161,7 @@ class Controller_Customer extends Controller_Core_Action{
 				$this->getMessage()->addMessage("System can't delete record.", Model_Core_Message::ERROR);
 				throw new Exception("System can't delete record.", 1);
 			}
-			$this->getMessage()->addMessage("Data Deleted.", Model_Core_Message::SUCCESS);
+			$this->getMessage()->addMessage("Data Deleted.");
 			$this->redirect($this->getView()->getUrl(null, null, null, true));	
 		}
 		catch (Exception $e) {			

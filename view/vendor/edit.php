@@ -1,6 +1,6 @@
 <?php $vendor = $this->getVendor();?>
 
-	<form method="Post" action="<?php echo $this->getUrl('save', null, null, true)?>">
+	<form method="Post" action="<?php echo $this->getUrl('save', null, ['id' => $vendor->vendorId], true)?>">
 		<table border="1" width="100%" cellspacing="4">
 			
 			<tr>
@@ -25,7 +25,6 @@
 			<tr>
 				<td width="10%">Mobile</td>
 				<td><input type="text" name="vendor[mobile]" value="<?php echo $vendor->mobile ?>"></td>
-				<input type="hidden" name="vendor[vendorId]" value="<?php echo $vendor->vendorId ?>">
 			</tr>
 			
 			<tr>

@@ -61,38 +61,24 @@ class Controller_Salesman extends Controller_Core_Action{
 
 			$salesmanModel = Ccc::getModel('Salesman');
 			$salesmanModel->setData($salesmanData);
+			$salesmanId = (int)$this->getRequest()->getRequest('id');
 
-			if ($salesmanData['salesmanId'] != null) {
-				
-				if (!(int) $salesmanData['salesmanId']) {
-					$this->getMessage()->addMessage("Invalid request.", Model_Core_Message::ERROR);
-					throw new Exception("Invalid request.", 1);
-					
-				}
-
+			if ($salesmanId) {
 				$salesmanModel->updatedDate = date('Y-m-d H:i:s');
-				$update = $salesmanModel->save();
-
-				if (!$update) {
-					$this->getMessage()->addMessage("System Can't update.", Model_Core_Message::ERROR);
-					throw new Exception("System Can't update", 1);	
-				}
-				$this->getMessage()->addMessage('Data Updated.', Model_Core_Message::SUCCESS);
-
+				$salesmanModel->salesmanId = $salesmanId;
 			}
 			else
 			{
-				unset($salesmanModel->salesmanId);
 				$salesmanModel->createdDate =  date('Y-m-d H:i:s');
-				$insetId = $salesmanModel->save();
-
-				if (!$insetId) {
-					$this->getMessage()->addMessage("System Can't insert.", Model_Core_Message::ERROR);
-					throw new Exception("System Can't insert", 1);		
-				}
-				$this->getMessage()->addMessage('Data Inserted.', Model_Core_Message::SUCCESS);
-
 			}
+
+			$saveId = $salesmanModel->save();
+
+			if (!$saveId) {
+				$this->getMessage()->addMessage("System can't save data.", Model_Core_Message::ERROR);
+				throw new Exception("System can't save data", 1);		
+			}
+			$this->getMessage()->addMessage('Data saved successfully.', Model_Core_Message::SUCCESS);
 			$this->redirect($this->getView()->getUrl(null, null, null, true));
 
 		} 
