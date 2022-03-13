@@ -1,6 +1,5 @@
 <?php $product = $this->getProduct();?>
 <?php $categories = $this->getCategories();?>
-<?php $selects = $this->getSelect();?>
 
 	<form method="post" action="<?php echo $this->getUrl('save', null, ['id' => $product->productId], true)?>">
 		<table border="1" width="100%" cellspacing="4">
@@ -67,14 +66,8 @@
 							<tr>
 								<td><input type="text" name="category[categoryId]" value="<?php echo $category->categoryId ?>" disabled></td>
 								<td><input type="text" name="category[path]" value="<?php echo $this->path($category->path) ?>" disabled></td>
-								<?php if($selects):?>
-									<td><input type="checkbox" name="category[categoryId][]" value="<?php echo $category->categoryId?>" 
-										<?php foreach ($selects as $select):?>
-											<?php if ($category->categoryId == $select->categoryId):?> checked <?php endif;?>
-										<?php endforeach;?>></td>
-								<?php else: ?>
-									<td><input type="checkbox" name="category[categoryId][]" value="<?php echo $category->categoryId?>"></td>
-								<?php endif; ?>			
+
+								<td><input type="checkbox" name="category[categoryId][]" value="<?php echo $category->categoryId; ?>" <?php echo $this->getSelect($category->categoryId);?>></td>		
 							</tr>
 						<?php endforeach;?>
 					</table>

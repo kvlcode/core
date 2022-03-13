@@ -29,7 +29,7 @@ class Controller_Admin extends Controller_Core_Action{
 				$admin =  Ccc::getModel('Admin')->load($id);	
 				
 				if (!$admin) {
-					$this->getMessage()->addMessage("Unable to Load Data.", Model_Core_Message::ERROR);
+					$this->getMessage()->addMessage("Unable to Load Data.", Model_Admin_Message::ERROR);
 					throw new Exception("Unable to Load", 1);	
 				}
 			}
@@ -55,7 +55,6 @@ class Controller_Admin extends Controller_Core_Action{
 	{	
 		try{
 			$adminData = $this->getRequest()->getPost('admin');
-
 			if (!$adminData) {
 				$this->getMessage()->addMessage("Missing Admin data in request.", Model_Core_Message::ERROR);
 				throw new Exception("Missing Admin data in request.", 1);
@@ -96,7 +95,6 @@ class Controller_Admin extends Controller_Core_Action{
 		try {
 
 			$id = $this->getRequest()->getRequest('id');
-			
 			if (!$id) {
 				$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);	
 				throw new Exception("Invalid Request.", 1);
@@ -107,11 +105,11 @@ class Controller_Admin extends Controller_Core_Action{
 			
 			if(!$delete)
 			{
-				$this->getMessage()->addMessage("System can't delete record.", Model_Core_Message::ERROR);
+				$this->getMessage()->addMessage("System can't delete record.", Model_Admin_Message::ERROR);
 				throw new Exception("System can't delete record.", 1);
 										
 			}
-			$this->getMessage()->addMessage("Data Deleted.", Model_Core_Message::SUCCESS);
+			$this->getMessage()->addMessage("Data Deleted.");
 			$this->redirect($this->getView()->getUrl(null, null, null, true));	
 				
 		}
