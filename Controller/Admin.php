@@ -117,7 +117,6 @@ class Controller_Admin extends Controller_Core_Action{
 		{
 			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}
-
 	}
 }
 

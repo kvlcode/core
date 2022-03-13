@@ -3,6 +3,16 @@
     <button type="button" name="addNew"><a href="<?php echo $this->getUrl('edit')?>"> Add New </a></button>
     <table border="1" width="100%" cellspacing="4">
         <tr>
+            <td>
+                <button><a href="<?php echo $this->getUrl(null,null,['p'=>$this->pager->getStart()], true); ?>">Start</a></button>
+                <button><a href="<?php echo $this->getUrl(null,null,['p'=>$this->pager->getPrev()], true); ?>">Previous</a></button>
+                <button><a href="<?php echo $this->getUrl(null,null,['p'=>$this->pager->getCurrent()], true); ?>">Current</a></button>
+                <button><a href="<?php echo $this->getUrl(null,null,['p'=>$this->pager->getNext()], true); ?>">Next</a></button>
+                <button><a href="<?php echo $this->getUrl(null,null,['p'=>$this->pager->getEnd()]); ?>">End</a></button>
+            </td>
+        </tr>
+
+        <tr>
            <td colspan="9"><b>page Information</b></td>
         </tr>
         <tr>

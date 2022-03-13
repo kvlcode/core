@@ -1,7 +1,7 @@
 <?php $configs = $this->getConfigs(); ?>
 
     <button type="button" name="addNew"><a href="<?php echo $this->getUrl('edit')?>"> Add New </a></button>
-    <table border="1" width="100%" cellspacing="4">
+    <table border="1" width="100%" cellspacing="4">        
         <tr>
            <td colspan="9"><b>Config Information</b></td>
         </tr>
