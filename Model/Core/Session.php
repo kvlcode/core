@@ -76,9 +76,13 @@ class Model_Core_Session {
 			return null;
 		}
 		if (!array_key_exists($key, $_SESSION[$this->getNamespace()])) {
-			return null;
+			 $_SESSION[$this->getNamespace()][$key] = [];
 		}
-		return $_SESSION[$this->getNamespace()][$key];	
+		if (array_key_exists($key, $_SESSION[$this->getNamespace()])) {
+			return $_SESSION[$this->getNamespace()][$key];
+		}
+		return null;
+			
 	}
 
 	public function __unset($key)
@@ -88,7 +92,6 @@ class Model_Core_Session {
 		}
 		if (array_key_exists($key, $_SESSION[$this->getNamespace()])) {
 			unset($_SESSION[$this->getNamespace()][$key]);
-
 		}
 		return $this;
 	}

@@ -29,8 +29,8 @@
                     <td><?php echo $product->name       ?></td>
                     <td><?php echo $product->sku        ?></td>
                     <td><?php echo $product->productPrice   ?></td>
-                    <td><?php echo $ce = $this->getSalesmanPrice($product->productPrice, $discount)?></td>
-                    <td><input type="number" name="product[<?php if($product->entityId){echo 'exist';} else{echo 'new';}?>][<?php if($product->entityId){echo $product->entityId;} else{echo $product->productId;} ?>]" value="<?php echo $product->customerPrice ?>" min="<?php echo $ce; ?>" max="<?php echo $product->productPrice; ?>" step="0.01" ></td>
+                    <td><?php echo $minimumPrice = $this->getSalesmanPrice($product->productPrice, $discount)?></td>
+                    <td><input type="number" name="product[<?php if($product->entityId){echo 'exist';} else{echo 'new';}?>][<?php if($product->entityId){echo $product->entityId;} else{echo $product->productId;} ?>]" value="<?php echo $product->customerPrice ?>" min="<?php echo $minimumPrice; ?>" max="<?php echo $product->productPrice; ?>" step="0.01" ></td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>   
