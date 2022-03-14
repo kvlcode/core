@@ -1,14 +1,13 @@
 <?php 
 Ccc::loadClass('Controller_Core_Action');
-
 class Controller_Salesman_Customer_Product extends Controller_Core_Action{
 
 	public function gridAction()			
 	{	
+		$this->setTitle('Customer Price');
 		$productGrid = Ccc::getBlock('Salesman_Customer_Product_Grid');
 		$content = $this->getLayout()->getContent();
 		$content->addChild($productGrid);
-		$this->getLayout()->getChild('content')->getChild('Block_Salesman_Customer_Product_Grid');
 		$this->renderLayout();		
 	}
 

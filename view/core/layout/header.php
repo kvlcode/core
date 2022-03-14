@@ -1,3 +1,3 @@
-<?php $this->getMenu();?>
+<?php echo $this->getMenu()->toHtml();?>
 <br>
-<?php $this->getMessages();?>
+<?php echo $this->getMessages()->toHtml();?>

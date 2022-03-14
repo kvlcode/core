@@ -1,21 +1,22 @@
+<?php Ccc::loadClass('Controller_Core_Action'); ?>
 <?php 
-Ccc::loadClass('Controller_Core_Action');
-
 class Controller_Admin extends Controller_Core_Action{
 
-	// public function __construct()
-	// {
-	// 	$this->authenticate();
-	// }
+	public function __construct()
+    {
+        if(!$this->authentication())
+        {
+			$this->redirect($this->getLayout()->getUrl('login','admin_login'));
+		}
+    }
 
 	public function gridAction()
 	{
-		$content = $this->getLayout()->getContent();
+		$this->setTitle('Admin Grid');
 		$adminGrid = Ccc::getBlock('Admin_Grid');
+		$content = $this->getLayout()->getContent();
 		$content->addChild($adminGrid);
-		$this->getLayout()->getChild('content')->getChild('Block_Admin_Grid');
 		$this->renderLayout();
-
 	}
 
 	public function editAction()
@@ -25,23 +26,24 @@ class Controller_Admin extends Controller_Core_Action{
 			
 			if ((int) $this->getRequest()->getRequest('id')) 
 			{
+				$this->setTitle('Admin Edit');
 				$id = (int) $this->getRequest()->getRequest('id');
 				$admin =  Ccc::getModel('Admin')->load($id);	
-				
-				if (!$admin) {
+				if (!$admin) 
+				{
 					$this->getMessage()->addMessage("Unable to Load Data.", Model_Core_Message::ERROR);
 					throw new Exception("Unable to Load", 1);	
 				}
 			}
 			else
 			{
+				$this->setTitle('Admin Add');
 				$admin =  Ccc::getModel('Admin');
 			}
 
 			$adminEdit = Ccc::getBlock('Admin_Edit')->setAdmin($admin);
 			$content = $this->getLayout()->getContent();
 			$content->addChild($adminEdit);
-			$this->getLayout()->getChild('content')->getChild('Block_Admin_Edit');
 			$this->renderLayout();
 
 		} 

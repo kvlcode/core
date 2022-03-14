@@ -3,40 +3,44 @@ Ccc::loadClass('Controller_Core_Action');
 
 class Controller_Category extends Controller_Core_Action{
 
+	public function __construct()
+    {
+        if(!$this->authentication())
+        {
+			$this->redirect($this->getLayout()->getUrl('login','admin_login'));
+		}
+    }
+
 	public function gridAction()
 	{
+		$this->setTitle('Category Grid');
 		$categoryGrid = Ccc::getBlock('Category_Grid');
 		$content = $this->getLayout()->getContent();
 		$content->addChild($categoryGrid);
-		$this->getLayout()->getChild('content')->getChild('Block_Category_Grid');
 		$this->renderLayout();
 	}
 
 	public function editAction()
 	{	
-
 		try {
 
 			if ((int) $this->getRequest()->getRequest('id')) {
-				
+				$this->setTitle('Category Edit');
 				$id = (int) $this->getRequest()->getRequest('id');
-				$categoryRow = Ccc::getModel('Category')->fetchRow("SELECT * FROM categories WHERE categoryId='$id'");
+				$categoryRow = Ccc::getModel('Category')->load($id);
 				
 				if (!$categoryRow) {
 					$this->getMessage()->addMessage("Unable to Load Data", Model_Core_Message::ERROR);
 					throw new Exception("Unable to Load Data", 1);	
 				}
-
 			}
 			else{
-
+				$this->setTitle('Category Add');
 				$categoryRow = Ccc::getModel('Category');
 			}
-
 			$categoryEdit = Ccc::getBlock('Category_Edit')->addData('categoryRow', $categoryRow);
 			$content = $this->getLayout()->getContent();
 			$content->addChild($categoryEdit);
-			$this->getLayout()->getChild('content')->getChild('Block_Category_Edit');
 			$this->renderLayout();
 
 		}
@@ -97,7 +101,7 @@ class Controller_Category extends Controller_Core_Action{
 					$this->getMessage()->addMessage("System can't update.", Model_Core_Message::ERROR);	
 					throw new Exception("System can't update", 1);
 				}
-				$this->getMessage()->addMessage('Data Updated.', Model_Core_Message::SUCCESS);	
+				$this->getMessage()->addMessage('Data Updated.');	
 			}
 			else
 			{
@@ -124,7 +128,7 @@ class Controller_Category extends Controller_Core_Action{
 						$this->getMessage()->addMessage("System can't insert.", Model_Core_Message::ERROR);	
 						throw new Exception("System can't update", 1);
 					}
-					$this->getMessage()->addMessage('Data Inserted.', Model_Core_Message::SUCCESS);
+					$this->getMessage()->addMessage('Data Inserted.');
 
 				}
 			}
@@ -138,12 +142,11 @@ class Controller_Category extends Controller_Core_Action{
 
 	public function deleteAction()
 	{
-
 		try{	
 			
 			$id = $this->getRequest()->getRequest('id');
 
-			if (!isset($id)) {
+			if (!$id) {
 				$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);	
 				throw new Exception("Invalid Request.", 1);
 			}
@@ -163,15 +166,8 @@ class Controller_Category extends Controller_Core_Action{
 		catch (Exception $e) 
 		{		
 			$this->redirect($this->getView()->getUrl(null, null, null, true));
-		}
-		
+		}	
 	}
-
-	public function errorAction(){
-
-		echo "Error Ocurred!!";	
-	}
-
 }
 
 ?>

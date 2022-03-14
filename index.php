@@ -2,7 +2,6 @@
 <?php $adapter = new Model_Core_Adapter();?>
 <?php date_default_timezone_set("Asia/Kolkata");?>
 <?php 
-
 class Ccc{
 
 	public static $front = null;
@@ -22,9 +21,31 @@ class Ccc{
 		return self::$front;
 	}
 	
+	public static function register($key, $value)
+	{
+		$GLOBALS[$key] = $value;
+	}
+
+	public static function getRegistry($key)
+	{
+		if (array_key_exists($key, $GLOBALS)) {
+			 return $GLOBALS[$key];
+		}
+		return null;
+	}
+
+	public static function getConfig()
+	{
+		if (!($config = self::getRegistry('config'))) {
+			$config = self::loadFile('etc/config.php');
+			self::register('çonfig', $config);
+		}
+		return $config;
+	}
+
 	public static function loadFile($path)
 	{
-		require_once($path);
+		return require_once($path);
 	}
 
 	public static function loadClass($className)

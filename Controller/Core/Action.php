@@ -52,8 +52,9 @@ class Controller_Core_Action {
 
 	public function renderLayout()
 	{
-		$this->getLayout()->toHtml();
-		return $this;
+		echo $this->getResponse()
+				->setHeader('Content-type', 'text/html')
+				->render($this->getLayout()->toHtml());
 	}
 
 	public function redirect($url)
@@ -62,24 +63,33 @@ class Controller_Core_Action {
 		exit();
 	}
 
+	public function getResponse()
+	{
+		return Ccc::getFront()->getResponse();
+	}
+
 	public function getRequest()
 	{
 		return Ccc::getFront()->getRequest();
 	}
 
-	public function authenticate()
+	public function setTitle($title)	
+	{
+		$this->getLayout()->getHead()->setTitle($title);
+	}
+
+	public function authentication()
     {
-        if($this->getRequest()->getRequest('a') != 'login' && $this->getRequest()->getRequest('a') != 'loginPost')
-        {
-            if(Ccc::getModel('Admin_Message')->login)
-            {
-                return true;
-            }
+        $loginModel = Ccc::getModel("Admin_Login");
+        $request = $this->getRequest();
+        if($request->getRequest('c') == 'admin_login'){
+            $this->redirect();
+        }
+        if(!$loginModel->getLogin()){
             $this->redirect($this->getLayout()->getUrl('login','admin_login'));
         }
         return true;
     }
-
 }
 
 ?>
