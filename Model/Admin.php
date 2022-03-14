@@ -40,24 +40,4 @@ class Model_Admin extends Model_Core_Row{
 		}
 		return self::STATUS_DISABLED_DEFAULT;
 	}
-
-
-	public function login($email, $password)
-	{
-	
-		$adminModel = Ccc::getModel('Admin');
-		$admin = $adminModel->fetchRow("SELECT * FROM `admin` WHERE `email` = '{$email}' AND `password` = '{$password}'");
-		
-		if (!$admin) {
-			return false;
-		}
-		Ccc::getModel('Admin_Message')->login = $admin;
-		return true;
-	}
-
-	public function logout()
-	{
-		unset(Ccc::getModel('Admin_Message')->login);
-	}
-
 }

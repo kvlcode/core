@@ -5,10 +5,10 @@ class Controller_Product_Media extends Controller_Core_Action
 
 	public function gridAction()
 	{	
+		$this->setTitle('Product Media Grid');
 		$mediaGrid = Ccc::getBlock('Product_Media_Grid');
 		$content = $this->getLayout()->getContent();
 		$content->addChild($mediaGrid);
-		$this->getLayout()->getChild('content')->getChild('Block_Product_Media_Grid');
 		$this->renderLayout();
 	}
 

@@ -3,50 +3,51 @@ Ccc::loadClass('Controller_Core_Action');
 
 class Controller_Vendor extends Controller_Core_Action{
 
+	public function __construct()
+    {
+        if(!$this->authentication())
+        {
+			$this->redirect($this->getLayout()->getUrl('login','admin_login'));
+		}
+    }
+	
 	public function gridAction()
 	{
+		$this->setTitle('Vendor Grid');
 		$vendorGrid = Ccc::getBlock('Vendor_Grid');
 		$content = $this->getLayout()->getContent();
 		$content->addChild($vendorGrid);
-		$this->getLayout()->getChild('content')->getChild('Block_Vendor_Grid');
 		$this->renderLayout();
 	}
 
 	public function editAction()
 	{	
-
-		try {
-
-			if ((int) $this->getRequest()->getRequest('id')) {
-				
+		try 
+		{
+			if ((int) $this->getRequest()->getRequest('id')) {	
+				$this->setTitle('Vendor Edit');
 				$id = (int)$this->getRequest()->getRequest('id');
 				if (!$id) {
 					$this->getMessage()->addMessage("Invalid Id.", Model_Core_Message::ERROR);
 					throw new Exception("Invalid Id.", 1);
 				}
 				$vendorModel =  Ccc::getModel('Vendor');
-				$vendor = $vendorModel->fetchRow("SELECT v.*,a.*
-							                        FROM vendor v
-							                        JOIN vendor_address a
-							                        ON a.vendorId = v.vendorId
-							                        WHERE v.vendorId = {$id}");
+				$vendor = $vendorModel->fetchRow("SELECT v.*,a.* FROM vendor v JOIN vendor_address a ON a.vendorId = v.vendorId WHERE v.vendorId = {$id}");
 				if (!$vendor) {
 					$this->getMessage()->addMessage("Unable to Load.", Model_Core_Message::ERROR);
 					throw new Exception("Unable to Load.", 1);	
 				}
-
 			}
 			else
 			{
+				$this->setTitle('Vendor Add');
 				$vendor = Ccc::getModel('Vendor');	
 			}
 			
 			$vendorEdit = Ccc::getBlock('Vendor_Edit')->setVendor($vendor);
 			$content = $this->getLayout()->getContent();
 			$content->addChild($vendorEdit);
-			$this->getLayout()->getChild('content')->getChild('Block_Vendor_Edit');
 			$this->renderLayout();	
-
 		} 
 		catch (Exception $e) {
 			$this->redirect($this->getView()->getUrl(null, null, null, true));	

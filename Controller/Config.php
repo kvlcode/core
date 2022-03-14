@@ -3,12 +3,21 @@ Ccc::loadClass('Controller_Core_Action');
 
 class Controller_Config extends Controller_Core_Action{
 
+	public function __construct()
+    {
+        if(!$this->authentication())
+        {
+			$this->redirect($this->getLayout()->getUrl('login','admin_login'));
+		}
+    }
+
+
 	public function gridAction()
 	{
+		$this->setTitle('Config Grid');
 		$pageGrid = Ccc::getBlock('Config_Grid');
 		$content = $this->getLayout()->getContent();
 		$content->addChild($pageGrid);
-		$this->getLayout()->getChild('content')->getChild('Block_Config_Grid');
 		$this->renderLayout();
 	}
 
@@ -18,6 +27,7 @@ class Controller_Config extends Controller_Core_Action{
 			
 			if ((int)$this->getRequest()->getRequest('id'))
 			{
+				$this->setTitle('Config Edit');
 				$id = (int)$this->getRequest()->getRequest('id');
 				$config = Ccc::getModel('Config')->load($id);
 				
@@ -27,14 +37,14 @@ class Controller_Config extends Controller_Core_Action{
 				}
 			}
 			else
-			{
+			{	
+				$this->setTitle('Config Add');
 				$config = Ccc::getModel('Config');
 			}	
 
 			$configEdit = Ccc::getBlock('Config_Edit')->setConfig($config);
 			$content = $this->getLayout()->getContent();
 			$content->addChild($configEdit);
-			$this->getLayout()->getChild('content')->getChild('Block_Config_Edit');
 			$this->renderLayout();
 
 		} 

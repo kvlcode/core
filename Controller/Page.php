@@ -3,12 +3,20 @@ Ccc:: loadClass('Controller_Core_Action');
 
 class Controller_Page extends Controller_Core_Action{
 
+	public function __construct()
+    {
+        if(!$this->authentication())
+        {
+			$this->redirect($this->getLayout()->getUrl('login','admin_login'));
+		}
+    }
+
 	public function gridAction()
 	{
+		$this->setTitle('Page Grid');
 		$content = $this->getLayout()->getContent();
 		$pageGrid = Ccc::getBlock('Page_Grid');
 		$content->addChild($pageGrid);
-		$this->getLayout()->getChild('content')->getChild('Block_Page_Grid');
 		$this->renderLayout();
 	}
 
@@ -17,16 +25,14 @@ class Controller_Page extends Controller_Core_Action{
 		try {
 			
 			if ((int) $this->getRequest()->getRequest('id')) {
-
+				$this->setTitle('Page Edit');
 				$id = (int)$this->getRequest()->getRequest('id');
-
 				if (!$id) {
 					$this->getMessage()->addMessage("Invalid request.", Model_Core_Message::ERROR);
 					throw new Exception("Invalid request.", 1);
 				}
 
 				$page = Ccc::getModel('Page')->load($id);
-				
 				if (!$page) {
 					$this->getMessage()->addMessage("Unable to load.", Model_Core_Message::ERROR);
 					throw new Exception("Unable to load.", 1);
@@ -34,13 +40,13 @@ class Controller_Page extends Controller_Core_Action{
 			}
 			else
 			{
+				$this->setTitle('Page Add');
 				$page = Ccc::getModel('Page');
 			}
 
 			$pageEdit = Ccc::getBlock('Page_Edit')->setPage($page);
 			$content = $this->getLayout()->getContent();
 			$content->addChild($pageEdit);
-			$this->getLayout()->getChild('content')->getChild('Block_Page_Edit');
 			$this->renderLayout();
 
 		}

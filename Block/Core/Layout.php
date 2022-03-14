@@ -39,7 +39,15 @@ class Block_Core_Layout extends Block_Core_Template{
 		return $child;
 	}
 
-	
 
-
+	public function getHead()
+	{
+		$child = $this->getChild('head');
+		if(!$child)
+		{
+			$child = Ccc::getBlock('Core_Layout_Head');
+			$this->addChild($child, 'head');
+		}
+		return $child;
+	}
 }

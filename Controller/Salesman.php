@@ -4,41 +4,46 @@ Ccc::loadClass('Controller_Core_Action');
 
 class Controller_Salesman extends Controller_Core_Action{
 
+	public function __construct()
+    {
+        if(!$this->authentication())
+        {
+			$this->redirect($this->getLayout()->getUrl('login','admin_login'));
+		}
+    }
+
 	public function gridAction()
 	{
+		$this->setTitle('Salesman Grid');
 		$salesmanGrid = Ccc::getBlock('Salesman_Grid');
 		$content = $this->getLayout()->getContent();
 		$content->addChild($salesmanGrid);
-		$this->getLayout()->getChild('content')->getChild('Block_Salesman_Grid');
 		$this->renderLayout();
 	}
 
 	public function editAction()
 	{	
-		try {
-			
+		try 
+		{
 			if ((int) $this->getRequest()->getRequest('id')) {
-			
+				$this->setTitle('Salesman Edit');
 				$id = (int) $this->getRequest()->getRequest('id');	
 				$salesman = Ccc::getModel('Salesman')->load($id);
-
 				if (!$salesman) {
 					$this->getMessage()->addMessage("Unable to load.", Model_Core_Message::ERROR);
-					throw new Exception("Unable to load.", 1);
-					
+					throw new Exception("Unable to load.", 1);		
 				}			
 			}
 			else
 			{
+				$this->setTitle('Salesman Add');
 				$salesman = Ccc::getModel('Salesman');
 			}
 
 			$salesmanEdit = Ccc::getBlock('Salesman_Edit')->setSalesman($salesman);
 			$content = $this->getLayout()->getContent();
 			$content->addChild($salesmanEdit);
-			$this->getLayout()->getChild('content')->getChild('Block_Salesman_Edit');
 			$this->renderLayout();
-
 		} 
 		catch (Exception $e) 
 		{
