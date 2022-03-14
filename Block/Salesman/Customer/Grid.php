@@ -20,7 +20,6 @@ class Block_Salesman_Customer_Grid extends Block_Core_Template
         $salesmanId = Ccc::getFront()->getRequest()->getRequest('id');
         $customerModel = Ccc::getModel('Customer');
         $selectedValues = $customerModel->fetchAll("SELECT * FROM `customer` WHERE `salesmanId` = {$salesmanId} AND `customerId` = {$customerId}");
-
         if($selectedValues){
             return "checked disabled";
         }
