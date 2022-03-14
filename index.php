@@ -45,7 +45,7 @@ class Ccc{
 
 	public static function loadFile($path)
 	{
-		return require_once($path);
+		return require_once(getcwd().DIRECTORY_SEPARATOR.$path);
 	}
 
 	public static function loadClass($className)
