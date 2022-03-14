@@ -3,7 +3,7 @@ Ccc::loadClass('Block_Core_Template');
 
 class Block_Page_Grid extends Block_Core_Template{
 
-	public $pager = null;
+	protected $pager = null;
 
 	public function __construct()
 	{
@@ -28,10 +28,11 @@ class Block_Page_Grid extends Block_Core_Template{
 	public function getPages()
 	{
 		$request = Ccc::getModel('Core_Request');
-		$current = $request->getRequest('p',1);
-		$totalRecord = $this->getPager()->getAdapter()->fetchOne("SELECT count('pageId') as totalCount FROM page;");
-		$this->getPager()->execute($totalRecord['totalCount'], $current);
-		$pages = Ccc::getModel('Page')->fetchAll("SELECT * FROM `page` LIMIT {$this->getPager()->getStartLimit()}, {$this->getPager()->getEndLimit()}");
-		return $pages;	
+        $page = (int)$request->getRequest('p', 1);
+        $ppr = (int)$request->getRequest('ppr',20);
+        $totalRecord = $this->getPager()->getAdapter()->fetchOne("SELECT count(pageId) as total FROM page");
+        $this->getPager()->execute($totalRecord['total'], $page, $ppr);
+        $pages = Ccc::getModel('Page')->fetchAll("SELECT * FROM page LIMIT {$this->getPager()->getStartLimit()}, {$this->getPager()->getEndLimit()}");
+        return $pages;		
 	}
 }
