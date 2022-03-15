@@ -3,6 +3,40 @@
 <button name="Add"><a href="<?php echo $this->getUrl('edit')?>">Add</a></button>
 <table border='1' class="table" width='100%' cellspacing="4">      
     <tr>
+        <script type="text/javascript"> function ppr() 
+          {
+            const pprValue = document.getElementById('ppr').selectedOptions[0].value;
+            let language = window.location.href;
+            if(!language.includes('ppr'))
+            {
+                language+='&ppr=20';
+            }
+            const myArray = language.split("&");
+            for (i = 0; i < myArray.length; i++)
+            {
+              if(myArray[i].includes('p='))
+              {
+                  myArray[i]='p=1';
+              }
+              if(myArray[i].includes('ppr='))
+              {
+                  myArray[i]='ppr='+pprValue;
+              }
+            }
+             const str = myArray.join("&");  
+             location.replace(str);
+          }
+        </script>   
+
+        <select onchange="ppr()" id="ppr">
+            <option selected>select</option>
+            <?php foreach($this->getPager()->getPerPageCountOption() as $perPageCount) :?>  
+                <option value="<?php echo $perPageCount ?>"><?php echo $perPageCount ?></a></option>
+            <?php endforeach;?>
+        </select>
+    </tr>
+
+    <tr>
         <td colspan="17">
             <button><a href="<?php echo $this->getUrl(null,null,['p'=>$this->getPager()->getStart()], true); ?>">Start</a></button>
             <button><a href="<?php echo $this->getUrl(null,null,['p'=>$this->getPager()->getPrev()], true); ?>">Previous</a></button>
