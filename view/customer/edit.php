@@ -39,52 +39,63 @@
 			</tr>
 
 			<tr>
-				<td colspan="2"><b>Address Information</b></td>
+				<td colspan="2"><b>Billing Address Information</b></td>
 			</tr>
 			
 			<tr>
 				<td width="10%">Address</td>	
-				<td><input type="text" name="address[address]" value="<?php echo $customer->address ?>"></td>
+				<td><input type="text" name="billingAddress[address]" value="<?php echo $customer->address ?>"></td>
 			</tr>
 
 			<tr>
 				<td width="10%">Postal Code</td>	
-				<td><input type="text" name="address[postalCode]" value="<?php echo $customer->postalCode ?>"></td>
+				<td><input type="text" name="billingAddress[postalCode]" value="<?php echo $customer->postalCode ?>"></td>
 			</tr>
 
 			<tr>
 				<td width="10%">City</td>	
-				<td><input type="text" name="address[city]" value="<?php echo $customer->city ?>"></td>
+				<td><input type="text" name="billingAddress[city]" value="<?php echo $customer->city ?>"></td>
 			</tr>
 
 			<tr>
 				<td width="10%">State</td>	
-				<td><input type="text" name="address[state]" value="<?php echo $customer->state ?>"></td>
+				<td><input type="text" name="billingAddress[state]" value="<?php echo $customer->state ?>"></td>
 			</tr>
 
 			<tr>
 				<td width="10%">Country</td>	
-				<td><input type="text" name="address[country]" value="<?php echo $customer->country ?>"></td>
+				<td><input type="text" name="billingAddress[country]" value="<?php echo $customer->country ?>"></td>
+			</tr>
+
+
+
+			<tr>
+				<td colspan="2"><b>Shipping Address Information</b></td>
+			</tr>
+			
+			<tr>
+				<td width="10%">Address</td>	
+				<td><input type="text" name="shippingAddress[address]" value="<?php echo $customer->address ?>"></td>
 			</tr>
 
 			<tr>
-				<td width="10%">Address Type</td>
-				<td>
-					<?php if($customer->billing==1):?>
-					<input type="checkbox" name="address[billing]" value="1" checked>
-					<?php else:?>
-					<input type="checkbox" name="address[billing]" value="1">
-					<?php endif;?>
-					<label>Billing</label>	
+				<td width="10%">Postal Code</td>	
+				<td><input type="text" name="shippingAddress[postalCode]" value="<?php echo $customer->postalCode ?>"></td>
+			</tr>
 
-					<?php if($customer->shipping==1):?>
-					<input type="checkbox" name="address[shipping]" value="1" checked>
-					<?php else:?>
-					<input type="checkbox" name="address[shipping]" value="1">
-					<?php endif;?>
-					<label>Shipping</label>	
+			<tr>
+				<td width="10%">City</td>	
+				<td><input type="text" name="shippingAddress[city]" value="<?php echo $customer->city ?>"></td>
+			</tr>
 
-				</td>
+			<tr>
+				<td width="10%">State</td>	
+				<td><input type="text" name="shippingAddress[state]" value="<?php echo $customer->state ?>"></td>
+			</tr>
+
+			<tr>
+				<td width="10%">Country</td>	
+				<td><input type="text" name="shippingAddress[country]" value="<?php echo $customer->country ?>"></td>
 			</tr>
 
 			<tr>
