@@ -3,13 +3,13 @@
 <button type="button" name="addNew"><a href="<?php echo $this->getUrl('edit', null, ['p' => $this->pager->getCurrent()])?>"> Add New </a></button>
 <table border="1" width="100%" cellspacing="4">
     <tr>
-        <script type="text/javascript"> function ppr() 
+        <script type="text/javascript"> function count() 
           {
-            const pprValue = document.getElementById('ppr').selectedOptions[0].value;
+            const countValue = document.getElementById('count').selectedOptions[0].value;
             let language = window.location.href;
-            if(!language.includes('ppr'))
+            if(!language.includes('count'))
             {
-                language+='&ppr=20';
+                language+='&count=20';
             }
             const myArray = language.split("&");
             for (i = 0; i < myArray.length; i++)
@@ -18,9 +18,9 @@
               {
                   myArray[i]='p=1';
               }
-              if(myArray[i].includes('ppr='))
+              if(myArray[i].includes('count='))
               {
-                  myArray[i]='ppr='+pprValue;
+                  myArray[i]='count='+countValue;
               }
             }
              const str = myArray.join("&");  
@@ -28,7 +28,7 @@
           }
         </script>   
 
-        <select onchange="ppr()" id="ppr">
+        <select onchange="count()" id="count">
             <option selected>select</option>
             <?php foreach($this->getPager()->getPerPageCountOption() as $perPageCount) :?>  
                 <option value="<?php echo $perPageCount ?>"><?php echo $perPageCount ?></a></option>

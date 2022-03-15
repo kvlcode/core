@@ -28,10 +28,10 @@ class Block_Vendor_Grid extends Block_Core_Template
 	{
 		$request = Ccc::getModel('Core_Request');
 		$current = $request->getRequest('p',1);
+		$count = $request->getRequest('count',20);
 		$totalRecord = $this->getPager()->getAdapter()->fetchOne("SELECT count('vendorId') as totalCount FROM `vendor`");
-		$this->getPager()->execute($totalRecord['totalCount'], $current);
-		$vendorModel = Ccc::getModel('Vendor');
-		$vendors = $vendorModel->fetchAll("SELECT v.*,a.*
+		$this->getPager()->execute($totalRecord['totalCount'], $current, $count);
+		$vendors = Ccc::getModel('Vendor')->fetchAll("SELECT v.*,a.*
 					                            FROM vendor v
 					                            JOIN vendor_address a
 					                            ON a.vendorId = v.vendorId LIMIT {$this->getPager()->getStartLimit()}, {$this->getPager()->getEndLimit()}");

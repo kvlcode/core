@@ -28,8 +28,9 @@ class Block_Category_Grid extends Block_Core_Template
 	{
 		$request = Ccc::getModel('Core_Request');
 		$current = $request->getRequest('p',1);
+		$count = $request->getRequest('count',20);
 		$totalRecord = $this->getPager()->getAdapter()->fetchOne("SELECT count('categoryId') as totalCount FROM `category`");
-		$this->getPager()->execute($totalRecord['totalCount'], $current);
+		$this->getPager()->execute($totalRecord['totalCount'], $current, $count);
 		$categoryModel = Ccc::getModel('Category');
 		$categories = $categoryModel->fetchAll("SELECT c.*,
 													b.name AS baseImage, 
