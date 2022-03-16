@@ -123,10 +123,16 @@ class Controller_Page extends Controller_Core_Action{
 		}
 	}
 
-	public function errorAction()
+	public function deleteAllAction()
 	{
-		echo "Error!!";
-	}
+		try {
+			
+			$delete = $this->getRequest()->getPost('check');
+			//Working...
 
+		} catch (Exception $e) {
+			
+		}
+	}
 
 }

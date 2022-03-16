@@ -2,6 +2,8 @@
 Ccc::loadClass('Model_Core_Row');
 class Model_Vendor extends Model_Core_Row{
 
+	protected $vendorAddress = null;
+
 	public function __construct()
 	{	
 		$this->setResourceClassName('Vendor_Resource');
@@ -26,5 +28,33 @@ class Model_Vendor extends Model_Core_Row{
 			return $status[$key];
 		}
 		return self::STATUS_DISABLED_DEFAULT;
+	}
+
+	public function setVendorAddress($vendorAddress)
+	{
+		$this->vendorAddress = $vendorAddress;
+		return $this;
+	}
+
+	public function getVendorAddress($reload = false)
+	{
+		$addressModel = Ccc::getModel('Vendor_Address');
+		if (!$this->vendorId) 
+		{
+			return $addressModel;
+		}
+		if ($this->vendorAddress && !$reload) 
+		{
+			return $this->vendorAddress;
+		}
+		$address = $addressModel->fetchRow("SELECT * FROM `vendor_address` 
+											WHERE `vendorId` = {$this->vendorId}");
+		if (!$address) 
+		{
+			return $addressModel;
+		}
+		$this->setVendorAddress($address);
+		return $address;
+		
 	}
 }

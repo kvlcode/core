@@ -2,7 +2,7 @@
 Ccc::loadClass('Block_Core_Template');
 class Block_Category_Grid extends Block_Core_Template
 {
-	public $pager = null;
+	protected $pager = null;
 
 	public function __construct()
 	{
@@ -29,17 +29,10 @@ class Block_Category_Grid extends Block_Core_Template
 		$request = Ccc::getModel('Core_Request');
 		$current = $request->getRequest('p',1);
 		$count = $request->getRequest('count',20);
-		$totalRecord = $this->getPager()->getAdapter()->fetchOne("SELECT count('categoryId') as totalCount FROM `category`");
+		$totalRecord = $this->getPager()->getAdapter()->fetchOne("SELECT count('categoryId') as totalCount FROM `categories`");
 		$this->getPager()->execute($totalRecord['totalCount'], $current, $count);
 		$categoryModel = Ccc::getModel('Category');
-		$categories = $categoryModel->fetchAll("SELECT c.*,
-													b.name AS baseImage, 
-													t.name AS thumbImage, 
-													s.name AS smallImage
-													FROM 
-													categories c LEFT JOIN category_media b ON c.categoryId = b.categoryId AND (b.base = 1)
-													LEFT JOIN category_media t ON c.categoryId = t.categoryId AND (t.thumbnail = 1)
-													LEFT JOIN category_media s ON c.categoryId = s.categoryId AND (s.small =1) LIMIT {$this->getPager()->getStartLimit()}, {$this->getPager()->getEndLimit()}");
+		$categories = $categoryModel->fetchAll("SELECT * FROM `categories` LIMIT {$this->getPager()->getStartLimit()}, {$this->getPager()->getEndLimit()}");
 		return $categories;
 	}
 

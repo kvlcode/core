@@ -46,7 +46,10 @@
     </tr>
 
     <tr>
-        <td colspan="17"><b>Customer Information</b></td>
+        <td colspan="6"><b>Personal Information</b></td>
+        <td colspan="5"><b>Billing Address</b></td>
+        <td colspan="5"><b>Shipping Address</b></td>
+        <td colspan="5"><b>Date & Action</b></td>
     </tr>
 
     <tr>
@@ -61,8 +64,11 @@
         <th>City</th>
         <th>State</th>
         <th>Country</th>
-        <th>Billing</th>
-        <th>Shipping</th>
+        <th>Address</th>
+        <th>Postal Code</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Country</th>
         <th>Created Date</th>
         <th>Updated Date</th>
         <th>Edit</th>
@@ -81,13 +87,18 @@
                 <td><?php echo $customer->email      ?></td>
                 <td><?php echo $customer->mobile     ?></td>
                 <td><?php echo $customer->getStatus($customer->status) ?></td>
-                <td><?php echo $customer->address    ?></td>
-                <td><?php echo $customer->postalCode ?></td>
-                <td><?php echo $customer->city       ?></td>
-                <td><?php echo $customer->state      ?></td>
-                <td><?php echo $customer->country    ?></td>
-                <td><?php echo $customer->billing    ?></td>
-                <td><?php echo $customer->shipping   ?></td>
+                <?php $billingAddress = $customer->getBillingAddresses();?>
+                <td><?php echo $billingAddress->address    ?></td>
+                <td><?php echo $billingAddress->postalCode ?></td>
+                <td><?php echo $billingAddress->city       ?></td>
+                <td><?php echo $billingAddress->state      ?></td>
+                <td><?php echo $billingAddress->country    ?></td>
+                <?php $shippingAddress = $customer->getShippingAddresses();?>
+                <td><?php echo $shippingAddress->address    ?></td>
+                <td><?php echo $shippingAddress->postalCode ?></td>
+                <td><?php echo $shippingAddress->city       ?></td>
+                <td><?php echo $shippingAddress->state      ?></td>
+                <td><?php echo $shippingAddress->country    ?></td>     
                 <td><?php echo $customer->createdDate?></td>
                 <td><?php echo $customer->updatedDate?></td>
                 <td><a href="<?php echo $this->getUrl('edit', null, ['id' => $customer->customerId], true)?>">Edit</a></td>

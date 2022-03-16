@@ -21,7 +21,7 @@
                     <td><?php echo $customer->customerId; ?></td>
                     <td><?php echo $customer->firstName; ?></td>
                     <td><?php echo $customer->lastName; ?></td>
-                    <td><a href="<?php echo $this->getUrl('grid', 'salesman_customer_product', ['id' => $customer->customerId, 'salesmanId' => $salesmanId]);?>">set price</a></td>
+                    <td><a href="<?php echo $this->getUrl('grid', 'customer_price', ['id' => $customer->customerId, 'salesmanId' => $salesmanId]);?>">set price</a></td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>

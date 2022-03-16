@@ -78,11 +78,12 @@
                 <td><?php echo $vendor->email      ?></td>
                 <td><?php echo $vendor->mobile     ?></td>
                 <td><?php echo $vendor->getStatus($vendor->status) ?></td>
-                <td><?php echo $vendor->address    ?></td>
-                <td><?php echo $vendor->postalCode ?></td>
-                <td><?php echo $vendor->city       ?></td>
-                <td><?php echo $vendor->state      ?></td>
-                <td><?php echo $vendor->country    ?></td>
+                <?php $address = $vendor->getVendorAddress();?>
+                <td><?php echo $address->address    ?></td>
+                <td><?php echo $address->postalCode ?></td>
+                <td><?php echo $address->city       ?></td>
+                <td><?php echo $address->state      ?></td>
+                <td><?php echo $address->country    ?></td>
                 <td><?php echo $vendor->createdDate?></td>
                 <td><?php echo $vendor->updatedDate?></td>
                 <td><a href="<?php echo $this->getUrl('edit', null, ['id' => $vendor->vendorId], true)?>">Edit</a></td>

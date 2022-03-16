@@ -32,7 +32,7 @@ class Controller_Vendor extends Controller_Core_Action{
 					throw new Exception("Invalid Id.", 1);
 				}
 				$vendorModel =  Ccc::getModel('Vendor');
-				$vendor = $vendorModel->fetchRow("SELECT v.*,a.* FROM vendor v JOIN vendor_address a ON a.vendorId = v.vendorId WHERE v.vendorId = {$id}");
+				$vendor = $vendorModel->load($id);
 				if (!$vendor) {
 					$this->getMessage()->addMessage("Unable to Load.", Model_Core_Message::ERROR);
 					throw new Exception("Unable to Load.", 1);	
@@ -91,16 +91,15 @@ class Controller_Vendor extends Controller_Core_Action{
 
 	public function saveAddress($vendorId)
 	{	
-		$addressModel = Ccc::getModel('Vendor_Address');
-		$addressRow = $addressModel->load($vendorId, 'vendorId');
 		$addressData = $this->getRequest()->getPost('address');
-		
 		if(!$addressData){
 			$this->getMessage()->addMessage("Missing Address data in Request.", Model_Core_Message::ERROR);
 			throw new Exception("Missing Address data in Request.", 1);	
 		}
 		
+		$addressModel = Ccc::getModel('Vendor_Address');
 		$addressModel->setData($addressData);	
+		$addressRow = $addressModel->load($vendorId, 'vendorId');
 	
 		if ($addressRow) 
 		{
