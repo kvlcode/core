@@ -11,7 +11,7 @@
 				$textColor = "yellow";
 			}
 		?>
-		<label style="color:<?php echo $textColor;?>"><?php echo $value; ?> <br></label>
+		<label style="color:<?php echo $textColor;?>"><?php echo $value;?></label>
 	<?php endforeach;?>	
-<?php endif;?>	
-<?php $this->unsetMessages();?>
+<?php endif;?>
+<?php $this->unsetMessage();?>

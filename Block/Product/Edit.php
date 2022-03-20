@@ -37,7 +37,6 @@ class Block_Product_Edit extends Block_Core_Template
 				
 	}
 
-
 	public function getCategories()
 	{
 		$category = Ccc::getModel('Category');

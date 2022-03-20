@@ -28,8 +28,9 @@ class Block_Config_Grid extends Block_Core_Template
 	{
 		$request = Ccc::getModel('Core_Request');
 		$current = $request->getRequest('p',1);
+		$count = $request->getRequest('count',20);
 		$totalRecord = $this->getPager()->getAdapter()->fetchOne("SELECT count('configId') as totalCount FROM `config`");
-		$this->getPager()->execute($totalRecord['totalCount'], $current);
+		$this->getPager()->execute($totalRecord['totalCount'], $current, $count);
 		$configs = Ccc::getModel('Config')->fetchAll("SELECT * FROM `config` LIMIT {$this->getPager()->getStartLimit()}, {$this->getPager()->getEndLimit()}");
 		return $configs;
 	}

@@ -43,9 +43,7 @@ class Model_Core_Row_Resource
 	{	
 		$resourceName = $this->getResourceName();
 		$primaryKey = $this->getPrimaryKey();
-
 		$query = "DELETE FROM `$resourceName` WHERE {$primaryKey} = {$deleteId}";
-		
 		$delete = $this->getAdapter()->delete($query);
 		return $delete;
 	} 

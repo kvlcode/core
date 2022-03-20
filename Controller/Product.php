@@ -22,14 +22,14 @@ class Controller_Product extends Controller_Core_Action{
 
 	public function editAction()
 	{
-		try {
-
+		try 
+		{
 			if ((int) $this->getRequest()->getRequest('id')) {
 				$this->setTitle('Product Edit');
 				$id = (int) $this->getRequest()->getRequest('id');
 				$product = Ccc::getModel('Product')->load($id);
-				if (!$product) {
-					$this->getMessage()->addMessage("Unable to Load.", Model_Core_Message::ERROR);	
+				if (!$product) 
+				{
 					throw new Exception("Unable to Load", 1);	
 				}
 			}
@@ -43,24 +43,20 @@ class Controller_Product extends Controller_Core_Action{
 			$content->addChild($productEdit);
 			$this->renderLayout();
 		} 
-		catch (Exception $e) {
-
-			$this->redirect($this->getView()->getUrl(null, null, null, true)); 
-			
+		catch (Exception $e) 
+		{
+			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);	
+			$this->redirect($this->getView()->getUrl(null, null, null, true)); 	
 		}
 	}
 
 	public function saveAction()
 	{
-
 		try{
- 
- 			echo "<pre>";
 			$productData = $this->getRequest()->getPost('product');
 			$categoryData = $this->getRequest()->getPost('category');
-
-			if (!$productData) {
-				$this->getMessage()->addMessage("Missing product data in request.", Model_Core_Message::ERROR);	
+			if (!$productData) 
+			{
 				throw new Exception("Missing product data in request.", 1);	
 			}
 			
@@ -84,50 +80,54 @@ class Controller_Product extends Controller_Core_Action{
 					$categoryModel->delete($value->entityId);
 				}
 				$categoryProduct->productId = $productId;
-				foreach ($categoryData['categoryId'] as $key => $id) {
+				foreach ($categoryData['categoryId'] as $key => $id) 
+				{
 					$categoryProduct->categoryId = $id;
 					$categoryProduct->save();
 				}
 
-			  	if (!$update) {
-					$this->getMessage()->addMessage("System can't update.", Model_Core_Message::ERROR);	
+			  	if (!$update) 
+			  	{
 					throw new Exception("System can't update.", 1);
 				}
 				$this->getMessage()->addMessage('Data Updated.');	
 			
-			}else{
-        
+			}
+			else
+			{
 				$productModel->createdDate = date('Y-m-d H:i:s');
 				$insertId = $productModel->save();
 
 				$categoryProduct->productId = $insertId;
-				foreach ($categoryData['categoryId'] as $key => $id) {
+				foreach ($categoryData['categoryId'] as $key => $id) 
+				{
 					$categoryProduct->categoryId = $id;
 					$categoryProduct->save();
 				}
 
-				if (!$insertId) {
-					$this->getMessage()->addMessage("System can't insert.", Model_Core_Message::ERROR);	
+				if (!$insertId) 
+				{
 			        throw new Exception("System can't insert.", 1);	
 			    }
 			    $this->getMessage()->addMessage('Data Inserted.');
 			}	
 			$this->redirect($this->getView()->getUrl(null, null, null, true)); 				
 		
-		}catch(Exception $e){
+		}
+		catch(Exception $e)
+		{
+			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);	
 	    	$this->redirect($this->getView()->getUrl(null, null, null, true)); 
 	    }			
-
 	}
 
 	public function deleteAction()
 	{
-
 		$id = $this->getRequest()->getRequest('id');
-
-		try{
-			if (!isset($id)){
-				$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);	
+		try
+		{
+			if (!$id)
+			{
 				throw new Exception("Invalid Request.", 1);
 			}
 
@@ -135,17 +135,16 @@ class Controller_Product extends Controller_Core_Action{
 			$delete = $productModel->delete($id);
 			if(!$delete)
 			{	
-				$this->getMessage()->addMessage("System can't delete record.", Model_Core_Message::ERROR);	
 				throw new Exception("System can't delete record.", 1);
 			}
 			$this->getMessage()->addMessage('Data Deleted.');
 			$this->redirect($this->getView()->getUrl(null, null, null, true)); 
 
-		}catch (Exception $e) {
-
+		}
+		catch (Exception $e) 
+		{
+			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);	
 			$this->redirect($this->getView()->getUrl(null, null, null, true)); 
 		}	
 	}
 }
-
-?>

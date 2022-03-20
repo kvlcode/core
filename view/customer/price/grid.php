@@ -3,7 +3,7 @@
 <?php $products = $this->getProducts($customerId);?>
 <?php $discount = $this->getDiscount($salesmanId);?>
 
-<form method="post" action="<?php echo $this->getUrl('save', 'salesman_customer_product', ['salesmanId' => $salesmanId])?>">
+<form method="post" action="<?php echo $this->getUrl('save', 'customer_price', ['salesmanId' => $salesmanId])?>">
     <table border="1" width="100%" cellspacing="4">
         <tr>
            <td colspan="16"><b>Select Customer Price</b></td>

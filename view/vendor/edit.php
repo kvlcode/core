@@ -1,4 +1,5 @@
 <?php $vendor = $this->getVendor();?>
+<?php $vendorAddress = $vendor->getAddress();?>
 
 	<form method="Post" action="<?php echo $this->getUrl('save', null, ['id' => $vendor->vendorId], true)?>">
 		<table border="1" width="100%" cellspacing="4">
@@ -44,27 +45,27 @@
 			
 			<tr>
 				<td width="10%">Address</td>	
-				<td><input type="text" name="address[address]" value="<?php echo $vendor->address ?>"></td>
+				<td><input type="text" name="address[address]" value="<?php echo $vendorAddress->address ?>"></td>
 			</tr>
 
 			<tr>
 				<td width="10%">Postal Code</td>	
-				<td><input type="text" name="address[postalCode]" value="<?php echo $vendor->postalCode ?>"></td>
+				<td><input type="text" name="address[postalCode]" value="<?php echo $vendorAddress->postalCode ?>"></td>
 			</tr>
 
 			<tr>
 				<td width="10%">City</td>	
-				<td><input type="text" name="address[city]" value="<?php echo $vendor->city ?>"></td>
+				<td><input type="text" name="address[city]" value="<?php echo $vendorAddress->city ?>"></td>
 			</tr>
 
 			<tr>
 				<td width="10%">State</td>	
-				<td><input type="text" name="address[state]" value="<?php echo $vendor->state ?>"></td>
+				<td><input type="text" name="address[state]" value="<?php echo $vendorAddress->state ?>"></td>
 			</tr>
 
 			<tr>
 				<td width="10%">Country</td>	
-				<td><input type="text" name="address[country]" value="<?php echo $vendor->country ?>"></td>
+				<td><input type="text" name="address[country]" value="<?php echo $vendorAddress->country ?>"></td>
 			</tr>
 
 			<tr>

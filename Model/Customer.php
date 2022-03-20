@@ -10,7 +10,11 @@ class Model_Customer extends Model_Core_Row{
 	const STATUS_DISABLED_DEFAULT = 1;
 	const STATUS_ENABLED_LBL = 'Enabled';
 	const STATUS_DISABLED_LBL = 'Disabled';
+	protected $billingAddress = null;
+	protected $shippingAddress = null;
+	protected $salesman = null;
 
+	
 	public function __construct()
 	{	
 		$this->setResourceClassName('Customer_Resource');
@@ -86,5 +90,32 @@ class Model_Customer extends Model_Core_Row{
 	}
 
 
+
+	public function setSalesman($salesman)
+	{
+		$this->salesman = $salesman;
+		return $this;
+	}
+
+	public function getSalesman($reload = false)
+	{
+		$salesmanModel = Ccc::getModel('Salesman');
+		if (!$this->customerId) 
+		{
+			return $salesmanModel;
+		}
+		if ($this->salesman && !$reload) 
+		{
+			return $this->salesman;
+		}
+		$salesman = $salesmanModel->fetchRow("SELECT * FROM `salesman` 
+											WHERE `salesmanId` = {$this->salesmanId}");
+		if (!$salesman) 
+		{
+			return $salesmanModel;
+		}
+		$this->setSalesman($salesman);
+		return $salesman;
+	}
 
 }

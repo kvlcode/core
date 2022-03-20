@@ -2,6 +2,13 @@
 Ccc::loadClass('Controller_Core_Action');
 class Controller_Category_Media extends Controller_Core_Action
 {
+	public function __construct()
+    {
+        if(!$this->authentication())
+        {
+			$this->redirect($this->getLayout()->getUrl('login','admin_login'));
+		}
+    }
 
 	public function gridAction()
 	{

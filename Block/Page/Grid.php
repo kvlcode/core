@@ -29,9 +29,9 @@ class Block_Page_Grid extends Block_Core_Template{
 	{
 		$request = Ccc::getModel('Core_Request');
         $page = (int)$request->getRequest('p', 1);
-        $ppr = (int)$request->getRequest('ppr',20);
+        $count = (int)$request->getRequest('count',20);
         $totalRecord = $this->getPager()->getAdapter()->fetchOne("SELECT count(pageId) as total FROM page");
-        $this->getPager()->execute($totalRecord['total'], $page, $ppr);
+        $this->getPager()->execute($totalRecord['total'], $page, $count);
         $pages = Ccc::getModel('Page')->fetchAll("SELECT * FROM page LIMIT {$this->getPager()->getStartLimit()}, {$this->getPager()->getEndLimit()}");
         return $pages;		
 	}

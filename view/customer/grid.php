@@ -1,15 +1,16 @@
 <?php $customers = $this->getCustomers();?>
                       
 <button name="Add"><a href="<?php echo $this->getUrl('edit')?>">Add</a></button>
-<table border='1' class="table" width='100%' cellspacing="4">      
+<table border='1' class="table" width='100%' cellspacing="4">   
+
     <tr>
-        <script type="text/javascript"> function ppr() 
+        <script type="text/javascript"> function count() 
           {
-            const pprValue = document.getElementById('ppr').selectedOptions[0].value;
+            const countValue = document.getElementById('count').selectedOptions[0].value;
             let language = window.location.href;
-            if(!language.includes('ppr'))
+            if(!language.includes('count'))
             {
-                language+='&ppr=20';
+                language+='&count=20';
             }
             const myArray = language.split("&");
             for (i = 0; i < myArray.length; i++)
@@ -18,9 +19,9 @@
               {
                   myArray[i]='p=1';
               }
-              if(myArray[i].includes('ppr='))
+              if(myArray[i].includes('count='))
               {
-                  myArray[i]='ppr='+pprValue;
+                  myArray[i]='count='+countValue;
               }
             }
              const str = myArray.join("&");  
@@ -28,7 +29,7 @@
           }
         </script>   
 
-        <select onchange="ppr()" id="ppr">
+        <select onchange="count()" id="count">
             <option selected>select</option>
             <?php foreach($this->getPager()->getPerPageCountOption() as $perPageCount) :?>  
                 <option value="<?php echo $perPageCount ?>"><?php echo $perPageCount ?></a></option>
@@ -37,17 +38,18 @@
     </tr>
 
     <tr>
-        <td colspan="17">
-            <button><a href="<?php echo $this->getUrl(null,null,['p'=>$this->getPager()->getStart()], true); ?>">Start</a></button>
-            <button><a href="<?php echo $this->getUrl(null,null,['p'=>$this->getPager()->getPrev()], true); ?>">Previous</a></button>
-            <b><?php echo $this->getPager()->getCurrent();?></b>
-            <button><a href="<?php if($this->getPager()->getEnd() != null){ echo $this->getUrl(null,null,['p'=>$this->getPager()->getNext()], true);} ?>">Next</a></button>
-            <button><a href="<?php if($this->getPager()->getEnd() != null){ echo $this->getUrl(null,null,['p'=>$this->getPager()->getEnd()], true);} ?>">End</a></button>
-        </td>
+        <button><a style="<?php ($this->pager->getStart()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->pager->getStart()]) ?>">Start</a></button></tr>
+        <tr><button><a style="<?php ($this->pager->getPrev()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->pager->getPrev()]) ?>">Prev</a></button>
+        &nbsp;&nbsp;&nbsp;&nbsp;<?php echo "<b>".$this->pager->getCurrent()."</b>"?>&nbsp;&nbsp;&nbsp;&nbsp;</tr>
+        <tr><button><a style="<?php ($this->pager->getNext()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->pager->getNext()]) ?>">Next</a></button></tr>
+        <tr><button><a style="<?php ($this->pager->getEnd()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->pager->getEnd()]) ?>">End</a></button>
     </tr>
 
     <tr>
-        <td colspan="17"><b>Customer Information</b></td>
+        <td colspan="6"><b>Personal Information</b></td>
+        <td colspan="5"><b>Billing Address</b></td>
+        <td colspan="5"><b>Shipping Address</b></td>
+        <td colspan="5"><b>Date & Action</b></td>
     </tr>
 
     <tr>
@@ -62,8 +64,11 @@
         <th>City</th>
         <th>State</th>
         <th>Country</th>
-        <th>Billing</th>
-        <th>Shipping</th>
+        <th>Address</th>
+        <th>Postal Code</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Country</th>
         <th>Created Date</th>
         <th>Updated Date</th>
         <th>Edit</th>
@@ -82,13 +87,18 @@
                 <td><?php echo $customer->email      ?></td>
                 <td><?php echo $customer->mobile     ?></td>
                 <td><?php echo $customer->getStatus($customer->status) ?></td>
-                <td><?php echo $customer->address    ?></td>
-                <td><?php echo $customer->postalCode ?></td>
-                <td><?php echo $customer->city       ?></td>
-                <td><?php echo $customer->state      ?></td>
-                <td><?php echo $customer->country    ?></td>
-                <td><?php echo $customer->billing    ?></td>
-                <td><?php echo $customer->shipping   ?></td>
+                <?php $billingAddress = $customer->getBillingAddresses();?>
+                <td><?php echo $billingAddress->address    ?></td>
+                <td><?php echo $billingAddress->postalCode ?></td>
+                <td><?php echo $billingAddress->city       ?></td>
+                <td><?php echo $billingAddress->state      ?></td>
+                <td><?php echo $billingAddress->country    ?></td>
+                <?php $shippingAddress = $customer->getShippingAddresses();?>
+                <td><?php echo $shippingAddress->address    ?></td>
+                <td><?php echo $shippingAddress->postalCode ?></td>
+                <td><?php echo $shippingAddress->city       ?></td>
+                <td><?php echo $shippingAddress->state      ?></td>
+                <td><?php echo $shippingAddress->country    ?></td>     
                 <td><?php echo $customer->createdDate?></td>
                 <td><?php echo $customer->updatedDate?></td>
                 <td><a href="<?php echo $this->getUrl('edit', null, ['id' => $customer->customerId], true)?>">Edit</a></td>
