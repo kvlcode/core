@@ -14,7 +14,7 @@ class Block_Core_Layout_Header_Message extends Block_Core_Template{
 		return $messages;
 	}
 
-	public function unsetMessages()
+	public function unsetMessage()
 	{
 		Ccc::getModel('Admin_Message')->unsetMessages();
 	}

@@ -1,18 +1,18 @@
 <?php
  Ccc::loadClass('Model_Core_Row');
 class Model_Category extends Model_Core_Row{
-
+	
+	const STATUS_ENABLED = 1;
+	const STATUS_DISABLED = 2;
+	const STATUS_DISABLED_DEFAULT = 1;
+	const STATUS_ENABLED_LBL = 'Enabled';
+	const STATUS_DISABLED_LBL = 'Disabled';
 	protected $small;
 	protected $thumbnail;
 	protected $base;
 	protected $gallery;
 	protected $media;
 
-	const STATUS_ENABLED = 1;
-	const STATUS_DISABLED = 2;
-	const STATUS_DISABLED_DEFAULT = 1;
-	const STATUS_ENABLED_LBL = 'Enabled';
-	const STATUS_DISABLED_LBL = 'Disabled';
 
 	public function __construct()
 	{	

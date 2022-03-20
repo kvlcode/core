@@ -30,7 +30,7 @@
         </script>   
 
         <select onchange="count()" id="count">
-            <option selected>select</option>
+            <option>select</option>
             <?php foreach($this->getPager()->getPerPageCountOption() as $perPageCount) :?>  
                 <option value="<?php echo $perPageCount ?>"><?php echo $perPageCount ?></a></option>
             <?php endforeach;?>

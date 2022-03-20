@@ -17,7 +17,7 @@ class Model_Core_Row{
 
 	public function setData(array $data)
 	{
-		$this->data = $data;
+		$this->data = array_merge($this->data, $data);
 		return $this;
 	}
 
@@ -40,7 +40,8 @@ class Model_Core_Row{
 
 	public function __get($key)
 	{
-		if (!array_key_exists($key, $this->data)) {
+		if (!array_key_exists($key, $this->data)) 
+		{
 			return null;
 		}
 		return $this->data[$key];
@@ -48,8 +49,8 @@ class Model_Core_Row{
 
 	public function __unset($key)
 	{	
-		if (array_key_exists($key, $this->data)) {
-			
+		if (array_key_exists($key, $this->data)) 
+		{	
 			unset($this->data[$key]);	
 		}
 		return null;
@@ -64,12 +65,13 @@ class Model_Core_Row{
 	public function fetchAll($query)
 	{
 		$rows = $this->getResource()->fetchAll($query);
-		if (!$rows) {
+		if (!$rows) 
+		{
 			return false;
 		}
-		foreach ($rows as &$row) {
+		foreach ($rows as &$row) 
+		{
 			$row = (new $this())->setData($row);
-
 		}
 		return $rows;		
 	}
@@ -77,7 +79,8 @@ class Model_Core_Row{
 	public function fetchRow($query)
 	{
 		$row = $this->getResource()->fetchRow($query);
-		if (!$row) {
+		if (!$row) 
+		{
 			return false;
 		}
 		$row = (new $this())->setData($row);
@@ -92,29 +95,29 @@ class Model_Core_Row{
 
 	public function save($column = null)
 	{
-		if (!$column) {
+		if (!$column) 
+		{
 			$column = $this->getResource()->getPrimaryKey();
 		}	
 
-		if (array_key_exists($column, $this->data)) {
-	
+		if (array_key_exists($column, $this->data)) 
+		{
 			$id = $this->data[$column];
-			$result = $this->getResource()->update($this->data, [$column => $id]);
+			$this->getResource()->update($this->data, [$column => $id]);
 		}
-		else{
-			
-			$result = $this->getResource()->insert($this->data);
+		else
+		{	
+			$id = $this->getResource()->insert($this->data);
 		}
-		return $result;
-
+		return $this->load($id);
 	}
 
 	public function load($id, $column = null)
 	{
-		if ($column == null) {
+		if ($column == null) 
+		{
 			$column = $this->getResource()->getPrimaryKey();
 		}
 		return $this->fetchRow("SELECT * FROM {$this->getResource()->getResourceName()} WHERE {$column} = '{$id}'");
 	}
-
 }

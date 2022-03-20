@@ -1,5 +1,5 @@
 <?php $vendor = $this->getVendor();?>
-<?php $vendorAddress = $vendor->getVendorAddress();?>
+<?php $vendorAddress = $vendor->getAddress();?>
 
 	<form method="Post" action="<?php echo $this->getUrl('save', null, ['id' => $vendor->vendorId], true)?>">
 		<table border="1" width="100%" cellspacing="4">

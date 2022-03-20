@@ -1,18 +1,16 @@
 <?php $pages = $this->getPages();?>
 
 <button type="button" name="addNew"><a href="<?php echo $this->getUrl('edit', null, ['p' => $this->pager->getCurrent()])?>"> Add New </a></button>
-
-<form method="post" action="<?php echo $this->getUrl('deleteAll', 'page')?>">
-    <input type="submit" value="Delete">
     <table border="1" width="100%" cellspacing="4">
         <tr>
-            <script type="text/javascript"> function count() 
-              {
-                const countValue = document.getElementById('count').selectedOptions[0].value;
+            <script type="text/javascript"> 
+            function count() 
+            {
+                const countValue = document.getElementById('ppr').selectedOptions[0].value;
                 let language = window.location.href;
-                if(!language.includes('count'))
+                if(!language.includes('ppr'))
                 {
-                    language+='&count=20';
+                    language+='&ppr=20';
                 }
                 const myArray = language.split("&");
                 for (i = 0; i < myArray.length; i++)
@@ -21,20 +19,20 @@
                   {
                       myArray[i]='p=1';
                   }
-                  if(myArray[i].includes('count='))
+                  if(myArray[i].includes('ppr='))
                   {
-                      myArray[i]='count='+countValue;
+                      myArray[i]='ppr='+countValue;
                   }
                 }
-                 const str = myArray.join("&");  
-                 location.replace(str);
-              }
-            </script>   
+                const str = myArray.join("&");  
+                location.replace(str);
+            }
 
-            <select onchange="count()" id="count">
-                <option selected>select</option>
+            </script>   
+            <select onchange="count()" id="ppr">
+                <option>select</option>
                 <?php foreach($this->getPager()->getPerPageCountOption() as $perPageCount) :?>  
-                    <option value="<?php echo $perPageCount ?>"><?php echo $perPageCount ?></a></option>
+                    <option value="<?php echo $perPageCount ?>"><?php echo $perPageCount ?></option>
                 <?php endforeach;?>
             </select>
         </tr>
@@ -47,10 +45,10 @@
             <tr><button><a style="<?php ($this->pager->getEnd()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->pager->getEnd()]) ?>">End</a></button>
         </tr>
         <tr>
-           <td colspan="9"><b>page Information</b></td>
+           <td colspan="9"><b>Page Information</b></td>
         </tr>
         <tr>
-            <th><input type="checkbox" name="checkAll" value="">Select</th>
+            <th><input type="checkbox" name="main" value="">Select</th>
             <th>Page Id</th>
             <th>Name</th>
             <th>Code</th>
@@ -84,4 +82,4 @@
             <?php endforeach; ?>
         <?php endif; ?> 
     </table>
-</form>
+

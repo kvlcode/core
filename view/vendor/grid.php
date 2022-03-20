@@ -3,31 +3,6 @@
 <button name="Add"><a href="<?php echo $this->getUrl('edit')?>">Add</a></button>
 <table border='1' class="table" width='100%' cellspacing="4">
     <tr>
-        <script type="text/javascript"> function count() 
-          {
-            const countValue = document.getElementById('count').selectedOptions[0].value;
-            let language = window.location.href;
-            if(!language.includes('count'))
-            {
-                language+='&count=20';
-            }
-            const myArray = language.split("&");
-            for (i = 0; i < myArray.length; i++)
-            {
-              if(myArray[i].includes('p='))
-              {
-                  myArray[i]='p=1';
-              }
-              if(myArray[i].includes('count='))
-              {
-                  myArray[i]='count='+countValue;
-              }
-            }
-             const str = myArray.join("&");  
-             location.replace(str);
-          }
-        </script>   
-
         <select onchange="count()" id="count">
             <option selected>select</option>
             <?php foreach($this->getPager()->getPerPageCountOption() as $perPageCount) :?>  
@@ -78,7 +53,7 @@
                 <td><?php echo $vendor->email      ?></td>
                 <td><?php echo $vendor->mobile     ?></td>
                 <td><?php echo $vendor->getStatus($vendor->status) ?></td>
-                <?php $address = $vendor->getVendorAddress();?>
+                <?php $address = $vendor->getAddress();?>
                 <td><?php echo $address->address    ?></td>
                 <td><?php echo $address->postalCode ?></td>
                 <td><?php echo $address->city       ?></td>
@@ -91,5 +66,29 @@
             </tr>
         <?php endforeach; ?>
     <?php endif; ?>
-
 </table>
+<script type="text/javascript"> 
+    function count() 
+    {
+        const countValue = document.getElementById('count').selectedOptions[0].value;
+        let language = window.location.href;
+        if(!language.includes('count'))
+        {
+            language+='&count=20';
+        }
+        const myArray = language.split("&");
+        for (i = 0; i < myArray.length; i++)
+        {
+          if(myArray[i].includes('p='))
+          {
+            myArray[i]='p=1';
+          }
+          if(myArray[i].includes('count='))
+          {
+            myArray[i]='count='+countValue;
+          }
+        }
+         const str = myArray.join("&");  
+         location.replace(str);
+      }
+</script> 

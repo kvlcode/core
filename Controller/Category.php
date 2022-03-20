@@ -22,15 +22,15 @@ class Controller_Category extends Controller_Core_Action{
 
 	public function editAction()
 	{	
-		try {
-
-			if ((int) $this->getRequest()->getRequest('id')) {
+		try 
+		{
+			if ((int) $this->getRequest()->getRequest('id')) 
+			{
 				$this->setTitle('Category Edit');
 				$id = (int) $this->getRequest()->getRequest('id');
 				$categoryRow = Ccc::getModel('Category')->load($id);
-				
-				if (!$categoryRow) {
-					$this->getMessage()->addMessage("Unable to Load Data", Model_Admin_Message::ERROR);
+				if (!$categoryRow) 
+				{
 					throw new Exception("Unable to Load Data", 1);	
 				}
 			}
@@ -46,6 +46,7 @@ class Controller_Category extends Controller_Core_Action{
 		}
 		catch (Exception $e) 
 		{
+			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);	
 			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}	
 
@@ -58,11 +59,10 @@ class Controller_Category extends Controller_Core_Action{
 			$category = $this->getRequest()->getPost('category');	
 			$categoryModel = Ccc::getModel('Category');
 			$categoryModel->setData($category);
-			
 			$date =date('y-m-d h:m:s');
 			if($category['categoryId'] != null){
-
-				if (!(int)$category['categoryId']) {
+				if (!(int)$category['categoryId']) 
+				{
 					$this->getMessage()->addMessage("Invalid Request.", Model_Admin_Message::ERROR);
 					throw new Exception("Invalid Request", 1);	
 				}
@@ -73,11 +73,10 @@ class Controller_Category extends Controller_Core_Action{
 				$oldPathString = $oldPath->path;
 
 				$samePath = $categoryModel->fetchAll("SELECT path, parentId FROM `categories` WHERE path LIKE '%$oldPathString%'");
-
-				if ($samePath) {
-		
-					foreach ($samePath as $key => $value) {
-									
+				if ($samePath) 
+				{
+					foreach ($samePath as $key => $value) 
+					{				
 						$parentId = $value->parentId;
 						$samePath2 = explode("/", $value->path);
 						unset($samePath2[0]);
@@ -97,8 +96,8 @@ class Controller_Category extends Controller_Core_Action{
 				$categoryModel->updatedDate = date('Y-m-d H:i:s');
 				unset($categoryModel->parentPath);
 				$update = $categoryModel->save();
-				if (!$update) {
-					$this->getMessage()->addMessage("System can't update.", Model_Admin_Message::ERROR);	
+				if (!$update)
+				{
 					throw new Exception("System can't update", 1);
 				}
 				$this->getMessage()->addMessage('Data Updated.');	
@@ -109,45 +108,44 @@ class Controller_Category extends Controller_Core_Action{
 				$categoryModel->createdDate = date('Y-m-d H:i:s');
 				$path = $categoryModel->path;
 				unset($categoryModel->categoryId);
-
 				$insertId = $categoryModel->save();
 				$modelPath = Ccc::getModel('Category')->load($path, 'name');
 				$categoryModel->categoryId = $insertId;
 				
-				if ($categoryModel->path == '0') {
+				if ($categoryModel->path == '0') 
+				{
 					$categoryModel->path = $insertId;
 					$categoryModel->save();	
 				}
-				else{
-
+				else
+				{
 					$categoryModel->path = $modelPath->path."/".$insertId;
 					$pathArray = explode("/", $modelPath->path);   			 
 					$categoryModel->parentId = array_pop($pathArray);    // parentId of new element
 					$insert = $categoryModel->save();
-					if (!$insert) {
-						$this->getMessage()->addMessage("System can't insert.", Model_Admin_Message::ERROR);	
-						throw new Exception("System can't update", 1);
+					if (!$insert) 
+					{
+						throw new Exception("System can't insert", 1);
 					}
 					$this->getMessage()->addMessage('Data Inserted.');
-
 				}
 			}
 				
 			$this->redirect($this->getView()->getUrl(null, null, null, true));	
 		}
 		catch (Exception $e){
+			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);
 			$this->redirect($this->getView()->getUrl(null, null, null, true));	
 		}	
 	}
 
 	public function deleteAction()
 	{
-		try{	
-			
+		try
+		{		
 			$id = $this->getRequest()->getRequest('id');
-
-			if (!$id) {
-				$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);	
+			if (!$id) 
+			{
 				throw new Exception("Invalid Request.", 1);
 			}
 			
@@ -156,7 +154,6 @@ class Controller_Category extends Controller_Core_Action{
 		
 			if(!$delete)
 			{
-				$this->getMessage()->addMessage("System can't delete record.", Model_Admin_Message::ERROR);	
 				throw new Exception("System can't delete record.", 1);							
 			}
 			$this->getMessage()->addMessage('Data Deleted.');
@@ -164,11 +161,9 @@ class Controller_Category extends Controller_Core_Action{
 		
 		}
 		catch (Exception $e) 
-		{		
+		{	
+			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);	
 			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}	
 	}
-
 }
-
-?>

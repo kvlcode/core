@@ -71,7 +71,28 @@ class Ccc{
 	public static function init()
 	{
 			self::getFront()->init();
+	}
+
+	public static function getPath($subPath = null)
+	{
+		$path = getcwd().DIRECTORY_SEPARATOR;
+		if ($subPath) {
+			return $path.$subPath;
+		}
+		return $path;
+	}
+
+	public static function getBaseUrl($subUrl = null)
+	{
+		$url = self::getConfig('baseUrl');
+		if ($subUrl) {
+			return $url.$subUrl;
+		}
+		return $url;
 	}	
+
+
+
 }
 
 Ccc::init();

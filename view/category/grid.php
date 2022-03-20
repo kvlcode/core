@@ -2,33 +2,7 @@
 
 <button type="button" name="addNew"><a href="<?php echo $this->getUrl('edit')?>"> Add New </a></button>
 <table border="1" width="100%" cellspacing="4">
-
 	<tr>
-    <script type="text/javascript"> function count() 
-      {
-        const countValue = document.getElementById('count').selectedOptions[0].value;
-        let language = window.location.href;
-        if(!language.includes('count'))
-        {
-            language+='&count=20';
-        }
-        const myArray = language.split("&");
-        for (i = 0; i < myArray.length; i++)
-        {
-          if(myArray[i].includes('p='))
-          {
-              myArray[i]='p=1';
-          }
-          if(myArray[i].includes('count='))
-          {
-              myArray[i]='count='+countValue;
-          }
-        }
-        const str = myArray.join("&");  
-        location.replace(str);
-      }
-    </script>   
-
     <select onchange="count()" id="count">
         <option selected>select</option>
         <?php foreach($this->getPager()->getPerPageCountOption() as $perPageCount) :?>  
@@ -83,4 +57,30 @@
 			</tr>
 		<?php endforeach; ?>
 	<?php endif; ?>	
-</table> 
+</table>
+
+<script type="text/javascript"> 
+	function count() 
+	{
+    const countValue = document.getElementById('count').selectedOptions[0].value;
+    let language = window.location.href;
+    if(!language.includes('count'))
+    {
+        language+='&count=20';
+    }
+    const myArray = language.split("&");
+    for (i = 0; i < myArray.length; i++)
+    {
+      if(myArray[i].includes('p='))
+      {
+          myArray[i]='p=1';
+      }
+      if(myArray[i].includes('count='))
+      {
+          myArray[i]='count='+countValue;
+      }
+    }
+    const str = myArray.join("&");  
+    location.replace(str);
+  }
+</script>   

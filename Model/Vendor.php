@@ -2,18 +2,17 @@
 Ccc::loadClass('Model_Core_Row');
 class Model_Vendor extends Model_Core_Row{
 
+	const STATUS_ENABLED = 1;
+	const STATUS_DISABLED = 2;
+	const STATUS_DISABLED_DEFAULT = 1;
+	const STATUS_ENABLED_LBL = 'Enabled';
+	const STATUS_DISABLED_LBL = 'Disabled';
 	protected $vendorAddress = null;
 
 	public function __construct()
 	{	
 		$this->setResourceClassName('Vendor_Resource');
 	}
-
-	const STATUS_ENABLED = 1;
-	const STATUS_DISABLED = 2;
-	const STATUS_DISABLED_DEFAULT = 1;
-	const STATUS_ENABLED_LBL = 'Enabled';
-	const STATUS_DISABLED_LBL = 'Disabled';
 
 	public function getStatus($key = NULL)
 	{
@@ -30,13 +29,13 @@ class Model_Vendor extends Model_Core_Row{
 		return self::STATUS_DISABLED_DEFAULT;
 	}
 
-	public function setVendorAddress($vendorAddress)
+	public function setAddress(Model_Vendor_Address $vendorAddress)
 	{
 		$this->vendorAddress = $vendorAddress;
 		return $this;
 	}
 
-	public function getVendorAddress($reload = false)
+	public function getAddress($reload = false)
 	{
 		$addressModel = Ccc::getModel('Vendor_Address');
 		if (!$this->vendorId) 
@@ -53,7 +52,7 @@ class Model_Vendor extends Model_Core_Row{
 		{
 			return $addressModel;
 		}
-		$this->setVendorAddress($address);
+		$this->setAddress($address);
 		return $address;
 		
 	}

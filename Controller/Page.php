@@ -22,19 +22,20 @@ class Controller_Page extends Controller_Core_Action{
 
 	public function editAction()
 	{
-		try {
-			
-			if ((int) $this->getRequest()->getRequest('id')) {
+		try 
+		{	
+			if ((int) $this->getRequest()->getRequest('id')) 
+			{
 				$this->setTitle('Page Edit');
 				$id = (int)$this->getRequest()->getRequest('id');
-				if (!$id) {
-					$this->getMessage()->addMessage("Invalid request.", Model_Core_Message::ERROR);
+				if (!$id) 
+				{
 					throw new Exception("Invalid request.", 1);
 				}
 
 				$page = Ccc::getModel('Page')->load($id);
-				if (!$page) {
-					$this->getMessage()->addMessage("Unable to load.", Model_Core_Message::ERROR);
+				if (!$page) 
+				{
 					throw new Exception("Unable to load.", 1);
 				}
 			}
@@ -48,10 +49,10 @@ class Controller_Page extends Controller_Core_Action{
 			$content = $this->getLayout()->getContent();
 			$content->addChild($pageEdit);
 			$this->renderLayout();
-
 		}
 		catch (Exception $e)
 		{
+			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);	
 			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}
 	}
@@ -61,11 +62,9 @@ class Controller_Page extends Controller_Core_Action{
 		try
 		{
 			$pageData = $this->getRequest()->getPost('page');
-
-			if (!isset($pageData)) {
-				$this->getMessage()->addMessage("Unable to load data.", Model_Core_Message::ERROR);
+			if (!isset($pageData)) 
+			{
 				throw new Exception("Unable to load data.", 1);
-				
 			}
 
 			$pageModel = Ccc::getModel('Page');
@@ -83,42 +82,41 @@ class Controller_Page extends Controller_Core_Action{
 			}
 
 			$saveId = $pageModel->save();
-			if (!$saveId) {
-				$this->getMessage()->addMessage("System can't save data.", Model_Core_Message::ERROR);
+			if (!$saveId) 
+			{
 				throw new Exception("Sustem can't' save data.", 1);
 			}
 			$this->getMessage()->addMessage('Data Saved successfully.');
-
 			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}
 		catch (Exception $e) 
 		{	
+			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);		
 			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}
 	}
 
-
 	public function deleteAction()
 	{
-		try {
-			
+		try 
+		{	
 			$id = $this->getRequest()->getRequest('id');
-			if (!$id) {
-				$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);
-				throw new Exception("Invalid Request.", 1);
-				
+			if (!$id) 
+			{
+				throw new Exception("Invalid Request.", 1);		
 			}
 
 			$pageModel = Ccc::getModel('Page');
 			$delete = $pageModel->delete($id);
-         	if (!$delete) {
-				$this->getMessage()->addMessage("System can't delete.", Model_Core_Message::ERROR);
+         	if (!$delete) 
+         	{
          		throw new Exception("System can't delete.", 1);
          	}
          	$this->getMessage()->addMessage('Data Deleted.', Model_Core_Message::SUCCESS);
       		$this->redirect($this->getView()->getUrl(null, null, null, true));
 
 		} catch (Exception $e) {
+			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);	
 			$this->redirect($this->getView()->getUrl(null, null, null, true));
 		}
 	}

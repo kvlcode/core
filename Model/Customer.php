@@ -2,16 +2,16 @@
 Ccc::loadClass('Model_Core_Row');
 class Model_Customer extends Model_Core_Row{
 
-	protected $billingAddress = null;
-	protected $shippingAddress = null;
-	protected $salesman = null;
-
 	const STATUS_ENABLED = 1;
 	const STATUS_DISABLED = 2;
 	const STATUS_DISABLED_DEFAULT = 1;
 	const STATUS_ENABLED_LBL = 'Enabled';
 	const STATUS_DISABLED_LBL = 'Disabled';
+	protected $billingAddress = null;
+	protected $shippingAddress = null;
+	protected $salesman = null;
 
+	
 	public function __construct()
 	{	
 		$this->setResourceClassName('Customer_Resource');

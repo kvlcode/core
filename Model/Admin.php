@@ -2,6 +2,11 @@
  Ccc::loadClass('Model_Core_Row');
 class Model_Admin extends Model_Core_Row{
 
+	const STATUS_ENABLED = 1;
+	const STATUS_DISABLED = 2;
+	const STATUS_DISABLED_DEFAULT = 1;
+	const STATUS_ENABLED_LBL = 'Enabled';
+	const STATUS_DISABLED_LBL = 'Disabled';
 	protected $login = [];
 
 	public function setLogin($login)
@@ -14,12 +19,6 @@ class Model_Admin extends Model_Core_Row{
 	{
 		return $this->login;	
 	}
-
-	const STATUS_ENABLED = 1;
-	const STATUS_DISABLED = 2;
-	const STATUS_DISABLED_DEFAULT = 1;
-	const STATUS_ENABLED_LBL = 'Enabled';
-	const STATUS_DISABLED_LBL = 'Disabled';
 
 	public function __construct()
 	{	

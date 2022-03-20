@@ -2,6 +2,8 @@
 Ccc::loadClass('Model_Core_Row');
 class Model_Customer_Address extends Model_Core_Row{
 
+	const BILLING = 1;
+	const SHIPPING = 1;
 	protected $customer = null;
 
 	public function __construct()

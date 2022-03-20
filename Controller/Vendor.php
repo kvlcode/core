@@ -24,17 +24,18 @@ class Controller_Vendor extends Controller_Core_Action{
 	{	
 		try 
 		{
-			if ((int) $this->getRequest()->getRequest('id')) {	
+			if ((int) $this->getRequest()->getRequest('id')) 
+			{	
 				$this->setTitle('Vendor Edit');
 				$id = (int)$this->getRequest()->getRequest('id');
-				if (!$id) {
-					$this->getMessage()->addMessage("Invalid Id.", Model_Core_Message::ERROR);
+				if (!$id) 
+				{
 					throw new Exception("Invalid Id.", 1);
 				}
 				$vendorModel =  Ccc::getModel('Vendor');
 				$vendor = $vendorModel->load($id);
-				if (!$vendor) {
-					$this->getMessage()->addMessage("Unable to Load.", Model_Core_Message::ERROR);
+				if (!$vendor) 
+				{
 					throw new Exception("Unable to Load.", 1);	
 				}
 			}
@@ -49,70 +50,66 @@ class Controller_Vendor extends Controller_Core_Action{
 			$content->addChild($vendorEdit);
 			$this->renderLayout();	
 		} 
-		catch (Exception $e) {
+		catch (Exception $e) 
+		 {
+			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);	
 			$this->redirect($this->getView()->getUrl(null, null, null, true));	
-
 		}
-
 	}
 
 	public function saveVendor()
 	{		 
 		$vendorData = $this->getRequest()->getPost('vendor');
-		if (!$vendorData) {
-			$this->getMessage()->addMessage("Missing Vendor data in request.", Model_Core_Message::ERROR);
+		if (!$vendorData) 
+		{
 			throw new Exception("Missing Vendor data in request.", 1);
 		}
 		
 		$vendorModel = Ccc::getModel('Vendor');
 		$vendorModel->setData($vendorData);
 		$vendorId = (int)$this->getRequest()->getRequest('id');
-		if ($vendorId) 
+		if($vendorId) 
 		{
 			$vendorModel->updatedDate = date('Y-m-d H:i:s');
-			$vendorModel->vendorId = $vendorId;	
-			$update = $vendorModel->save();
-			if (!$update) {
-				$this->getMessage()->addMessage("System can't update vendor data.", Model_Core_Message::ERROR);
-		        throw new Exception("System can't update vendor data.", 1);    	
-		    }    
+			$vendorModel->vendorId = $vendorId;	  
 		}
 		else
 		{
 			$vendorModel->createdDate = date('Y-m-d H:i:s');
-			$vendorId = $vendorModel->save();
-			if (!$vendorId) {
-				$this->getMessage()->addMessage("System can't save vendor data.", Model_Core_Message::ERROR);
-		        throw new Exception("System can't save vendor data.", 1);    	
-		    }        		
 		}
-		return $vendorId;
+			
+		$vendorRow = $vendorModel->save();
+		if (!$vendorRow) 
+		{
+	        throw new Exception("System can't save vendor data.", 1);    	
+	    }        		
+		return $vendorRow;
 	}
 
-	public function saveAddress($vendorId)
+	public function saveAddress($vendorRow)
 	{	
 		$addressData = $this->getRequest()->getPost('address');
-		if(!$addressData){
-			$this->getMessage()->addMessage("Missing Address data in Request.", Model_Core_Message::ERROR);
+		if(!$addressData)
+		{
 			throw new Exception("Missing Address data in Request.", 1);	
 		}
 		
 		$addressModel = Ccc::getModel('Vendor_Address');
-		$addressModel->setData($addressData);	
-		$addressRow = $addressModel->load($vendorId, 'vendorId');
-	
-		if ($addressRow) 
+		$addressModel->setData($addressData);
+		$addressRow = $vendorRow->getAddress();
+
+		if($addressRow->addressId) 
 		{
 			$addressModel->addressId = $addressRow->addressId;	
 		}
 		else
 		{
-			$addressModel->vendorId = $vendorId;
+			$addressModel->vendorId = $vendorRow->vendorId;
 		}
 
 		$saveId = $addressModel->save();
-		if (!$saveId) {
-			$this->getMessage()->addMessage("System can't save address.", Model_Core_Message::ERROR);
+		if (!$saveId) 
+		{
 	        throw new Exception("System can't save address", 1);       	
 	    }
 		$this->getMessage()->addMessage('Data saved successfully.');
@@ -120,50 +117,41 @@ class Controller_Vendor extends Controller_Core_Action{
 
 	public function saveAction()
 	{
-		try{
-			
-			$vendorId = $this->saveVendor();
-			$this->saveAddress($vendorId);
+		try
+		{
+			$vendorRow = $this->saveVendor();
+			$this->saveAddress($vendorRow);
 			$this->redirect($this->getView()->getUrl(null, null, null, true));
-
-	    }catch(Exception $e){
+	    }
+	    catch(Exception $e)
+	    {
+			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
 	    	$this->redirect($this->getView()->getUrl(null, null, null, true));	
 	    }
 	}    	
 
 	public function deleteAction()
 	{
-		
-		try {
-	
+		try 
+		{
 			$id = $this->getRequest()->getRequest('id');
-			if (!isset($id)) {
-				$this->getMessage()->addMessage("Invalid Request.", Model_Core_Message::ERROR);
+			if (!$id) {
 				throw new Exception("Invalid Request.", 1);
 			}
 			
 			$vendorModel = Ccc::getModel('Vendor');
-			$delete = $vendorModel->delete($id); 
-	
+			$delete = $vendorModel->delete($id); 	
 			if(!$delete)
 			{
-				$this->getMessage()->addMessage("System can't delete record.", Model_Core_Message::ERROR);
 				throw new Exception("System can't delete record.", 1);
 			}
 			$this->getMessage()->addMessage('Data Deleted.', Model_Core_Message::SUCCESS);
-			$this->redirect($this->getView()->getUrl(null, null, null, true));	
-				
-		} catch (Exception $e) {	
+			$this->redirect($this->getView()->getUrl(null, null, null, true));			
+		} 
+		catch (Exception $e) 
+		{
+			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);		
 			$this->redirect($this->getView()->getUrl(null, null, null, true));	
 		}
-
 	}
-
-	public function errorAction()
-	{
-		echo "Error...";
-	}
-
 }
-
-?>
