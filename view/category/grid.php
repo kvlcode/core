@@ -48,9 +48,9 @@
 				<td><?php echo $category->getStatus($category->status) ?></td>
 				<td><?php echo $category->createdDate ?></td>
 				<td><?php echo $category->updatedDate ?></td>
-				<td><img src="<?php echo 'Media/Category/'.$category->getBase()->name;?>" width = "50px" hieght = "50px" alt = "Image not found"></td>
-				<td><img src="<?php echo 'Media/Category/'.$category->getThumbnail()->name;?>" width = "50px" hieght = "50px" alt = "Image not found"></td>
-				<td><img src="<?php echo 'Media/Category/'.$category->getSmall()->name;?>" width = "50px" hieght = "50px" alt = "Image not found"></td>
+        <td><img src="<?php echo $category->getBase()->getImageUrl(); ?>" width = "50px" height = "50px" alt = "Image not found"></td>
+        <td><img src="<?php echo $category->getThumbnail()->getImageUrl();?>" width = "50px" height = "50px" alt = "Image not found"></td>
+        <td><img src="<?php echo $category->getSmall()->getImageUrl(); ?>" width = "50px" height = "50px" alt = "Image not found"></td>
 				<td><a href="<?php echo $this->getUrl('edit', null, ['id' => $category->categoryId], true)?>">Edit</a></td>
 				<td><a href="<?php echo $this->getUrl('delete', null, ['id' => $category->categoryId], true)?>">Delete</a></td>
 				<td><a href="<?php echo $this->getUrl('grid', 'category_media', ['id' => $category->categoryId]);?>">Media</a></td>

@@ -63,7 +63,6 @@ class Controller_Category extends Controller_Core_Action{
 			if($category['categoryId'] != null){
 				if (!(int)$category['categoryId']) 
 				{
-					$this->getMessage()->addMessage("Invalid Request.", Model_Admin_Message::ERROR);
 					throw new Exception("Invalid Request", 1);	
 				}
 

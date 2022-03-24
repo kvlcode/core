@@ -59,9 +59,9 @@
                 <td><?php echo $product->createdDate ?></td>
                 <td><?php echo $product->updatedDate ?></td>
                 
-                <td> <img src="<?php echo 'Media/Product/'.$product->getBase()->name; ?>" width = "50px" hieght = "50px" alt = "Image not found"></td>
-                <td><img src="<?php echo 'Media/Product/'.$product->getThumbnail()->name; ?>" width = "50px" hieght = "50px" alt = "Image not found"></td>
-                <td><img src="<?php echo 'Media/Product/'.$product->getSmall()->name ?>" width = "50px" hieght = "50px" alt = "Image not found"></td>
+                <td><img src="<?php echo $product->getBase()->getImageUrl(); ?>" width = "50px" height = "50px" alt = "Image not found"></td>
+                <td><img src="<?php echo $product->getThumbnail()->getImageUrl();?>" width = "50px" height = "50px" alt = "Image not found"></td>
+                <td><img src="<?php echo $product->getSmall()->getImageUrl(); ?>" width = "50px" height = "50px" alt = "Image not found"></td>
                 <td><a href="<?php echo $this->getUrl('edit', null, ['id' =>  $product->productId], true)?>">Edit</a></td>
                 <td><a href="<?php echo $this->getUrl('delete', null, ['id' => $product->productId], true);?>">Delete</a></td>
                 <td><a href="<?php echo $this->getUrl('grid', 'product_media', ['id' => $product->productId]);?>">Media</a></td>

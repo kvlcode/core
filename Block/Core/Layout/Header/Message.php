@@ -1,22 +1,18 @@
-<?php
-Ccc::loadClass('Block_Core_Template');
-
-class Block_Core_Layout_Header_Message extends Block_Core_Template{
-
+<?php Ccc::loadClass('Block_Core_Template'); ?>
+<?php 
+class Block_Core_Layout_Header_Message extends Block_Core_Template
+{
 	public function __construct()
 	{
-		$this->setTemplate('view/core/layout/header/message.php');
+		$this->setTemplate('view/Core/Layout/Header/message.php');
 	}
 
-	public function getMessages()
+	public function getMessage()
 	{
-		$messages = Ccc::getModel('Admin_Message')->getMessages();
-		return $messages;
-	}
-
-	public function unsetMessage()
-	{
-		Ccc::getModel('Admin_Message')->unsetMessages();
-	}
+		$message = Ccc::getModel('Admin_Message');
+		return $message;
+	}	
 
 }
+
+

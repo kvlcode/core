@@ -34,13 +34,16 @@ class Ccc{
 		return null;
 	}
 
-	public static function getConfig()
+	public static function getConfig($key)
 	{
 		if (!($config = self::getRegistry('config'))) {
 			$config = self::loadFile('etc/config.php');
-			self::register('çonfig', $config);
+			self::register('config', $config);
 		}
-		return $config;
+		if (array_key_exists($key, $config)) {
+			return $config[$key];
+		}
+		return null;
 	}
 
 	public static function loadFile($path)
@@ -90,9 +93,6 @@ class Ccc{
 		}
 		return $url;
 	}	
-
-
-
 }
 
 Ccc::init();

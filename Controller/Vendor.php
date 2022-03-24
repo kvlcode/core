@@ -52,7 +52,7 @@ class Controller_Vendor extends Controller_Core_Action{
 		} 
 		catch (Exception $e) 
 		 {
-			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);	
+			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
 			$this->redirect($this->getView()->getUrl(null, null, null, true));	
 		}
 	}
@@ -150,7 +150,7 @@ class Controller_Vendor extends Controller_Core_Action{
 		} 
 		catch (Exception $e) 
 		{
-			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);		
+			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);		
 			$this->redirect($this->getView()->getUrl(null, null, null, true));	
 		}
 	}

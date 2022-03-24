@@ -12,6 +12,7 @@ class Model_Product extends Model_Core_Row{
 	protected $base;
 	protected $gallery;
 	protected $media;
+	
 
 	public function __construct()
 	{	
@@ -87,12 +88,13 @@ class Model_Product extends Model_Core_Row{
 		return $this->gallery;
 	}
 
-	public function setBase($base)		
+	public function setBase(Model_Product_Media $base)		
 	{
 		$this->base = $base;
 		return $this;
 	}
 
+	
 	public function getBase($reload = false)
 	{
 		$mediaModel = Ccc::getModel('Product_Media'); 
@@ -104,17 +106,16 @@ class Model_Product extends Model_Core_Row{
 		{
 			return $this->base;
 		}
-		$base = $mediaModel->fetchRow("SELECT * FROM `product_media` WHERE `productId` = $this->productId AND `base` = 1");
+		$base = $mediaModel->fetchRow("SELECT * FROM `product_media` WHERE `productId` = {$this->productId} AND `base` = 1");
 		if(!$base)
 		{
-			return null;
+			return $mediaModel;
 		}
 		$this->setBase($base);
-
 		return $this->base;
 	}
 
-	public function setSmall($small)		
+	public function setSmall(Model_Product_Media $small)		
 	{
 		$this->small = $small;
 		return $this;
@@ -131,17 +132,16 @@ class Model_Product extends Model_Core_Row{
 		{
 			return $this->small;
 		}
-		$small = $mediaModel->fetchRow("SELECT * FROM `product_media` WHERE `productId` = $this->productId AND `small` = 1");
+		$small = $mediaModel->fetchRow("SELECT * FROM `product_media` WHERE `productId` = {$this->productId} AND `small` = 1");
 		if(!$small)
 		{
-			return null;
+			return $mediaModel;
 		}
 		$this->setSmall($small);
-
 		return $this->small;
 	}
 
-	public function setThumbnail($thumbnail)		
+	public function setThumbnail(Model_Product_Media $thumbnail)		
 	{
 		$this->thumbnail = $thumbnail;
 		return $this;
@@ -158,12 +158,12 @@ class Model_Product extends Model_Core_Row{
 		{
 			return $this->thumbnail;
 		}
-		$thumbnail = $mediaModel->fetchRow("SELECT * FROM `product_media` WHERE `productId` = $this->productId AND `thumbnail` = 1");
+		$thumbnail = $mediaModel->fetchRow("SELECT * FROM `product_media` WHERE `productId` = {$this->productId} AND `thumbnail` = 1");
 		if(!$thumbnail)
 		{
 			return $mediaModel;
 		}
-
+		$this->setThumbnail($thumbnail);
 		return $thumbnail;
 	}
 

@@ -1,6 +1,7 @@
 <?php $customers = $this->getCustomers();?>
                       
-<button name="Add"><a href="<?php echo $this->getUrl('edit')?>">Add</a></button>
+<button name="Add Cart"><a href="<?php echo $this->getUrl('grid','cart'); ?>">Add Cart</a></button>                      
+<button name="Add"><a href="<?php echo $this->getUrl('edit')?>">Add Customer</a></button>
 <table border='1' class="table" width='100%' cellspacing="4">   
 
     <tr>
