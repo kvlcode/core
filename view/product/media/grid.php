@@ -43,7 +43,6 @@
 				<?php endif; ?>			
 			</table>
 	</form>
-	<br>
 	
 	<form method="POST" action="<?php echo $this->getUrl('save', 'product_media', ['id' =>  $id]);?>" enctype="multipart/form-data">
 		<table border="1" width="100%" cellspacing="4">

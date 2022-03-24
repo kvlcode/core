@@ -1,11 +1,11 @@
-<?php 
+<?php
 class Model_Core_Message{
 
-	const SUCCESS = "success";
+	protected $session = null; 
+
+	const SUCCESS = "sucess";
 	const ERROR = "error";
 	const WARNING = "warning";
-
-	protected $session = null; 
 
 	public function __construct()
 	{
@@ -37,13 +37,11 @@ class Model_Core_Message{
 		$messages = ($this->getSession()->messages) ? $this->getSession()->messages : [];
 		$messages[$type] = $message;
 		$this->getSession()->messages = $messages;
-		return $this;
+		return $this; 
 	}
 
 	public function unsetMessages()
 	{
 		unset($this->getSession()->messages);
 	}
-
-
 }

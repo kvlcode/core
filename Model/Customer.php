@@ -11,7 +11,6 @@ class Model_Customer extends Model_Core_Row{
 	protected $shippingAddress = null;
 	protected $salesman = null;
 
-	
 	public function __construct()
 	{	
 		$this->setResourceClassName('Customer_Resource');

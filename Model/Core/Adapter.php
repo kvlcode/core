@@ -4,6 +4,11 @@ class Model_Core_Adapter{
 	public $config=[];
 	private $connect=NULL;
 
+	public function __construct()
+	{
+		$this->setConfig(Ccc::getConfig('connection'));
+	}
+
 	public function setConfig($config)
 	{
 		$this->config=$config;
@@ -17,8 +22,6 @@ class Model_Core_Adapter{
 	
 	public function connect()
 	{
-		$this->config = Ccc::getConfig();
-		$this->config = $this->config['connection'];
 		$connect=mysqli_connect($this->config['host'],$this->config['username'],$this->config['password'],
 			$this->config['db_name']);
 		$this->setConnect($connect);

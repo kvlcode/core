@@ -19,9 +19,7 @@
 						<select name="category[parentPath]" class="form-control">
 							<?php foreach ($parentList as $key => $value): ?>
 								<?php $path = $this->path($parentList[$key]->path);?>
-
 								<option value="<?php echo $parentList[$key]->path; ?>"><?php echo $path;?></option>
-								
 							<?php endforeach;?>
 					    </select>
 					<?php else: ?>

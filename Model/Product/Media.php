@@ -39,6 +39,6 @@ class Model_Product_Media extends Model_Core_Row{
 
 	public function getImageUrl()
 	{
-		return Ccc::getPath();
+		return Ccc::getBaseUrl($this->path.'/'.$this->name);
 	}
 }
