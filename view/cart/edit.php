@@ -195,7 +195,7 @@
 				        <th>Action</th>
 				    </tr>
 
-				    <?php if(!$cartItems):?>
+				    <?php if(!$products):?>
 				        <tr>
 				            <td colspan="10">No record Available</td>
 				        </tr>   
@@ -262,7 +262,7 @@
 	</tr>
 </table>
 
-<form method="Post" action="<?php echo $this->getUrl('order')?>">
+<form method="Post" action="<?php echo $this->getUrl('save')?>">
 	<table border="1" cellspacing="4">
 		<tr>
 			<td>Sub Total:</td>
@@ -288,7 +288,8 @@
 
 		<tr>
 			<td>Grand Total:</td>
-			<td><?php echo $subTotal + $deliveryCharge + $totalTax - $finalDiscount;?></td>
+			<td><?php echo $grandTotal = $subTotal + $deliveryCharge + $totalTax - $finalDiscount;?></td>
+			<input type="hidden" name="total" value="<?php echo $grandTotal ?>">
 		</tr>	
 		<tr><td><input type="submit" name="Save" value="Place Order"></td></tr>
 

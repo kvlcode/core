@@ -19,11 +19,15 @@ class Controller_Customer_Price extends Controller_Core_Action{
 			$customerId = $this->getRequest()->getRequest('id');
 			$salesmanId = $this->getRequest()->getRequest('salesmanId');
 
-			foreach ($product as $key => $value) {				
+			foreach ($product as $key => $value) 
+			{				
 				$customerPrice = Ccc::getModel('Customer_Price');	
-				if($key == 'new'){
-					foreach ($value as $productId => $price) {
-						if ($price){
+				if($key == 'new')
+				{
+					foreach ($value as $productId => $price) 
+					{
+						if ($price)
+						{
 						 	$customerPrice->customerId = $customerId;
 							$customerPrice->productId = $productId;
 							$customerPrice->price = $price;
@@ -31,9 +35,10 @@ class Controller_Customer_Price extends Controller_Core_Action{
 						} 
 					}	
 				}
-				else{
-					
-					foreach ($value as $entityId => $price) {
+				else
+				{
+					foreach ($value as $entityId => $price) 
+					{
 						$customerPrice->price = $price;
 						$customerPrice->entityId = $entityId;
 						$save = $customerPrice->save(); 
@@ -42,15 +47,18 @@ class Controller_Customer_Price extends Controller_Core_Action{
 
 			}
 
-			if (!$save) {
-				$this->getMessage()->addMessage("System can't save.", Model_Core_Message::ERROR);	
+			if (!$save) 
+			{
 				throw new Exception("System can't save.", 1);
 			}
 			$this->getMessage()->addMessage('Data Saved.', Model_Core_Message::SUCCESS);
-			$this->redirect($this->getView()->getUrl(null, null, ['id' => $customerId, 'salesmanId' => $salesmanId], true));
+			$this->redirect($this->getLayout()->getUrl(null, null, ['id' => $customerId, 'salesmanId' => $salesmanId], true));
 
-		} catch (Exception $e) {
-			$this->redirect($this->getView()->getUrl(null, null, ['id' => $customerId, 'salesmanId' => $salesmanId], true));
+		} 
+		catch (Exception $e) 
+		{
+			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
+			$this->redirect($this->getLayout()->getUrl(null, null, ['id' => $customerId, 'salesmanId' => $salesmanId], true));
 								
 		}
 	}

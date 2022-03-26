@@ -117,4 +117,30 @@ class Model_Customer extends Model_Core_Row{
 		return $salesman;
 	}
 
+	public function setCart($cart)
+	{
+		$this->cart = $cart;
+		return $this;
+	}
+
+	public function getCart($reload = false)
+	{
+		$cartModel = Ccc::getModel('Cart');
+		if (!$this->customerId) 
+		{
+			return $cartModel;
+		}
+		if ($this->cart && !$reload) 
+		{
+			return $this->cart;
+		}
+		$cart = $cartModel->fetchRow("SELECT * FROM `cart` 
+											WHERE `customerId` = {$this->customerId}");
+		if (!$cart) 
+		{
+			return $cartModel;
+		}
+		$this->setCart($cart);
+		return $cart;
+	}
 }

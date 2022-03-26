@@ -5,4 +5,11 @@ class Block_Cart_Grid extends Block_Core_Template{
 	{
 		$this->setTemplate('view/cart/grid.php');
 	}
+
+
+	public function getOrders()
+	{	
+		$orders = Ccc::getModel('Order')->fetchAll("SELECT * FROM `orders`");
+		return $orders;
+	}
 }

@@ -42,12 +42,12 @@ class Controller_Cart extends Controller_Core_Action{
 		 		}
 		 		$cartModel->setCart($result->cartId);
 	    	}
-    		$this->redirect($this->getView()->getUrl('edit', 'cart', ['customerId' => $customerId]));	    	
+    		$this->redirect($this->getLayout()->getUrl('edit', 'cart', ['customerId' => $customerId]));	    	
    		}
    		catch (Exception $e) 
 		{
 		 	$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);
-		 	$this->redirect($this->getView()->getUrl('edit', 'cart', ['customerId' => $customerId]));	    	
+		 	$this->redirect($this->getLayout()->getUrl('edit', 'cart', ['customerId' => $customerId]));	    	
 		}
     }
 
@@ -105,13 +105,13 @@ class Controller_Cart extends Controller_Core_Action{
 	 			throw new Exception("System is unable to save.", 1);	
 	 		}
 			$this->getMessage()->addMessage('Data Saved.');
-    		$this->redirect($this->getView()->getUrl('edit', 'cart', ['customerId' => $customerId]));	    	
+    		$this->redirect($this->getLayout()->getUrl('edit', 'cart', ['customerId' => $customerId]));	    	
 
 		}
 		catch (Exception $e) 
 		{
 		 	$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);
-		 	$this->redirect($this->getView()->getUrl('edit', 'cart', ['customerId' => $customerId]));	    	
+		 	$this->redirect($this->getLayout()->getUrl('edit', 'cart', ['customerId' => $customerId]));	    	
 		}	
 	}
 
@@ -156,13 +156,13 @@ class Controller_Cart extends Controller_Core_Action{
 	 			throw new Exception("System is unable to insert.", 1);	
 	 		}
 			$this->getMessage()->addMessage('Data Saved.');
-		 	$this->redirect($this->getView()->getUrl('edit', 'cart', ['customerId' => $customerId]));
+		 	$this->redirect($this->getLayout()->getUrl('edit', 'cart', ['customerId' => $customerId]));
 
 		}
 		catch (Exception $e) 
 		{
 		 	$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);
-		 	$this->redirect($this->getView()->getUrl('edit', 'cart', ['customerId' => $customerId]));
+		 	$this->redirect($this->getLayout()->getUrl('edit', 'cart', ['customerId' => $customerId]));
 		}	
 	}
 
@@ -203,7 +203,7 @@ class Controller_Cart extends Controller_Core_Action{
 	
 
 		$this->getMessage()->addMessage('Item Added.');
-		$this->redirect($this->getView()->getUrl('edit', 'cart', ['customerId' => $customerId]));	
+		$this->redirect($this->getLayout()->getUrl('edit', 'cart', ['customerId' => $customerId]));	
 
 	}
 	
@@ -271,7 +271,8 @@ class Controller_Cart extends Controller_Core_Action{
 		{
 			if ($key == 'quantity') 
 			{
-				foreach ($itemId as $index => $quantity) {
+				foreach ($itemId as $index => $quantity) 
+				{
 					$itemModel->itemId = $index;
 					$itemModel->quantity = $quantity;
 					$itemModel->save();
@@ -283,5 +284,120 @@ class Controller_Cart extends Controller_Core_Action{
 			}
 		}
 		$this->redirect($this->getLayout()->getUrl('edit', 'cart', ['customerId' => $customerId]));
+	}
+
+
+
+
+	public function saveOrderAction()
+	{
+		$cartModel = Ccc::getModel('Cart');
+		$cartId = $cartModel->getCart()['cartId'];
+		$cartRow = $cartModel->load($cartId);
+		$customerRow = $cartRow->getCustomer();
+		$shippingMethod = $cartRow->getShippingMethod();
+
+		$orderModel = Ccc::getModel('Order');
+		$orderModel->customerId = $customerRow->customerId;
+		$orderModel->firstName = $customerRow->firstName;
+		$orderModel->lastName = $customerRow->lastName;
+		$orderModel->mobile = $customerRow->mobile;
+		$orderModel->email = $customerRow->email;
+		$orderModel->shippingId = $shippingMethod->shippingId;
+		$orderModel->shippingAmount = $shippingMethod->amount;
+		$orderModel->createdDate = date('Y-m-d H:i:s');
+		$orderModel->paymentId = $cartRow->paymentMethod;
+		$orderModel->state = Model_Order::STAT_ENABLED;
+		$orderModel->grandTotal = $this->getRequest()->getPost('total');
+		$orderModel->status = Model_Order::STATUS_ENABLED;
+		$saveRow = $orderModel->save();
+		if(!$saveRow)
+		{
+			throw new Exception("System can't save ", 1);	
+		}
+		return $saveRow;
+	
+	}
+
+	public function saveOrderAddressAction($orderRow)
+	{
+		$orderAddressModel = Ccc::getModel('Order_Address');
+		$billingRow = $orderRow->getCustomer()->getCart()->getShippingAddresses();
+		$shippingRow = $orderRow->getCustomer()->getCart()->getBillingAddresses();
+
+		$orderAddressModel->orderId = $orderRow->orderId;
+		$orderAddressModel->firstName = $orderRow->firstName;
+		$orderAddressModel->lastName = $orderRow->lastName;
+		$orderAddressModel->mobile = $orderRow->mobile;
+		$orderAddressModel->email = $orderRow->email;
+
+
+		if ($billingRow->addressId)
+		{
+			$orderAddressModel->address = $billingRow->address;
+			$orderAddressModel->postalCode = $billingRow->postalCode;
+			$orderAddressModel->city = $billingRow->city;
+			$orderAddressModel->state = $billingRow->state;
+			$orderAddressModel->country = $billingRow->country;
+			$orderAddressModel->type = 1;
+			$orderAddressModel->createdDate = date('Y-m-d H:i:s');
+			$save = $orderAddressModel->save();
+		}
+		
+		if ($shippingRow->addressId) 
+		{
+			$orderAddressModel->address = $shippingRow->address;
+			$orderAddressModel->postalCode = $shippingRow->postalCode;
+			$orderAddressModel->city = $shippingRow->city;
+			$orderAddressModel->state = $shippingRow->state;
+			$orderAddressModel->country = $shippingRow->country;
+			$orderAddressModel->type = 2;
+			$orderAddressModel->createdDate = date('Y-m-d H:i:s');
+			$save = $orderAddressModel->save();
+		}
+		return $save;
+	}
+
+	public function saveOrderItemAction($orderRow)
+	{
+		$items = $orderRow->getCustomer()->getCart()->getItems();
+		$orderId = $orderRow->orderId;
+
+		$orderItemModel = Ccc::getModel('Order_Item');
+		$orderItemModel->orderId = $orderId;
+
+		foreach ($items as $key => $item) 
+		{
+		   	$orderItemModel->quantity = $item->quantity;
+			$product = $item->getProduct();
+		    $orderItemModel->productId = $product->productId;
+		    $orderItemModel->name = $product->name;
+		    $orderItemModel->sku = $product->sku;
+		    $orderItemModel->cost = $product->costPrice;
+		    $orderItemModel->price = $product->price;
+		    $orderItemModel->discount = $product->discount;
+		    $orderItemModel->taxPercentage = $product->tax;
+		    $orderItemModel->taxAmount = $product->taxAmount;
+		    $orderItemModel->createdDate = date('Y-m-d H:i:s');
+		    $save = $orderItemModel->save();
+		}
+		return $save;
+		
+	}
+
+	public function saveAction()
+	{
+		try 
+		{
+			$orderRow = $this->saveOrderAction();
+			$addressRow = $this->saveOrderAddressAction($orderRow);
+			$this->saveOrderItemAction($orderRow);
+		 	$this->redirect($this->getLayout()->getUrl('grid','cart'));
+		} 
+		catch (Exception $e) 
+		{
+			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);
+		 	$this->redirect($this->getLayout()->getUrl('grid','cart'));
+		}
 	}
 }

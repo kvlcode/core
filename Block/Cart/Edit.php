@@ -70,4 +70,5 @@ class Block_Cart_Edit extends Block_Core_Template
 		$cartModel = Ccc::getModel('Cart')->fetchAll("SELECT * FROM `cart` where cartId = {$this->getCart()->getCart()['cartId']}");
 		return $cartModel;
 	}
+
 }
