@@ -2,6 +2,9 @@
 Ccc::loadClass('Model_Core_Row');
 class Model_Customer extends Model_Core_Row{
 
+	protected $billingAddresses = null;
+	protected $shippingAddresses = null;
+
 	const STATUS_ENABLED = 1;
 	const STATUS_DISABLED = 2;
 	const STATUS_DISABLED_DEFAULT = 1;
@@ -86,6 +89,7 @@ class Model_Customer extends Model_Core_Row{
 	}
 
 
+
 	public function setSalesman($salesman)
 	{
 		$this->salesman = $salesman;
@@ -112,7 +116,6 @@ class Model_Customer extends Model_Core_Row{
 		$this->setSalesman($salesman);
 		return $salesman;
 	}
-
 
 	public function setCart($cart)
 	{
