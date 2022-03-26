@@ -23,10 +23,11 @@ class Controller_Category_Media extends Controller_Core_Action
 	{
 		try {
 			
-			if ($_FILES['image']) {
+			if ($_FILES['image']) 
+			{
 
-				if (!$this->getRequest()->getRequest('id')) {
-					$this->getMessage()->addMessage("Invalid Request", Model_Core_Message::ERROR);
+				if (!$this->getRequest()->getRequest('id')) 
+				{
 					throw new Exception("Invalid Request", 1);
 				}
 			
@@ -39,7 +40,6 @@ class Controller_Category_Media extends Controller_Core_Action
 				
 				if($extention != "jpg" && $extention != "png" && $extention != "jpeg") 
 				{
-					$this->getMessage()->addMessage("Invalid file extention.", Model_Core_Message::ERROR);
 					throw new Exception("Invalid file extention.", 1);				
 				}
 
@@ -52,8 +52,8 @@ class Controller_Category_Media extends Controller_Core_Action
 				$imageModel->categoryId = $id;
 				$imageModel->name = $imageName;
 				$upload = $imageModel->save();
-				if (!$upload) {
-					$this->getMessage()->addMessage("System can't upload", Model_Core_Message::ERROR);
+				if (!$upload) 
+				{
 					throw new Exception("System can't upload", 1);	
 				}
 				$this->getMessage()->addMessage("Image Uploaded", Model_Core_Message::SUCCESS);
@@ -105,11 +105,11 @@ class Controller_Category_Media extends Controller_Core_Action
 				}
 				$this->getMessage()->addMessage("Image data updated", Model_Core_Message::SUCCESS);
 			}
-		$this->redirect($this->getView()->getUrl(null, null, ['id'=> $id], true));
+		$this->redirect($this->getLayout()->getUrl(null, null, ['id'=> $id], true));
 
 		} catch (Exception $e) {
-			
-			$this->redirect($this->getView()->getUrl(null, null, ['id'=> $id], true));
+			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
+			$this->redirect($this->getLayout()->getUrl(null, null, ['id'=> $id], true));
 
 		}	
 

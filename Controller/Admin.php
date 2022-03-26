@@ -49,7 +49,7 @@ class Controller_Admin extends Controller_Core_Action{
 		} 
 		catch (Exception $e) {
 			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);
-			$this->redirect($this->getView()->getUrl(null, null, null, true));	
+			$this->redirect($this->getLayout()->getUrl(null, null, null, true));	
 		}		
 	}
 
@@ -80,11 +80,11 @@ class Controller_Admin extends Controller_Core_Action{
 		       	throw new Exception("System can't save admin data", 1);   	
 		    }    
 			$this->getMessage()->addMessage('Data saved successfully.', Model_Core_Message::SUCCESS);
-			$this->redirect($this->getView()->getUrl(null, null, null, true));
+			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
 		}
 		catch (Exception $e) {
 			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);
-			$this->redirect($this->getView()->getUrl(null, null, null, true));
+			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
 		}
 
 	}
@@ -107,12 +107,12 @@ class Controller_Admin extends Controller_Core_Action{
 				throw new Exception("System can't delete record.", 1);
 			}
 			$this->getMessage()->addMessage("Data Deleted.");
-			$this->redirect($this->getView()->getUrl(null, null, null, true));	
+			$this->redirect($this->getLayout()->getUrl(null, null, null, true));	
 		}
 		catch (Exception $e) 
 		{
 			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);
-			$this->redirect($this->getView()->getUrl(null, null, null, true));
+			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
 		}
 	}
 }

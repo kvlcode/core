@@ -50,7 +50,7 @@ class Controller_Customer extends Controller_Core_Action{
 		catch (Exception $e) 
 		{	
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-			$this->redirect($this->getView()->getUrl(null, null, null, true));	
+			$this->redirect($this->getLayout()->getUrl(null, null, null, true));	
 		}
 	}
 
@@ -153,12 +153,12 @@ class Controller_Customer extends Controller_Core_Action{
 			$customerRow = $this->saveCustomer();
 			$this->saveBillingAddress($customerRow);
 			$this->saveShippingAddress($customerRow);
-			$this->redirect($this->getView()->getUrl(null, null, null, true));
+			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
 	    }
 	    catch(Exception $e)
 	    {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-	    	$this->redirect($this->getView()->getUrl(null, null, null, true));	
+	    	$this->redirect($this->getLayout()->getUrl(null, null, null, true));	
 	    }
 	}    	
 
@@ -180,12 +180,12 @@ class Controller_Customer extends Controller_Core_Action{
 				throw new Exception("System can't delete record.", 1);
 			}
 			$this->getMessage()->addMessage("Data Deleted.");
-			$this->redirect($this->getView()->getUrl(null, null, null, true));	
+			$this->redirect($this->getLayout()->getUrl(null, null, null, true));	
 		}
 		catch (Exception $e) 
 		{	
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);			
-			$this->redirect($this->getView()->getUrl(null, null, null, true));	
+			$this->redirect($this->getLayout()->getUrl(null, null, null, true));	
 		}
 	}
 }

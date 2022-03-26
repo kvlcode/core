@@ -53,7 +53,7 @@ class Controller_Page extends Controller_Core_Action{
 		catch (Exception $e)
 		{
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-			$this->redirect($this->getView()->getUrl(null, null, null, true));
+			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
 		}
 	}
 
@@ -87,12 +87,12 @@ class Controller_Page extends Controller_Core_Action{
 				throw new Exception("Sustem can't' save data.", 1);
 			}
 			$this->getMessage()->addMessage('Data Saved successfully.');
-			$this->redirect($this->getView()->getUrl(null, null, null, true));
+			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
 		}
 		catch (Exception $e) 
 		{	
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);		
-			$this->redirect($this->getView()->getUrl(null, null, null, true));
+			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
 		}
 	}
 
@@ -113,11 +113,11 @@ class Controller_Page extends Controller_Core_Action{
          		throw new Exception("System can't delete.", 1);
          	}
          	$this->getMessage()->addMessage('Data Deleted.', Model_Core_Message::SUCCESS);
-      		$this->redirect($this->getView()->getUrl(null, null, null, true));
+      		$this->redirect($this->getLayout()->getUrl(null, null, null, true));
 
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-			$this->redirect($this->getView()->getUrl(null, null, null, true));
+			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
 		}
 	}
 
