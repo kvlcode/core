@@ -36,25 +36,16 @@ class Controller_Core_Action {
 		return $this->layout;
 	}
 
-	public function setView($view)
-	{
-		$this->view = $view;
-		return $this;
-	}
-
-	public function getView()
-	{
-		if(!$this->view) {
-			$this->setView(new Model_Core_View());				
-		}
-		return $this->view;
-	}
-
 	public function renderLayout()
 	{
 		echo $this->getResponse()
 				->setHeader('Content-type', 'text/html')
 				->render($this->getLayout()->toHtml());
+	}
+
+	public function renderJson($content)
+	{
+		$this->getResponse()->setHeader('Content-Type', 'application/json')->render(json_encode($content));
 	}
 
 	public function redirect($url)

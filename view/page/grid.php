@@ -1,6 +1,7 @@
 <?php $pages = $this->getPages();?>
 
-<button type="button" name="addNew"><a href="<?php echo $this->getUrl('edit', null, ['p' => $this->pager->getCurrent()])?>"> Add New </a></button>
+<button type="button" name="addNew" onclick="admin.setUrl('<?php echo $this->getUrl('edit','page'); ?>').setDataType('html').load();">Add New</button>
+<form id="pageGrid">
     <table border="1" width="100%" cellspacing="4">
         <tr>
             <script type="text/javascript"> 
@@ -76,10 +77,53 @@
                     <td><?php echo $page->getStatus($page->status) ?></td>
                     <td><?php echo $page->createdDate ?></td>
                     <td><?php echo $page->updatedDate ?></td>
-                    <td><a href="<?php echo $this->getUrl('edit', null, ['id' =>  $page->pageId], true)?>">Edit</a></td>
-                    <td><a href="<?php echo $this->getUrl('delete', null, ['id' => $page->pageId], true);?>">Delete</a></td>
+                    <td><button type="button" onclick="admin.setUrl('<?php echo $this->getUrl('edit','page',['id' => $page->pageId])?>').setDataType('html').load();">Edit</a></td>
+                        <td><button type="button" onclick="admin.setUrl('<?php echo $this->getUrl('delete','page',['id' => $page->pageId])?>').load();">Delete</a></td></td>
+
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?> 
     </table>
+</form>
 
+<script type="text/javascript">
+pageDelete = {
+        url : null,
+        setUrl : function(url){
+            this.url = url;
+            return this;
+        },
+        getUrl : function(){
+            return this.url;
+        },
+        callAjax : function() {
+                $.ajax({
+                    type: "POST",
+                    url: this.getUrl(),
+                    data: jQuery('#page-form').serializeArray(),
+                    success: function(data) {
+                            alert(data);
+                    },
+                    dataType : "json"
+                })
+        },
+        addNew : function() {
+                alert('add new');
+                alert("<?php echo $this->getUrl('edit')?>");                                                
+                $.ajax({
+                    type: "POST",
+                    //data: jQuery('#pageGrid'),
+                    url: "<?php echo $this->getUrl('edit')?>",
+                    success: function(data) {
+                            alert(data);
+
+                    },
+                    dataType : "json",
+                })
+        }
+
+
+        
+    };
+
+</script>

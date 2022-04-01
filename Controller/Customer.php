@@ -41,7 +41,8 @@ class Controller_Customer extends Controller_Core_Action{
 				$customer = Ccc::getModel('Customer');
 			}	
 			
-			$customerEdit = Ccc::getBlock('Customer_Edit')->setCustomer($customer);
+			Ccc::register('customer', $customer);
+			$customerEdit = Ccc::getBlock('Customer_Edit');
 			$content = $this->getLayout()->getContent();
 			$content->addChild($customerEdit);
 			$this->renderLayout();	
@@ -57,65 +58,74 @@ class Controller_Customer extends Controller_Core_Action{
 	public function saveCustomer()
 	{	 
 		$customerData = $this->getRequest()->getPost('customer');
-		if (!$customerData) 
-		{
-			throw new Exception("Missing Customer data in request.", 1);
-		}
-		
-		$customerModel = Ccc::getModel('Customer');
-		$customerModel->setData($customerData);
 		$customerId = (int) $this->getRequest()->getRequest('id');
-		if($customerId) 
-		{
-			$customerModel->updatedDate = date('Y-m-d H:i:s');
-			$customerModel->customerId = $customerId;		
-		}
-		else
-		{
-			$customerModel->createdDate = date('Y-m-d H:i:s');
-		}
+		$customerModel = Ccc::getModel('Customer');
 
-		$customerRow = $customerModel->save();
-		if (!$customerRow) 
+		if($this->getRequest()->getRequest('tab') == 'personal')
 		{
-	        throw new Exception("System can't save customer data", 1);   	
-	    }    
-		return $customerRow;
+			if (!$customerData) 
+			{
+				throw new Exception("Missing Customer data in request.", 1);
+			}
+			
+			$customerModel->setData($customerData);
+			if($customerId) 
+			{
+				$customerModel->updatedDate = date('Y-m-d H:i:s');
+				$customerModel->customerId = $customerId;		
+			}
+			else
+			{
+				$customerModel->createdDate = date('Y-m-d H:i:s');
+			}
+
+			$customerRow = $customerModel->save();
+			if (!$customerRow) 
+			{
+		        throw new Exception("System can't save customer data", 1);   	
+		    } 
+		    $this->redirect($this->getLayout()->getUrl('edit','customer', ['id'=>$customerRow->customerId, 'tab' => 'address'],true));   
+			return $customerRow;
+		}
 	}
 
-	public function saveBillingAddress($customerRow)
+	public function saveBillingAddress($customerRow = null)
 	{	
+		$customerId = (int) $this->getRequest()->getRequest('id');
+		$customerModel = Ccc::getModel('Customer')->load($customerId);
 		$addressData = $this->getRequest()->getPost('billingAddress');
+
 		if(!$addressData)
 		{
 			throw new Exception("Missing Address data in Request.", 1);	
 		}
 
+		$addressRow = $customerModel->getBillingAddresses();
 		$address = Ccc::getModel('Customer_Address');
 		$address->setData($addressData);
-		$address->billing = 1;
-		$address->shipping = 0;
-		$addressRow = $customerRow->getBillingAddresses();
-	
+		$address->billing = Model_Customer_Address::BILLING;
+
 		if ($addressRow->addressId) 
 		{
 			$address->addressId = $addressRow->addressId;
 		}
 		else
 		{
-			$address->customerId = $customerRow->customerId;
+			$address->customerId = $customerId;
 		}
 
 		$saveId = $address->save();
 		if (!$saveId) 
 		{
-	        throw new Exception("System can't save address.", 1);   	
+	        throw new Exception("System can't save address.", 1);  
 	    }
 		$this->getMessage()->addMessage("Data saved successfully.");    
 	}
 
-	public function saveShippingAddress($customerRow)
+	public function saveShippingAddress($customerRow = null)
 	{	
+		$customerId = $this->getRequest()->getRequest('id');
+		$customerModel = Ccc::getModel('Customer')->load($customerId);
 		$addressData = $this->getRequest()->getPost('shippingAddress');
 		if(!$addressData)
 		{
@@ -124,9 +134,8 @@ class Controller_Customer extends Controller_Core_Action{
 
 		$address = Ccc::getModel('Customer_Address');
 		$address->setData($addressData);
-		$address->billing = 0;
-		$address->shipping = 1;
-		$addressRow = $customerRow->getShippingAddresses();
+		$address->shipping = Model_Customer_Address::SHIPPING;
+		$addressRow = $customerModel->getShippingAddresses();
 
 		if ($addressRow->addressId) 
 		{
@@ -134,7 +143,7 @@ class Controller_Customer extends Controller_Core_Action{
 		}
 		else
 		{
-			$address->customerId = $customerRow->customerId;
+			$address->customerId = $customerId;
 		}
 
 		$saveId = $address->save();
@@ -151,8 +160,8 @@ class Controller_Customer extends Controller_Core_Action{
 		try
 		{	
 			$customerRow = $this->saveCustomer();
-			$this->saveBillingAddress($customerRow);
-			$this->saveShippingAddress($customerRow);
+			$this->saveBillingAddress();
+			$this->saveShippingAddress();
 			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
 	    }
 	    catch(Exception $e)

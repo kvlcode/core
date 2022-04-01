@@ -17,7 +17,7 @@
 <select id="customerId" name="customer[customerId]" onchange="customer()">
 	<option>Select Customer</option>
 	<?php foreach($customers as $customer): ?>
-		<option value="<?php echo $customer->customerId;?>"><?php echo $customer->customerId.'=>'.$customer->firstName; ?></option>
+		<option value="<?php echo $customer->customerId;?>" <?php if($customer->customerId == $customerId):?> selected <?php endif;?>><?php echo $customer->customerId.'=>'.$customer->firstName; ?></option>
 	<?php endforeach;?>
 </select>
 

@@ -1,22 +1,12 @@
+<?php Ccc::loadClass('Block_Core_Edit'); ?>
+<?php Ccc::loadClass('Block_Admin_Edit_Tab'); ?>
+
 <?php
-Ccc::loadClass('Block_Core_Template');
-class Block_Admin_Edit extends Block_Core_Template
+class Block_Admin_Edit extends Block_Core_Edit
 {
-	protected $admin = null;
+
 	public function __construct()
 	{
-		$this->setTemplate('view/admin/edit.php');		
+		parent::__construct();
 	}
-
-	public function setAdmin($admin)
-	{
-		$this->admin = $admin;
-		return $this;
-	}
-
-	public function getAdmin()
-	{
-		return $this->admin;
-	}
-
 }

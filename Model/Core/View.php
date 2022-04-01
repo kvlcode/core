@@ -22,7 +22,7 @@ class Model_Core_View{
 		ob_end_clean();
 		return $html;
 	}
-
+	
 	public function getData($key = null)
 	{
 		if(!$key) {
@@ -100,7 +100,8 @@ class Model_Core_View{
 				}
 			}
 		}
-		else{
+		else
+		{
 
 			if ($actionName) {
 				$url['a'] = $actionName;

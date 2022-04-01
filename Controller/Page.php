@@ -62,6 +62,7 @@ class Controller_Page extends Controller_Core_Action{
 		try
 		{
 			$pageData = $this->getRequest()->getPost('page');
+
 			if (!isset($pageData)) 
 			{
 				throw new Exception("Unable to load data.", 1);
@@ -87,12 +88,12 @@ class Controller_Page extends Controller_Core_Action{
 				throw new Exception("Sustem can't' save data.", 1);
 			}
 			$this->getMessage()->addMessage('Data Saved successfully.');
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
+			// $this->redirect($this->getLayout()->getUrl(null, null, null, true));
 		}
 		catch (Exception $e) 
 		{	
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);		
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
+			// $this->redirect($this->getLayout()->getUrl(null, null, null, true));
 		}
 	}
 
