@@ -10,10 +10,10 @@ class Block_Core_Edit extends Block_Core_Template
         $this->setTemplate('view/core/edit.php');
     }
 
-    public function getSaveUrl()
-    {
-        return $this->getUrl('save');
-    }
+    // public function getSaveUrl()
+    // {
+    //     return $this->getUrl('save');
+    // }
 
     public function getTab()
     {

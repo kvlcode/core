@@ -105,14 +105,12 @@ class Controller_Category_Media extends Controller_Core_Action
 				}
 				$this->getMessage()->addMessage("Image data updated", Model_Core_Message::SUCCESS);
 			}
-		$this->redirect($this->getLayout()->getUrl(null, null, ['id'=> $id], true));
+		$this->redirect($this->getLayout()->getUrl('grid', 'category_media', ['id'=> $id]));
 
 		} catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-			$this->redirect($this->getLayout()->getUrl(null, null, ['id'=> $id], true));
+			$this->redirect($this->getLayout()->getUrl('grid', 'category_media', ['id'=> $id]));
 
 		}	
-
-
 	}			
 }

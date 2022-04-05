@@ -1,7 +1,13 @@
 <?php $products = $this->getProducts();?>
 
-<button type="button" name="addNew"><a href="<?php echo $this->getUrl('edit')?>"> Add New </a></button>
-<table border="1" width="100%" cellspacing="4">
+<div class="row">
+    <div class="col-md-2">
+        <div class="card card-primary">
+            <button type="button" class="btn btn-block btn-primary" name="addNew"><a href="<?php echo $this->getUrl('edit')?>"> Add New </a></button>
+        </div>
+    </div>
+</div>            
+<table class="table table-bordered table-striped">
     <tr>
         <select onchange="count()" id="count">
             <option selected>select</option>
@@ -62,9 +68,9 @@
                 <td><img src="<?php echo $product->getBase()->getImageUrl(); ?>" width = "50px" height = "50px" alt = "Image not found"></td>
                 <td><img src="<?php echo $product->getThumbnail()->getImageUrl();?>" width = "50px" height = "50px" alt = "Image not found"></td>
                 <td><img src="<?php echo $product->getSmall()->getImageUrl(); ?>" width = "50px" height = "50px" alt = "Image not found"></td>
-                <td><a href="<?php echo $this->getUrl('edit', null, ['id' =>  $product->productId], true)?>">Edit</a></td>
-                <td><a href="<?php echo $this->getUrl('delete', null, ['id' => $product->productId], true);?>">Delete</a></td>
-                <td><a href="<?php echo $this->getUrl('grid', 'product_media', ['id' => $product->productId]);?>">Media</a></td>
+                <td><a class="btn btn-block btn-success" href="<?php echo $this->getUrl('edit', null, ['id' =>  $product->productId], true)?>">Edit</a></td>
+                <td><a  class="btn btn-block btn-success" href="<?php echo $this->getUrl('delete', null, ['id' => $product->productId], true);?>">Delete</a></td>
+                <td><a class="btn btn-block btn-success" href="<?php echo $this->getUrl('grid', 'product_media', ['id' => $product->productId]);?>">Media</a></td>
             </tr>
         <?php endforeach; ?>
     <?php endif; ?> 

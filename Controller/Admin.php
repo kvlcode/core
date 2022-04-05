@@ -13,8 +13,8 @@ class Controller_Admin extends Controller_Core_Action{
     public function indexAction()
 	{
 		$content = $this->getLayout()->getContent();
-		$adimnGrid = Ccc::getBlock('Admin_Index');
-		$content->addChild($adimnGrid);
+		$adminGrid = Ccc::getBlock('Admin_Index');
+		$content->addChild($adminGrid);
 		$this->renderLayout();
 
 	}
@@ -29,9 +29,8 @@ class Controller_Admin extends Controller_Core_Action{
 		$this->renderJson($response);
 	}
 
-	public function addBlockAction()
+	public function editAction()
 	{
-
 		if ((int) $this->getRequest()->getRequest('id')) 
 		{
 			$this->setTitle('Admin Edit');
@@ -49,62 +48,13 @@ class Controller_Admin extends Controller_Core_Action{
 			$admin =  Ccc::getModel('Admin');
 		}
 		
-		// $adminModel = Ccc::getModel('Admin');
-		Ccc::register('admin', $adminModel);
+		Ccc::register('admin', $admin);
 		$adminEdit = Ccc::getBlock('Admin_Edit')->toHtml();
-
 		$response = [
 			'status' => 'success',
 			'content' => $adminEdit
 		];
-		
 		$this->renderJson($response);
-	}
-
-
-
-	// public function gridAction()
-	// {
-	// 	$this->setTitle('Admin Grid');
-	// 	$adminGrid = Ccc::getBlock('Admin_Grid');
-	// 	$content = $this->getLayout()->getContent();
-	// 	$content->addChild($adminGrid);
-	// 	$this->renderLayout();
-	// }
-
-	public function editAction()
-	{	
-
-		try {
-			
-			if ((int) $this->getRequest()->getRequest('id')) 
-			{
-				$this->setTitle('Admin Edit');
-				$id = (int) $this->getRequest()->getRequest('id');
-				$admin =  Ccc::getModel('Admin')->load($id);	
-
-				if (!$admin) 
-				{
-					throw new Exception("Unable to Load Data.", 1);	
-				}
-			}
-			else
-			{
-				$this->setTitle('Admin Add');
-				$admin =  Ccc::getModel('Admin');
-			}
-
-			Ccc::register('admin', $admin);
-			$adminEdit = Ccc::getBlock('Admin_Edit');
-			$content = $this->getLayout()->getContent();
-			$content->addChild($adminEdit);
-			$this->renderLayout();
-
-		} 
-		catch (Exception $e) {
-			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));	
-		}		
 	}
 
 	public function saveAction()
@@ -134,31 +84,11 @@ class Controller_Admin extends Controller_Core_Action{
 		       	throw new Exception("System can't save admin data", 1);   	
 		    }    
 			$this->getMessage()->addMessage('Data saved successfully.', Model_Core_Message::SUCCESS);
-
-
-			$adminGrid = Ccc::getBlock('Admin_Grid')->toHtml();
-			$response = [
-				'status' => 'success',
-				'content' => $adminGrid
-			];
-			$this->renderJson($response);
-
-
-			// $this->redirect($this->getLayout()->getUrl(null, null, null, true));
+			$this->gridBlockAction();
 		}
 		catch (Exception $e) {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);
-
-
-
-			$adminGrid = Ccc::getBlock('Admin_Grid')->toHtml();
-			$response = [
-				'status' => 'success',
-				'content' => $adminGrid
-			];
-			$this->renderJson($response);
-
-			// $this->redirect($this->getLayout()->getUrl(null, null, null, true));
+			$this->gridBlockAction();
 		}
 
 	}
@@ -181,12 +111,13 @@ class Controller_Admin extends Controller_Core_Action{
 				throw new Exception("System can't delete record.", 1);
 			}
 			$this->getMessage()->addMessage("Data Deleted.");
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));	
+			$this->gridBlockAction();
+
 		}
 		catch (Exception $e) 
 		{
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
+			$this->gridBlockAction();
 		}
 	}
 }

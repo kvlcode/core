@@ -38,7 +38,8 @@ class Controller_Product extends Controller_Core_Action{
 				$this->setTitle('Product Add');
 				$product = Ccc::getModel('Product');
 			}	
-			$productEdit = Ccc::getBlock('Product_Edit')->setProduct($product);
+			Ccc::register('product', $product);
+			$productEdit = Ccc::getBlock('Product_Edit');
 			$content = $this->getLayout()->getContent();
 			$content->addChild($productEdit);
 			$this->renderLayout();

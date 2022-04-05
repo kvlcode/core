@@ -11,13 +11,23 @@ class Controller_Customer extends Controller_Core_Action{
 		}
     }
 
-	public function gridAction()
+    public function indexAction()
 	{
-		$this->setTitle('Customer Grid');
-		$customerGrid = Ccc::getBlock('Customer_Grid');
 		$content = $this->getLayout()->getContent();
+		$customerGrid = Ccc::getBlock('Customer_Index');
 		$content->addChild($customerGrid);
 		$this->renderLayout();
+
+	}
+
+	public function gridBlockAction()
+	{
+		$customerGrid = Ccc::getBlock('Customer_Grid')->toHtml();
+		$response = [
+			'status' => 'success',
+			'content' => $customerGrid
+		];
+		$this->renderJson($response);
 	}
 
 	public function editAction()
@@ -42,16 +52,19 @@ class Controller_Customer extends Controller_Core_Action{
 			}	
 			
 			Ccc::register('customer', $customer);
-			$customerEdit = Ccc::getBlock('Customer_Edit');
-			$content = $this->getLayout()->getContent();
-			$content->addChild($customerEdit);
-			$this->renderLayout();	
+			$customerEdit = Ccc::getBlock('Customer_Edit')->toHtml();
+			$response = [
+			'status' => 'success',
+			'content' => $customerEdit
+			];
+			$this->renderJson($response);	
 
 		} 
 		catch (Exception $e) 
 		{	
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));	
+			$this->gridBlockAction();
+	
 		}
 	}
 
@@ -162,12 +175,14 @@ class Controller_Customer extends Controller_Core_Action{
 			$customerRow = $this->saveCustomer();
 			$this->saveBillingAddress();
 			$this->saveShippingAddress();
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
+			$this->gridBlockAction();
+
 	    }
 	    catch(Exception $e)
 	    {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-	    	$this->redirect($this->getLayout()->getUrl(null, null, null, true));	
+			$this->gridBlockAction();
+
 	    }
 	}    	
 
@@ -189,12 +204,13 @@ class Controller_Customer extends Controller_Core_Action{
 				throw new Exception("System can't delete record.", 1);
 			}
 			$this->getMessage()->addMessage("Data Deleted.");
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));	
+			$this->gridBlockAction();
+
 		}
 		catch (Exception $e) 
 		{	
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);			
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));	
+			$this->gridBlockAction();
 		}
 	}
 }

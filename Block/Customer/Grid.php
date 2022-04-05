@@ -2,12 +2,9 @@
 Ccc::loadClass('Block_Core_Grid');
 class Block_Customer_Grid extends Block_Core_Grid
 {
-	protected $pager = null;
 	public function __construct()
 	{
 		parent::__construct();
-		$this->getAddress();
-		// $this->setTemplate('view/customer/grid.php');
 	}
 
 	public function getEditUrl($customer)
@@ -17,22 +14,18 @@ class Block_Customer_Grid extends Block_Core_Grid
 
 	public function getDeleteUrl($customer)
 	{
-		return $this->getUrl('delete', null, ['id' => $customer->adminId]);
+		return $this->getUrl('delete', null, ['id' => $customer->customerId]);
 	}
 
 	public function prepareCollections()
 	{
-		$this->setCollection($this->getCustomers());
-	}
-
-	public function getAddress()
-	{
 		$customers = $this->getCustomers();
-		foreach ($customers as $customer) 
-		{
-			$address[] = $customer->getBillingAddresses();
-		}
-		print_r($address);
+        foreach ($customers as &$customer) {
+            $billingAddress = $customer->getBillingAddresses()->getData();
+            $customer->setData($billingAddress);
+        }
+        $this->setCollection($customers);
+        return $this;
 	}
 
 	public function prepareColumns()
@@ -62,6 +55,27 @@ class Block_Customer_Grid extends Block_Core_Grid
 			'type' => 'tinyint'
 		], 'status');
 		$this->addColumn([
+			'title' => 'Address',
+			'type' => 'varchar'
+		],'address');
+		$this->addColumn([
+			'title' => 'Postal Code',
+			'type' => 'int'
+		],'postalCode');
+		$this->addColumn([
+			'title' => 'City',
+			'type' => 'varchar'
+		],'city');
+		$this->addColumn([
+			'title' => 'State',
+			'type' => 'varchar'
+		],'state');
+			$this->addColumn([
+			'title' => 'Country',
+			'type' => 'varchar'
+		],'country');
+
+		$this->addColumn([
 			'title' => 'Created Date',
 			'type' => 'datetime'
 		], 'createdDate');
@@ -85,31 +99,14 @@ class Block_Customer_Grid extends Block_Core_Grid
 		return $this;
 	}
 
-
-	public function setPager($pager)
-	{
-		$this->pager = $pager;
-		return $this;
-	}
-
-	public function getPager()
-	{
-		if(!$this->pager)
-		{
-			$this->setPager(Ccc::getModel('Core_Pager'));
-		}
-		return $this->pager;
-	}
-
 	public function getCustomers()
 	{
 		$request = Ccc::getModel('Core_Request');
 		$current = $request->getRequest('p',1);
-		$count = $request->getRequest('count',20);
+		$count = $request->getRequest('ppr',20);
 		$totalRecord = $this->getPager()->getAdapter()->fetchOne("SELECT count('customerId') as totalCount FROM `customer`");
 		$this->getPager()->execute($totalRecord['totalCount'], $current, $count);
 		$customers = Ccc::getModel('Customer')->fetchAll("SELECT * FROM `customer` LIMIT {$this->getPager()->getStartLimit()}, {$this->getPager()->getEndLimit()}");
 		return $customers;
 	}
-
 }

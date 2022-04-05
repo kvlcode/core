@@ -12,13 +12,32 @@ class Controller_Salesman extends Controller_Core_Action{
 		}
     }
 
-	public function gridAction()
+	// public function gridAction()
+	// {
+	// 	$this->setTitle('Salesman Grid');
+	// 	$salesmanGrid = Ccc::getBlock('Salesman_Grid');
+	// 	$content = $this->getLayout()->getContent();
+	// 	$content->addChild($salesmanGrid);
+	// 	$this->renderLayout();
+	// }
+
+    public function indexAction()
 	{
-		$this->setTitle('Salesman Grid');
-		$salesmanGrid = Ccc::getBlock('Salesman_Grid');
 		$content = $this->getLayout()->getContent();
+		$salesmanGrid = Ccc::getBlock('Salesman_Index');
 		$content->addChild($salesmanGrid);
 		$this->renderLayout();
+
+	}
+
+	public function gridBlockAction()
+	{
+		$salesmanGrid = Ccc::getBlock('Salesman_Grid')->toHtml();
+		$response = [
+			'status' => 'success',
+			'content' => $salesmanGrid
+		];
+		$this->renderJson($response);
 	}
 
 	public function editAction()
@@ -40,16 +59,19 @@ class Controller_Salesman extends Controller_Core_Action{
 				$this->setTitle('Salesman Add');
 				$salesman = Ccc::getModel('Salesman');
 			}
-
-			$salesmanEdit = Ccc::getBlock('Salesman_Edit')->setSalesman($salesman);
-			$content = $this->getLayout()->getContent();
-			$content->addChild($salesmanEdit);
-			$this->renderLayout();
+			Ccc::register('salesman', $salesman);
+			$salesmanEdit = Ccc::getBlock('Salesman_Edit')->toHtml();
+			$response = [
+			'status' => 'success',
+			'content' => $salesmanEdit
+			];
+			$this->renderJson($response);	
 		} 
 		catch (Exception $e) 
 		{
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
+			$this->gridBlockAction();
+
 		}
 	}
 
@@ -83,13 +105,12 @@ class Controller_Salesman extends Controller_Core_Action{
 				throw new Exception("System can't save data", 1);		
 			}
 			$this->getMessage()->addMessage('Data saved successfully.', Model_Core_Message::SUCCESS);
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
-
+			$this->gridBlockAction();
 		} 
 		catch (Exception $e) 
 		{	
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
+			$this->gridBlockAction();
 		}
 	}
 
@@ -110,12 +131,12 @@ class Controller_Salesman extends Controller_Core_Action{
 				throw new Exception("System can't delete.", 1);
 			}
 			$this->getMessage()->addMessage('Data Deleted.', Model_Core_Message::SUCCESS);
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
+			$this->gridBlockAction();
 		}
 		catch (Exception $e) 
 		{	
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
+			$this->gridBlockAction();
 		}
 	}
 }

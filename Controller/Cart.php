@@ -307,7 +307,7 @@ class Controller_Cart extends Controller_Core_Action{
 		$orderModel->shippingAmount = $shippingMethod->amount;
 		$orderModel->createdDate = date('Y-m-d H:i:s');
 		$orderModel->paymentId = $cartRow->paymentMethod;
-		$orderModel->state = Model_Order::STAT_ENABLED;
+		$orderModel->state = Model_Order::STATE_ENABLED;
 		$orderModel->grandTotal = $this->getRequest()->getPost('total');
 		$orderModel->status = Model_Order::STATUS_ENABLED;
 		$saveRow = $orderModel->save();

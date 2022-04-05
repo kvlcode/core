@@ -1,47 +1,61 @@
 <?php $customer = $this->getCustomer();	?>
-<table border="1" width="100%" cellspacing="4">
-	
-	<tr>
-		<td colspan="2"><b>Personal Information</b></td>
-	</tr>
 
-	<tr>
-		<td width="10%">First Name</td>
-		<td><input type="text" name="customer[firstName]" value="<?php echo $customer->firstName ?>"></td>
-	</tr>
 
-	<tr>
-		<td width="10%">Last Name</td>
-		<td><input type="text" name="customer[lastName]" value="<?php echo $customer->lastName ?>"></td>
-	</tr>
-	
-	<tr>
-		<td width="10%">Email</td>
-		<td><input type="text" name="customer[email]" value="<?php echo $customer->email ?>"></td>
-	</tr>
-	
-	<tr>
-		<td width="10%">Mobile</td>
-		<td><input type="text" name="customer[mobile]" value="<?php echo $customer->mobile ?>"></td>
-	</tr>
-	
-	<tr>
-		<td>Status</td>
-		<td width="10%">
-			<select name="customer[status]">
-			<?php foreach ($customer->getStatus() as $key => $value):?>
-				<option value="<?php echo $key ?>" <?php if($customer->status == $key){?> selected <?php }?>> <?php echo $value ?> </option>
-			<?php endforeach;?>
-			</select>
-		</td>
-	</tr>	
+<div class="card card-info">
+    <div class="card-body">
+		<div class="form-group row">
+			<label for="firstName" class="col-sm-2 col-form-label">First Name</label>
+			<div class="col-sm-10">
+			    <input type="text" class="form-control"  name="customer[firstName]" id="firstName" value="<?php echo $customer->firstName ?>" placeholder="First Name">
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="lastName" class="col-sm-2 col-form-label">Last Name</label>
+			<div class="col-sm-10">
+			    <input type="text" class="form-control"  name="customer[lastName]" id="lastName" value="<?php echo $customer->lastName ?>" placeholder="Last Name">
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="email" class="col-sm-2 col-form-label">Email</label>
+			<div class="col-sm-10">
+			    <input type="email" class="form-control"  name="customer[email]" id="email" value="<?php echo $customer->email ?>" placeholder="Email">
+			</div>
+		</div>
 
-	<tr>
-		<td width="10%">&nbsp;</td>
-		<td>
-			<input type="submit" name="Save" value="Save">
-			<button type="button"><a href="<?php echo $this->getUrl(null, null, null, true)?>">Cancel</a></button> 
-		</td>
-	</tr>
+		<div class="form-group row">
+			<label for="mobile" class="col-sm-2 col-form-label">Mobile</label>
+			<div class="col-sm-10">
+			    <input type="mobile" class="form-control"  name="customer[mobile]" id="mobile" value="<?php echo $customer->mobile ?>" placeholder="Mobile">
+			</div>
+		</div>
 
-</table>
+		<div class="form-group row">
+			<label for="status" class="col-sm-2 col-form-label">Status</label>
+			<div class="col-sm-10">
+			    <select name="customer[status]">
+					<?php foreach ($customer->getStatus() as $key => $value): ?>
+						<option value="<?php echo $key?>"<?php if($customer->status == $key){?> selected <?php }?>> <?php echo $value; ?> </option>
+					<?php endforeach; ?>
+				</select>
+			</div>
+		</div>
+
+      	<div class="card-footer">
+			<button id="customerFormSaveBtn" class="btn btn-info" type="button" name="Save">Save</button>
+			<button id="customerFormCancelBtn" class="btn btn-default" type="button" value="cancel" name="cancel">Cancel</button> 
+		</div>	 
+	</div>
+</div>
+
+<script type="text/javascript">
+	jQuery('#customerFormCancelBtn').click(function() {
+		admin.setUrl("<?php echo $this->getUrl('gridBlock','customer', ['id' => null]);?>");
+		admin.load();
+	});
+
+	jQuery('#customerFormSaveBtn').click(function() {
+		admin.setForm(jQuery("#indexForm"));
+		admin.setUrl("<?php echo $this->getUrl('save');?>");
+		admin.load();
+	});
+</script>

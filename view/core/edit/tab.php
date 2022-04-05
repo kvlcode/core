@@ -1,4 +1,11 @@
 <?php $tabs = $this->getTabs(); ?>
-<?php foreach ($tabs as $key => $tab):?>
-	<a href="<?php echo $tab['url']; ?>" <?php if($this->getCurrentTab() == $key): ?> style="color: red" <?php endif; ?>><?php echo $tab['title']; ?></a>
-	<?php endforeach; ?>
+<?php foreach ($tabs as $key => $value): ?>
+	<button type="button" class="btn btn-default" onclick="tab('<?php if($this->getCurrentTab() != $key){ echo $value['url']; }?>')"><?php echo $value['title'] ?></button>
+<?php endforeach; ?>
+
+<script type="text/javascript">
+	function tab(url){
+		admin.setUrl(url);
+		admin.load();
+	}
+</script>

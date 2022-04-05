@@ -11,13 +11,22 @@ class Controller_Page extends Controller_Core_Action{
 		}
     }
 
-	public function gridAction()
+	public function indexAction()
 	{
-		$this->setTitle('Page Grid');
 		$content = $this->getLayout()->getContent();
-		$pageGrid = Ccc::getBlock('Page_Grid');
+		$pageGrid = Ccc::getBlock('Page_Index');
 		$content->addChild($pageGrid);
 		$this->renderLayout();
+	}
+
+	public function gridBlockAction()
+	{
+		$pageGrid = Ccc::getBlock('Page_Grid')->toHtml();
+		$response = [
+			'status' => 'success',
+			'content' => $pageGrid
+		];
+		$this->renderJson($response);
 	}
 
 	public function editAction()
@@ -44,16 +53,17 @@ class Controller_Page extends Controller_Core_Action{
 				$this->setTitle('Page Add');
 				$page = Ccc::getModel('Page');
 			}
-
-			$pageEdit = Ccc::getBlock('Page_Edit')->setPage($page);
-			$content = $this->getLayout()->getContent();
-			$content->addChild($pageEdit);
-			$this->renderLayout();
+			Ccc::register('page', $page);
+			$pageEdit = Ccc::getBlock('Page_Edit')->toHtml();
+			$response = [
+			'status' => 'success',
+			'content' => $pageEdit
+			];
+			$this->renderJson($response);
 		}
 		catch (Exception $e)
 		{
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
 		}
 	}
 
@@ -88,12 +98,14 @@ class Controller_Page extends Controller_Core_Action{
 				throw new Exception("Sustem can't' save data.", 1);
 			}
 			$this->getMessage()->addMessage('Data Saved successfully.');
-			// $this->redirect($this->getLayout()->getUrl(null, null, null, true));
+			$this->gridBlockAction();		
+
 		}
 		catch (Exception $e) 
 		{	
-			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);		
-			// $this->redirect($this->getLayout()->getUrl(null, null, null, true));
+			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);
+			$this->gridBlockAction();		
+
 		}
 	}
 
@@ -114,11 +126,11 @@ class Controller_Page extends Controller_Core_Action{
          		throw new Exception("System can't delete.", 1);
          	}
          	$this->getMessage()->addMessage('Data Deleted.', Model_Core_Message::SUCCESS);
-      		$this->redirect($this->getLayout()->getUrl(null, null, null, true));
+      		$this->gridBlockAction();		
 
 		} catch (Exception $e) {
-			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
+			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);
+			$this->gridBlockAction();		
 		}
 	}
 

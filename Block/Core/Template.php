@@ -4,6 +4,7 @@ class Block_Core_Template extends Model_Core_View
 {
 	protected $children = [];
 	protected $layout = null; 
+	public $page = null;
 
 	public function __construct()
 	{
@@ -76,6 +77,21 @@ class Block_Core_Template extends Model_Core_View
 			return $block;
 		}
 		return null;
+	}
+
+	public function setPager($pager)
+	{
+		$this->pager = $pager;
+		return $this;
+	}
+
+	public function getPager()
+	{
+		if(!$this->pager)
+		{
+			$this->setPager(Ccc::getModel('Core_Pager'));
+		}
+		return $this->pager;
 	}
 
 }

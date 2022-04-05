@@ -38,7 +38,8 @@ class Controller_Category extends Controller_Core_Action{
 				$this->setTitle('Category Add');
 				$categoryRow = Ccc::getModel('Category');
 			}
-			$categoryEdit = Ccc::getBlock('Category_Edit')->addData('categoryRow', $categoryRow);
+			Ccc::register('category', $categoryRow);
+			$categoryEdit = Ccc::getBlock('Category_Edit');
 			$content = $this->getLayout()->getContent();
 			$content->addChild($categoryEdit);
 			$this->renderLayout();
@@ -130,11 +131,11 @@ class Controller_Category extends Controller_Core_Action{
 				}
 			}
 				
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));	
+			$this->redirect($this->getLayout()->getUrl('grid', 'category', null, true));	
 		}
 		catch (Exception $e){
 			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));	
+			$this->redirect($this->getLayout()->getUrl('grid', 'category', null, true));	
 		}	
 	}
 
@@ -156,13 +157,13 @@ class Controller_Category extends Controller_Core_Action{
 				throw new Exception("System can't delete record.", 1);							
 			}
 			$this->getMessage()->addMessage('Data Deleted.');
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
+			$this->redirect($this->getLayout()->getUrl('grid', 'category', null, true));
 		
 		}
 		catch (Exception $e) 
 		{	
 			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);	
-			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
+			$this->redirect($this->getLayout()->getUrl('grid', 'category', null, true));
 		}	
 	}
 }

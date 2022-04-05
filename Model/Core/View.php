@@ -107,7 +107,7 @@ class Model_Core_View{
 				$url['a'] = $actionName;
 			}
 			else{
-				$url['a'] = 'grid';
+				$url['a'] = 'index';
 			}
 
 			if ($controllerName) {

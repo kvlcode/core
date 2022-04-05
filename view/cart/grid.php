@@ -1,9 +1,11 @@
 <?php $orders = $this->getOrders();?>
 <form method="post" action="<?php echo $this->getUrl('edit', 'cart')?>">
-	<input type="submit" name="Add New" value="Add New">
+    <div class="card-footer">
+        <input type="submit" class="btn btn-primary" name="addOrder" value="Add Order">
+    </div>    
 </form>
 
-<table border="1" width="100%" cellspacing="4">
+<table class="table table-bordered table-striped">
 
 	<tr>
 		<th>Order Id</th>
@@ -31,8 +33,8 @@
                 <td><?php echo $order->paymentId   ?></td>
                 <td><?php echo $order->getStatus($order->status) ?></td>
                 <td><?php echo $order->getState($order->state) ?></td>
-                <td><a href="<?php echo $this->getUrl('edit', 'order', ['orderId' => $order->orderId])?>">View</a></td>
-                <td><a href="<?php echo $this->getUrl('delete', null, ['orderId' => $order->orderId], true)?>">Delete</a></td>
+                <td><a class="btn btn-success" href="<?php echo $this->getUrl('edit', 'order', ['orderId' => $order->orderId])?>">View</a></td>
+                <td><a class="btn btn-success" href="<?php echo $this->getUrl('delete', null, ['orderId' => $order->orderId], true)?>">Delete</a></td>
             </tr>
         <?php endforeach; ?>
     <?php endif; ?>

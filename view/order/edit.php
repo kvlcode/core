@@ -6,13 +6,7 @@
 		$items = $order->getItems();
 ?>
 
-
-<form method="post" action="<?php echo $this->getUrl('edit', 'cart')?>">
-	<input type="submit" name="Add New" value="Add New">
-</form>
-
-
-<table border="1" width="100%" cellspacing="4">
+<table class="table table-bordered table-striped">
 	<tr>
 		<td>	
 			<table border="1" width="100%" cellspacing="4">	
@@ -30,7 +24,7 @@
 		</td>
 
 		<td>	
-			<table border="1" width="100%" cellspacing="4">	
+			<table class="table table-bordered table-striped">	
 				<tr>
 					<td><b>Shipping Address</b></td>
 					<td>
@@ -47,7 +41,7 @@
 
 	<tr>
 		<td>
-			<table border="1" width="100%" cellspacing="4">	
+			<table class="table table-bordered table-striped">	
 				<tr>
 					<td><b>Payment Method</b></td>
 					<td><?php echo $paymentMethod->name?></td>
@@ -56,7 +50,7 @@
 		</td>
 
 		<td>
-			<table border="1" width="100%" cellspacing="4">
+			<table class="table table-bordered table-striped">
 				<tr>
 					<td><b>Shipping Method</b></td>
 					<td><?php echo $shippingMethod->name;?>:<?php echo $shippingMethod->amount?>$</td>
@@ -67,7 +61,7 @@
 	</tr>
 </table>
 		
-<table border="1" width="100%" cellspacing="4">
+<table class="table table-bordered table-striped">
 	<tr>
         <th>Quantity</th>
         <th>Price</th>
@@ -89,7 +83,7 @@
 	<?php endif; ?> 
 </table>
 
-<table border="1" cellspacing="4">
+<table class="table table-bordered table-striped">
 	<tr>
 		<td>Sub Total:</td>
 		<td><?php echo $this->getSubTotal();?></td>
