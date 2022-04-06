@@ -84,11 +84,13 @@ class Controller_Admin extends Controller_Core_Action{
 		       	throw new Exception("System can't save admin data", 1);   	
 		    }    
 			$this->getMessage()->addMessage('Data saved successfully.', Model_Core_Message::SUCCESS);
-			$this->gridBlockAction();
+			$this->redirectPage();
+			
 		}
-		catch (Exception $e) {
+		catch (Exception $e) 
+		{
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);
-			$this->gridBlockAction();
+			$this->redirectPage();
 		}
 
 	}
@@ -111,14 +113,26 @@ class Controller_Admin extends Controller_Core_Action{
 				throw new Exception("System can't delete record.", 1);
 			}
 			$this->getMessage()->addMessage("Data Deleted.");
-			$this->gridBlockAction();
+			$this->redirectPage();
 
 		}
 		catch (Exception $e) 
 		{
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);
-			$this->gridBlockAction();
+			$this->redirectPage();
 		}
+	}
+
+	public function redirectPage()
+	{	
+		$adminGrid = Ccc::getBlock('Admin_Grid')->toHtml();
+ 		$message = Ccc::getBlock('Core_Layout_Header_Message')->toHtml();
+ 		$response = [
+		'status' => 'success',
+		'content' => $adminGrid,
+		'message' => $message
+		];
+		$this->renderJson($response);
 	}
 }
 

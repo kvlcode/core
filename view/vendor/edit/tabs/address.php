@@ -1,5 +1,5 @@
 <?php 	$vendor = $this->getVendor();?>
-<?php $vendorAddress = $vendor->getAddress();?>
+<?php $address = $vendor->getAddress();?>
 
 
 <div class="card card-info">
@@ -7,7 +7,7 @@
 		<div class="form-group row">
 			<label for="address" class="col-sm-2 col-form-label">Address</label>
 			<div class="col-sm-10">
-			    <input type="text" class="form-control"  name="address[address]" id="address" value="<?php echo $vendorAddress->address ?>" placeholder="Address">
+			    <input type="text" class="form-control"  name="address[address]" id="address" value="<?php echo $address->address ?>" placeholder="Address">
 			</div>
 		</div>
 		<div class="form-group row">

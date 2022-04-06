@@ -28,7 +28,7 @@ class Controller_Admin_Login extends Controller_Core_Action
 			}
 			$loginModel->login($admin[0]->email);
 			$message->addMessage('You are Logedin');
-			$this->redirect($this->getLayout()->getUrl('grid','Product'));
+			$this->redirect($this->getLayout()->getUrl('index','product',null,true));
 		}
 		catch (Exception $e) 
 		{
@@ -43,7 +43,7 @@ class Controller_Admin_Login extends Controller_Core_Action
 		{
 			$loginModel->logout();
 		}
-		$this->redirect($this->getLayout()->getUrl('login','Admin_Login'));		
+		$this->redirect($this->getLayout()->getUrl('login','admin_login', null, true));		
 	}
 
 }

@@ -21,6 +21,14 @@ class Block_Vendor_Grid extends Block_Core_Grid
 	public function prepareCollections()
 	{
 		$this->setCollection($this->getVendors());
+		// $vendors = $this->getVendorData();
+  //       foreach ($vendors as &$vendor) 
+  //       {
+  //           $vendorAddress = $vendor->getAddress()->getData();
+  //           $vendor->setData($vendorAddress);
+  //       }
+  //       $this->setCollection($vendors);
+  //       return $this;
 	}
 
 	public function prepareColumns()

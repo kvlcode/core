@@ -1,4 +1,7 @@
 <form action="<?php echo $this->getUrl('gridBlock'); ?>" method="POST" id="indexForm" >
+	<div id="indexMessage">
+		
+	</div>
 	<div id="indexContent">
 		
 	</div>

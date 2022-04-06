@@ -2,14 +2,14 @@
 <?php $billingAddress = $customer->getBillingAddresses();?>
 <?php $shippingAddress = $customer->getShippingAddresses();?>
 
-
-
-
-
 <div class="card card-info">
     <div class="card-body">
-		<div class="form-group row">
+
+    	<div class="form-group row">
 			<label for="billingAddress" class="col-sm-2 col-form-label">Billing Address</label>
+		</div>
+		<div class="form-group row">
+			<label for="billingAddress" class="col-sm-2 col-form-label">Address</label>
 			<div class="col-sm-10">
 			    <input type="text" class="form-control"  name="billingAddress[address]" id="billingAddress" value="<?php echo $billingAddress->address ?>" placeholder="Address">
 			</div>
@@ -41,8 +41,13 @@
 			</div>
 		</div>
 
+
 		<div class="form-group row">
 			<label for="shippingAddress" class="col-sm-2 col-form-label">Shipping Address</label>
+		</div>
+
+		<div class="form-group row">
+			<label for="shippingAddress" class="col-sm-2 col-form-label"> Address</label>
 			<div class="col-sm-10">
 			    <input type="text" class="form-control"  name="shippingAddress[address]" id="shippingAddress" value="<?php echo $shippingAddress->address ?>" placeholder="Address">
 			</div>

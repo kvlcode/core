@@ -30,7 +30,7 @@
 		<div class="form-group row">
 			<label for="status" class="col-sm-2 col-form-label">Status</label>
 			<div class="col-sm-10">
-			    <select name="vendor[status]">
+			    <select class="form-control" name="vendor[status]">
 					<?php foreach ($vendor->getStatus() as $key => $value): ?>
 						<option value="<?php echo $key?>"<?php if($vendor->status == $key){?> selected <?php }?>> <?php echo $value; ?> </option>
 					<?php endforeach; ?>

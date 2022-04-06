@@ -11,13 +11,31 @@ class Controller_Category extends Controller_Core_Action{
 		}
     }
 
-	public function gridAction()
+	// public function gridAction()
+	// {
+	// 	$this->setTitle('Category Grid');
+	// 	$categoryGrid = Ccc::getBlock('Category_Grid');
+	// 	$content = $this->getLayout()->getContent();
+	// 	$content->addChild($categoryGrid);
+	// 	$this->renderLayout();
+	// }
+
+	public function indexAction()
 	{
-		$this->setTitle('Category Grid');
-		$categoryGrid = Ccc::getBlock('Category_Grid');
 		$content = $this->getLayout()->getContent();
+		$categoryGrid = Ccc::getBlock('Category_Index');
 		$content->addChild($categoryGrid);
 		$this->renderLayout();
+	}
+	
+	public function gridBlockAction()
+	{
+		$categoryGrid = Ccc::getBlock('Category_Grid')->toHtml();
+		$response = [
+			'status' => 'success',
+			'content' => $categoryGrid
+		];
+		$this->renderJson($response);
 	}
 
 	public function editAction()
@@ -39,10 +57,15 @@ class Controller_Category extends Controller_Core_Action{
 				$categoryRow = Ccc::getModel('Category');
 			}
 			Ccc::register('category', $categoryRow);
-			$categoryEdit = Ccc::getBlock('Category_Edit');
-			$content = $this->getLayout()->getContent();
-			$content->addChild($categoryEdit);
-			$this->renderLayout();
+			$categoryEdit = Ccc::getBlock('Category_Edit')->toHtml();
+			$response = [
+				'status' => 'success',
+				'content' => $categoryEdit
+			];
+			$this->renderJson($response);
+
+
+
 
 		}
 		catch (Exception $e) 

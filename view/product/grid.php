@@ -1,29 +1,48 @@
 <?php $products = $this->getProducts();?>
 
+<script type="text/javascript">  
+    function productAction(url){
+        admin.setUrl(url);
+        admin.load();
+    }
+</script>
+
+<select onchange="count()" id="count">
+    <option selected>select</option>
+    <?php foreach($this->getPager()->getPerPageCountOption() as $perPageCount) :?>  
+        <option value="<?php echo $perPageCount ?>"><?php echo $perPageCount ?></a></option>
+    <?php endforeach;?>
+</select>
+
+<nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+            <button  type="button" class="pagerBtn" value="<?php echo $this->getUrl('gridBlock',null,['p' => $this->getPager()->getStart()])?>">Start</button>
+        </li>
+        <li class="page-item">
+            <button  type="button" class="pagerBtn" value="<?php echo $this->getUrl('gridBlock',null,['p' => $this->getPager()->getPrev()])?>">Prev</button>
+        </li>
+        <li class="page-item">
+            <button type="button" class="pagerBtn" value="<?php echo $this->getUrl('gridBlock',null,['p' => $this->getPager()->getCurrent()])?>">Current</button>
+        </li>
+        <li class="page-item">
+            <button type="button" class="pagerBtn" value="<?php echo $this->getUrl('gridBlock',null,['p' => $this->getPager()->getNext()])?>">Next</button>
+        </li>
+        <li class="page-item">
+            <button type="button" class="pagerBtn" value="<?php echo $this->getUrl('gridBlock',null,['p' => $this->getPager()->getEnd()])?>">End</button>
+        </li>
+      </ul>
+</nav>
+
+
 <div class="row">
     <div class="col-md-2">
         <div class="card card-primary">
-            <button type="button" class="btn btn-block btn-primary" name="addNew"><a href="<?php echo $this->getUrl('edit')?>"> Add New </a></button>
+            <button type="button" class="btn btn-block btn-primary" name="addNew" id="addProductBtn">Add New</button>
         </div>
     </div>
 </div>            
 <table class="table table-bordered table-striped">
-    <tr>
-        <select onchange="count()" id="count">
-            <option selected>select</option>
-            <?php foreach($this->getPager()->getPerPageCountOption() as $perPageCount) :?>  
-                <option value="<?php echo $perPageCount ?>"><?php echo $perPageCount ?></a></option>
-            <?php endforeach;?>
-        </select>
-    </tr>
-
-    <tr>
-        <button><a style="<?php ($this->pager->getStart()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->pager->getStart()]) ?>">Start</a></button></tr>
-        <tr><button><a style="<?php ($this->pager->getPrev()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->pager->getPrev()]) ?>">Prev</a></button>
-        &nbsp;&nbsp;&nbsp;&nbsp;<?php echo "<b>".$this->pager->getCurrent()."</b>"?>&nbsp;&nbsp;&nbsp;&nbsp;</tr>
-        <tr><button><a style="<?php ($this->pager->getNext()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->pager->getNext()]) ?>">Next</a></button></tr>
-        <tr><button><a style="<?php ($this->pager->getEnd()==NULL)? "pointer-events: none" : "" ?>" href="<?php echo $this->getUrl(null,null,['p' => $this->pager->getEnd()]) ?>">End</a></button>
-    </tr>
     <tr>
        <td colspan="16"><b>Product Information</b></td>
     </tr>
@@ -68,15 +87,23 @@
                 <td><img src="<?php echo $product->getBase()->getImageUrl(); ?>" width = "50px" height = "50px" alt = "Image not found"></td>
                 <td><img src="<?php echo $product->getThumbnail()->getImageUrl();?>" width = "50px" height = "50px" alt = "Image not found"></td>
                 <td><img src="<?php echo $product->getSmall()->getImageUrl(); ?>" width = "50px" height = "50px" alt = "Image not found"></td>
-                <td><a class="btn btn-block btn-success" href="<?php echo $this->getUrl('edit', null, ['id' =>  $product->productId], true)?>">Edit</a></td>
-                <td><a  class="btn btn-block btn-success" href="<?php echo $this->getUrl('delete', null, ['id' => $product->productId], true);?>">Delete</a></td>
+                <td><button type="button" class="btn btn-block btn-success" onclick="productAction('<?php echo $this->getUrl('edit','product',['id' => $product->productId])?>')">Edit</button></td>
+                <td><button type="button" class="btn btn-block btn-success" onclick="productAction('<?php echo $this->getUrl('delete','product',['id' => $product->productId])?>')">Delete</button></td>
                 <td><a class="btn btn-block btn-success" href="<?php echo $this->getUrl('grid', 'product_media', ['id' => $product->productId]);?>">Media</a></td>
             </tr>
         <?php endforeach; ?>
     <?php endif; ?> 
 </table>
 
+
 <script type="text/javascript"> 
+    $("#addProductBtn").click(function(){
+        admin.setType("GET");
+        admin.setData({'id' : null});
+        admin.setUrl("<?php echo $this->getUrl('edit');?>");
+        admin.load();
+    });
+
     function count() 
     {
         const countValue = document.getElementById('count').selectedOptions[0].value;

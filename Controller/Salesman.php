@@ -11,16 +11,6 @@ class Controller_Salesman extends Controller_Core_Action{
 			$this->redirect($this->getLayout()->getUrl('login','admin_login'));
 		}
     }
-
-	// public function gridAction()
-	// {
-	// 	$this->setTitle('Salesman Grid');
-	// 	$salesmanGrid = Ccc::getBlock('Salesman_Grid');
-	// 	$content = $this->getLayout()->getContent();
-	// 	$content->addChild($salesmanGrid);
-	// 	$this->renderLayout();
-	// }
-
     public function indexAction()
 	{
 		$content = $this->getLayout()->getContent();
@@ -70,11 +60,10 @@ class Controller_Salesman extends Controller_Core_Action{
 		catch (Exception $e) 
 		{
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-			$this->gridBlockAction();
+			$this->redirectPage();
 
 		}
 	}
-
 
 	public function saveAction()
 	{
@@ -105,12 +94,12 @@ class Controller_Salesman extends Controller_Core_Action{
 				throw new Exception("System can't save data", 1);		
 			}
 			$this->getMessage()->addMessage('Data saved successfully.', Model_Core_Message::SUCCESS);
-			$this->gridBlockAction();
+			$this->redirectPage();
 		} 
 		catch (Exception $e) 
 		{	
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-			$this->gridBlockAction();
+			$this->redirectPage();
 		}
 	}
 
@@ -131,12 +120,24 @@ class Controller_Salesman extends Controller_Core_Action{
 				throw new Exception("System can't delete.", 1);
 			}
 			$this->getMessage()->addMessage('Data Deleted.', Model_Core_Message::SUCCESS);
-			$this->gridBlockAction();
+			$this->redirectPage();
 		}
 		catch (Exception $e) 
 		{	
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-			$this->gridBlockAction();
+			$this->redirectPage();
 		}
+	}
+
+	public function redirectPage()
+	{
+		$salesmanGrid = Ccc::getBlock('Salesman_Grid')->toHtml();
+ 		$message = Ccc::getBlock('Core_Layout_Header_Message')->toHtml();
+ 		$response = [
+		'status' => 'success',
+		'content' => $salesmanGrid,
+		'message' => $message
+		];
+		$this->renderJson($response);
 	}
 }

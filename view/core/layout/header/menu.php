@@ -71,7 +71,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="<?php echo $this->getUrl('grid','category')?>" class="nav-link">
+            <a href="<?php echo $this->getUrl('index','category')?>" class="nav-link">
                 <p>Category</p>
             </a>
         </li>
@@ -91,7 +91,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="<?php echo $this->getUrl('grid','product')?>" class="nav-link">
+            <a href="<?php echo $this->getUrl('index','product')?>" class="nav-link">
                 <p>Product</p>
             </a>
         </li>

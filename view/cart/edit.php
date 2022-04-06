@@ -12,6 +12,40 @@
  	$billingAddress = $cartModel->getBillingAddresses();
  	$shippingAddress = $cartModel->getShippingAddresses();
 ?>
+
+<script>
+	function customer() 
+	{
+		var customerId = document.getElementById('customerId').value;
+		var url = new URL(window.location.href);
+		var search_parameter = url.searchParams;
+		search_parameter.set('customerId', customerId);
+		search_parameter.set('a', 'getCart');
+		url.search = search_parameter.toString();
+		var newUrl = url.toString();
+		window.location = newUrl; 
+	}
+
+	function shipping() {
+		if(document.getElementById('mark').checked) {
+           document.getElementById('shipping').style.display = "none";
+		}
+		else{
+           document.getElementById('shipping').style.display = "block";
+		}	
+	}
+
+	function showTable()
+	{
+		document.getElementById('addItem').style.display = "block";
+	}
+	function hideTable()
+	{
+		document.getElementById('addItem').style.display = "none";
+	}
+
+</script>
+
 <div class="card">
 	<select id="customerId" class="form-control" name="customer[customerId]" onchange="customer()">
 		<option>Select Customer</option>
@@ -296,38 +330,3 @@
 	</table>
 </form>
 
-<script>
-
-	function shipping() {
-		if(document.getElementById('mark').checked) {
-           document.getElementById('shipping').style.display = "none";
-		}
-		else{
-           document.getElementById('shipping').style.display = "block";
-		}	
-	}
-
-
-	function customer() 
-	{
-		var customerId = document.getElementById('customerId').value;
-		var url = new URL(window.location.href);
-		var search_parameter = url.searchParams;
-		search_parameter.set('customerId', customerId);
-		search_parameter.set('a', 'getCart');
-		url.search = search_parameter.toString();
-		var newUrl = url.toString();
-		window.location = newUrl; 
-	}
-
-	function showTable()
-	{
-		document.getElementById('addItem').style.display = "block";
-	}
-	function hideTable()
-	{
-		document.getElementById('addItem').style.display = "none";
-	}
-
-
-</script>

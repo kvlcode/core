@@ -3,7 +3,7 @@ class Model_Core_Message{
 
 	protected $session = null; 
 
-	const SUCCESS = "sucess";
+	const SUCCESS = "success";
 	const ERROR = "error";
 	const WARNING = "warning";
 

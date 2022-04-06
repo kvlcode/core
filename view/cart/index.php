@@ -1,4 +1,4 @@
-<form action="<?php echo $this->getUrl('gridBlock'); ?>" method="POST" id="indexForm" >
+<form method="POST" id="indexForm" action="<?php echo $this->getUrl('gridBlock'); ?>" >
 	<div id="indexMessage">
 		
 	</div>

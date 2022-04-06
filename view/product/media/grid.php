@@ -4,7 +4,7 @@
 	<form method="POST" action="<?php echo $this->getUrl('save', 'product_media', ['id' => $id]);?>">
 		<div class="card-footer">
 			<button type="submit" name="update" class="btn btn-success"> Update </a></button>
-			<button type="button" name="cancel" class="btn btn-default"><a href="<?php echo $this->getUrl('grid','product')?>"> Cancel </a></button>
+			<button type="button" name="cancel" class="btn btn-default"><a href="<?php echo $this->getUrl('index','product')?>"> Cancel </a></button>
 		</div>	
 
 		<table class="table table-bordered table-striped">

@@ -60,7 +60,7 @@ class Controller_Config extends Controller_Core_Action{
 		catch (Exception $e) 
 		{
 			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);	
-			$this->gridBlockAction();		
+			$this->redirectPage();
 		}
 	}
 
@@ -94,19 +94,20 @@ class Controller_Config extends Controller_Core_Action{
 		        throw new Exception("System can't saved config data.", 1);	
 		    }
 		    $this->getMessage()->addMessage("Data saved successfully.", Model_Core_Message::SUCCESS);
-			$this->gridBlockAction();				
+			$this->redirectPage();				
 		}
 		catch(Exception $e)
 		{	
 			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);	
-	    	$this->gridBlockAction();				
+			$this->redirectPage();		
 	    }			
 	}
 
 	public function deleteAction()
 	{
 		$id = $this->getRequest()->getRequest('id');
-		try{
+		try
+		{
 			if (!$id)
 			{
 				throw new Exception("Invalid Request.", 1);
@@ -119,13 +120,24 @@ class Controller_Config extends Controller_Core_Action{
 				throw new Exception("System can't delete record.", 1);							
 			}
 			$this->getMessage()->addMessage("Data Deleted.");
-			$this->gridBlockAction();
-
+			$this->redirectPage();
 		}
 		catch (Exception $e) 
 		{
 			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);	
-			$this->gridBlockAction();
+			$this->redirectPage();
 		}	
+	}
+	
+	public function redirectPage()
+	{
+		$configGrid = Ccc::getBlock('Config_Grid')->toHtml();
+ 		$message = Ccc::getBlock('Core_Layout_Header_Message')->toHtml();
+ 		$response = [
+		'status' => 'success',
+		'content' => $configGrid,
+		'message' => $message
+		];
+		$this->renderJson($response);	
 	}
 }

@@ -1,6 +1,5 @@
 <?php $product = $this->getProduct();?>
 
-
 <div class="card card-info">
     <div class="card-body">
 		<div class="form-group row">
@@ -44,7 +43,7 @@
 		<div class="form-group row">
 			<label for="status" class="col-sm-2 col-form-label">Status</label>
 			<div class="col-sm-10">
-			    <select name="product[status]">
+			    <select class="form-control" name="product[status]">
 					<?php foreach ($product->getStatus() as $key => $value): ?>
 						<option value="<?php echo $key?>"<?php if($product->status == $key){?> selected <?php }?>> <?php echo $value; ?> </option>
 					<?php endforeach; ?>
@@ -54,7 +53,20 @@
 
       	<div class="card-footer">
 			<button id="productFormSaveBtn" class="btn btn-info" type="button" name="Save">Save</button>
-			<button id="productFormCancelBtn" class="btn btn-default" type="button" value="cancel" name="cancel"><a href="<?php echo $this->getUrl('grid', 'product') ?>">Cancel</a></button> 
+			<button id="productFormCancelBtn" class="btn btn-default" type="button" value="cancel" name="cancel">Cancel</button> 
 		</div>	 
 	</div>
 </div>
+
+<script type="text/javascript">
+	jQuery('#productFormCancelBtn').click(function() {
+		admin.setUrl("<?php echo $this->getUrl('gridBlock','product', ['id' => null]);?>");
+		admin.load();
+	});
+
+	jQuery('#productFormSaveBtn').click(function() {
+		admin.setForm(jQuery("#indexForm"));
+		admin.setUrl("<?php echo $this->getUrl('save');?>");
+		admin.load();
+	});
+</script>

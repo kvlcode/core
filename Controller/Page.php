@@ -63,7 +63,8 @@ class Controller_Page extends Controller_Core_Action{
 		}
 		catch (Exception $e)
 		{
-			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
+			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);
+			$this->redirectPage();	
 		}
 	}
 
@@ -98,13 +99,13 @@ class Controller_Page extends Controller_Core_Action{
 				throw new Exception("Sustem can't' save data.", 1);
 			}
 			$this->getMessage()->addMessage('Data Saved successfully.');
-			$this->gridBlockAction();		
-
+			$this->redirectPage();
 		}
 		catch (Exception $e) 
 		{	
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);
-			$this->gridBlockAction();		
+			$this->redirectPage();
+	
 
 		}
 	}
@@ -126,24 +127,25 @@ class Controller_Page extends Controller_Core_Action{
          		throw new Exception("System can't delete.", 1);
          	}
          	$this->getMessage()->addMessage('Data Deleted.', Model_Core_Message::SUCCESS);
-      		$this->gridBlockAction();		
+      		$this->redirectPage();
 
-		} catch (Exception $e) {
+		} 
+		catch (Exception $e) 
+		{
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);
-			$this->gridBlockAction();		
+			$this->redirectPage();
 		}
 	}
 
-	public function deleteAllAction()
+	public function redirectPage()
 	{
-		try {
-			
-			$delete = $this->getRequest()->getPost('check');
-			//Working...
-
-		} catch (Exception $e) {
-			
-		}
+		$pageGrid = Ccc::getBlock('Page_Grid')->toHtml();
+ 		$message = Ccc::getBlock('Core_Layout_Header_Message')->toHtml();
+ 		$response = [
+		'status' => 'success',
+		'content' => $pageGrid,
+		'message' => $message
+		];
+		$this->renderJson($response);
 	}
-
 }

@@ -3,7 +3,7 @@ Ccc::loadClass('Block_Core_Template');
 class Block_Cart_Edit extends Block_Core_Template
 {
 	protected $cart = null;
-
+	
 	public function __construct()
 	{
 		$this->setTemplate('view/cart/edit.php');
@@ -70,5 +70,4 @@ class Block_Cart_Edit extends Block_Core_Template
 		$cartModel = Ccc::getModel('Cart')->fetchAll("SELECT * FROM `cart` where cartId = {$this->getCart()->getCart()['cartId']}");
 		return $cartModel;
 	}
-
 }

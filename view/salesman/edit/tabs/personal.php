@@ -22,13 +22,13 @@
       <div class="form-group row">
         <label for="mobile" class="col-sm-2 col-form-label">Mobile</label>
         <div class="col-sm-10">
-            <input type="mobile" class="form-control"  name="salesman[mobile]" id="mobile" value="<?php echo $salesman->mobile ?>" placeholder="Mobile">
+            <input type="number" class="form-control"  name="salesman[mobile]" id="mobile" value="<?php echo $salesman->mobile ?>" placeholder="Mobile">
         </div>
       </div>
       <div class="form-group row">
         <label for="discount" class="col-sm-2 col-form-label">Discount</label>
         <div class="col-sm-10">
-            <input type="discount" class="form-control"  name="salesman[discount]" id="discount" value="<?php echo $salesman->discount ?>" placeholder="Password">
+            <input type="number" class="form-control"  name="salesman[discount]" id="discount" value="<?php echo $salesman->discount ?>" placeholder="Discount">
         </div>
       </div>
       <div class="form-group row">

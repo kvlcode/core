@@ -1,6 +1,4 @@
 <?php $customer = $this->getCustomer();	?>
-
-
 <div class="card card-info">
     <div class="card-body">
 		<div class="form-group row">
@@ -32,7 +30,7 @@
 		<div class="form-group row">
 			<label for="status" class="col-sm-2 col-form-label">Status</label>
 			<div class="col-sm-10">
-			    <select name="customer[status]">
+			    <select class="form-control" name="customer[status]">
 					<?php foreach ($customer->getStatus() as $key => $value): ?>
 						<option value="<?php echo $key?>"<?php if($customer->status == $key){?> selected <?php }?>> <?php echo $value; ?> </option>
 					<?php endforeach; ?>
@@ -55,7 +53,8 @@
 
 	jQuery('#customerFormSaveBtn').click(function() {
 		admin.setForm(jQuery("#indexForm"));
-		admin.setUrl("<?php echo $this->getUrl('save');?>");
+		admin.setUrl("<?php echo $this->getUrl('save','customer');?>");
+		alert(admin.getUrl());
 		admin.load();
 	});
 </script>

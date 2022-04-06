@@ -4,9 +4,7 @@
         <input type="submit" class="btn btn-primary" name="addOrder" value="Add Order">
     </div>    
 </form>
-
 <table class="table table-bordered table-striped">
-
 	<tr>
 		<th>Order Id</th>
 		<th>First Name</th>
@@ -18,13 +16,10 @@
         <th>View</th>
         <th>Delete</th>
 	</tr>
-
-
 	<?php if (!$orders): ?>
         <tr><td colspan="17">No data</td></tr>
     <?php else:  ?>      
         <?php foreach($orders as $order): ?>
-         
             <tr>
                 <td><?php echo $order->orderId?></td>
                 <td><?php echo $order->firstName  ?></td>

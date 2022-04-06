@@ -31,7 +31,7 @@
 		<div class="form-group row">
 			<label for="status" class="col-sm-2 col-form-label">Status</label>
 			<div class="col-sm-10">
-			    <select name="admin[status]">
+			    <select class="form-control" name="admin[status]">
 					<?php foreach ($admin->getStatus() as $key => $value): ?>
 						<option value="<?php echo $key?>"<?php if($admin->status == $key){?> selected <?php }?>> <?php echo $value; ?> </option>
 					<?php endforeach; ?>

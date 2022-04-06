@@ -12,13 +12,18 @@
 	}
 </script>
 
-
-<select id="ppr">
-	<option selected>select</option>
-	<?php foreach($this->getPager()->getPerPageCountOption() as $perPageCount) :?>  
-		<option value="<?php echo $perPageCount ?>" ><?php echo $perPageCount ?></option>
-	<?php endforeach;?>
-</select>
+<div class="row">
+  <div class="col-md-2">
+    <div class="card card-primary">
+			<select id="ppr" class="form-control">
+				<option selected>select</option>
+				<?php foreach($this->getPager()->getPerPageCountOption() as $perPageCount) :?>  
+					<option value="<?php echo $perPageCount ?>" ><?php echo $perPageCount ?></option>
+				<?php endforeach;?>
+			</select>
+		</div>
+	</div>
+</div>			
 
 <nav aria-label="Page navigation example">
 	  <ul class="pagination">
