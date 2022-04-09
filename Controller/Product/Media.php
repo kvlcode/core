@@ -98,13 +98,13 @@ class Controller_Product_Media extends Controller_Core_Action
 				}
 				$this->getMessage()->addMessage("Image Data updated", Model_Core_Message::SUCCESS);
 			}
-			$this->redirect($this->getView()->getUrl(null, null, ['id'=> $id], true));
+			$this->redirect($this->getLayout()->getUrl('grid', 'product_media', ['id'=> $id]));
 
 		} 
 		catch (Exception $e) 
 		{
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-			$this->redirect($this->getView()->getUrl(null, null, ['id'=> $id], true));
+			$this->redirect($this->getLayout()->getUrl('grid', 'product_media', ['id'=> $id]));
 		}
 	}
 }

@@ -6,7 +6,6 @@
 <?php $cartShippingMethod = $this->getCartShippingMethod();?>
 <?php $payments = $this->getPayment();?>
 <?php
-	// $cartId = $this->getCart()->getCart();
 	$cartId = $this->getCart()->getCart()['cartId'];
 	$cartModel = $this->getCart();
 	$cartModel->cartId = $cartId;
@@ -14,14 +13,49 @@
  	$shippingAddress = $cartModel->getShippingAddresses();
 ?>
 
-<select id="customerId" name="customer[customerId]" onchange="customer()">
-	<option>Select Customer</option>
-	<?php foreach($customers as $customer): ?>
-		<option value="<?php echo $customer->customerId;?>"><?php echo $customer->customerId.'=>'.$customer->firstName; ?></option>
-	<?php endforeach;?>
-</select>
+<script>
+	function customer() 
+	{
+		var customerId = document.getElementById('customerId').value;
+		var url = new URL(window.location.href);
+		var search_parameter = url.searchParams;
+		search_parameter.set('customerId', customerId);
+		search_parameter.set('a', 'getCart');
+		url.search = search_parameter.toString();
+		var newUrl = url.toString();
+		window.location = newUrl; 
+	}
 
-<table border="1" width="100%" cellspacing="4">
+	function shipping() {
+		if(document.getElementById('mark').checked) {
+           document.getElementById('shipping').style.display = "none";
+		}
+		else{
+           document.getElementById('shipping').style.display = "block";
+		}	
+	}
+
+	function showTable()
+	{
+		document.getElementById('addItem').style.display = "block";
+	}
+	function hideTable()
+	{
+		document.getElementById('addItem').style.display = "none";
+	}
+
+</script>
+
+<div class="card">
+	<select id="customerId" class="form-control" name="customer[customerId]" onchange="customer()">
+		<option>Select Customer</option>
+		<?php foreach($customers as $customer): ?>
+			<option value="<?php echo $customer->customerId;?>" <?php if($customer->customerId == $customerId):?> selected <?php endif;?>><?php echo $customer->customerId.'=>'.$customer->firstName; ?></option>
+		<?php endforeach;?>
+	</select>
+</div>
+
+<table class="table table-bordered table-striped">
 	<tr>
 		<td>	
 			<form method="Post" action="<?php echo $this->getUrl('saveBillingAddress')?>">
@@ -67,7 +101,7 @@
 					<tr>
 						<td width="50%">&nbsp;</td>
 						<td>
-							<input type="submit" name="save" value="Save">
+							<input class="btn btn-info" type="submit" name="save" value="Save">
 						</td>
 					</tr>
 				</table>
@@ -77,7 +111,7 @@
 		<td id="shipping">	
 			<form method="Post" action="<?php echo $this->getUrl('saveShippingAddress')?>">
 
-				<table border="1" width="100%" cellspacing="4">
+				<table class="table table-bordered table-striped">
 					
 					<tr>
 						<td colspan="2"><b>Shipping Address</b></td>
@@ -116,7 +150,7 @@
 					<tr>
 						<td width="50%">&nbsp;</td>
 						<td>
-							<input type="submit" name="save" value="Save">
+							<input class="btn btn-info" type="submit" name="save" value="Save">
 						</td>
 					</tr>
 				</table>
@@ -127,7 +161,7 @@
 	<tr>
 		<td>
 			<form method="Post" action="<?php echo $this->getUrl('savePaymentMethod')?>">
-				<table border="1" width="100%" cellspacing="4">	
+				<table class="table table-bordered table-striped">	
 					<tr>
 						<td colspan="2"><b>Payment Method</b></td>
 					</tr>
@@ -145,7 +179,7 @@
 					<tr>
 						<td>&nbsp;</td>
 						<td>
-							<input type="submit" name="update" value="Update">
+							<input class="btn btn-info" type="submit" name="update" value="Update">
 						</td>
 					</tr>
 				</table>
@@ -154,7 +188,7 @@
 
 		<td>
 			<form method="Post" action="<?php echo $this->getUrl('saveShippingMethod')?>">
-				<table border="1" width="100%" cellspacing="4">
+				<table class="table table-bordered table-striped">
 					<tr>
 						<td colspan="2"><b>Shipping Method</b></td>
 					</tr>
@@ -171,7 +205,7 @@
 
 						<td>&nbsp;</td>
 						<td>
-							<input type="submit" name="update" value="Update">
+							<input class="btn btn-info" type="submit" name="update" value="Update">
 						</td>
 					</tr>
 				</table>
@@ -182,10 +216,10 @@
 	<tr id="addItem" style="display: none;">
 		<td>
 			<form method="Post" action="<?php echo $this->getUrl('addItem')?>">
-				<table border="1" width="100%" cellspacing="4">
+				<table class="table table-bordered table-striped">
 					<tr>
-						<td><input type="button" name="cancel" value="CANCEL" onclick="hideTable()"></td>
-						<td><input type="submit" name="save" value="ADD SELECTED ITEM"></td>
+						<td><input class="btn btn-info" type="button" name="cancel" value="CANCEL" onclick="hideTable()"></td>
+						<td><input class="btn btn-default" type="submit" name="save" value="ADD SELECTED ITEM"></td>
 					</tr>
 					<tr>
 				        <th>Image</th>
@@ -195,7 +229,7 @@
 				        <th>Action</th>
 				    </tr>
 
-				    <?php if(!$cartItems):?>
+				    <?php if(!$products):?>
 				        <tr>
 				            <td colspan="10">No record Available</td>
 				        </tr>   
@@ -218,10 +252,10 @@
 	<tr>
 		<td>
 			<form method="Post" action="<?php echo $this->getUrl('removeItem')?>">
-				<table border="1" width="100%" cellspacing="4">
+				<table class="table table-bordered table-striped">
 					<tr>
-						<td><input type="submit" name="save" value="UPDATE"></td>
-						<td><input type="button" name="save" value="NEW ITEM" onclick="showTable()"></td>
+						<td><input class="btn btn-info" type="submit" name="save" value="UPDATE"></td>
+						<td><input class="btn btn-info" type="button" name="save" value="NEW ITEM" onclick="showTable()"></td>
 					</tr>
 					<tr>
 				        <th>Image</th>
@@ -262,8 +296,8 @@
 	</tr>
 </table>
 
-<form method="Post" action="<?php echo $this->getUrl('order')?>">
-	<table border="1" cellspacing="4">
+<form method="Post" action="<?php echo $this->getUrl('save')?>">
+	<table class="table table-bordered table-striped">
 		<tr>
 			<td>Sub Total:</td>
 			<td><?php echo $subTotal;?></td>
@@ -288,45 +322,11 @@
 
 		<tr>
 			<td>Grand Total:</td>
-			<td><?php echo $subTotal + $deliveryCharge + $totalTax - $finalDiscount;?></td>
+			<td><?php echo $grandTotal = $subTotal + $deliveryCharge + $totalTax - $finalDiscount;?></td>
+			<input type="hidden" name="total" value="<?php echo $grandTotal ?>">
 		</tr>	
-		<tr><td><input type="submit" name="Save" value="Place Order"></td></tr>
+		<tr><td><input class="btn btn-info" type="submit" name="Save" value="Place Order"></td></tr>
 
 	</table>
 </form>
 
-<script>
-
-	function shipping() {
-		if(document.getElementById('mark').checked) {
-           document.getElementById('shipping').style.display = "none";
-		}
-		else{
-           document.getElementById('shipping').style.display = "block";
-		}	
-	}
-
-
-	function customer() 
-	{
-		var customerId = document.getElementById('customerId').value;
-		var url = new URL(window.location.href);
-		var search_parameter = url.searchParams;
-		search_parameter.set('customerId', customerId);
-		search_parameter.set('a', 'getCart');
-		url.search = search_parameter.toString();
-		var newUrl = url.toString();
-		window.location = newUrl; 
-	}
-
-	function showTable()
-	{
-		document.getElementById('addItem').style.display = "block";
-	}
-	function hideTable()
-	{
-		document.getElementById('addItem').style.display = "none";
-	}
-
-
-</script>

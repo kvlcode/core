@@ -9,26 +9,11 @@ class Block_Category_Grid extends Block_Core_Template
 		$this->setTemplate('view/category/grid.php');
 	}
 
-	public function setPager($pager)
-	{
-		$this->pager = $pager;
-		return $this;
-	}
-
-	public function getPager()
-	{
-		if(!$this->pager)
-		{
-			$this->setPager(Ccc::getModel('Core_Pager'));
-		}
-		return $this->pager;
-	}
-
 	public function getCategories()
 	{
 		$request = Ccc::getModel('Core_Request');
 		$current = $request->getRequest('p',1);
-		$count = $request->getRequest('count',20);
+		$count = $request->getRequest('ppr',20);
 		$totalRecord = $this->getPager()->getAdapter()->fetchOne("SELECT count('categoryId') as totalCount FROM `categories`");
 		$this->getPager()->execute($totalRecord['totalCount'], $current, $count);
 		$categoryModel = Ccc::getModel('Category');
@@ -42,7 +27,7 @@ class Block_Category_Grid extends Block_Core_Template
 		$pathArray = explode("/", $path);
 		$temp1 = [];
 			foreach ($pathArray as $value) {
-				$temp2 = $category->fetchRow("SELECT name FROM categories WHERE categoryId = '$value'");
+				$temp2 = $category->fetchRow("SELECT name FROM `categories` WHERE categoryId = '$value'");
 				$temp1[] = $temp2->name;
 
 			}	

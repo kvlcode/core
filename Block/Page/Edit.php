@@ -1,23 +1,9 @@
-<?php
-Ccc::loadClass('Block_Core_Template');
-class Block_Page_Edit extends Block_Core_Template
+<?php Ccc::loadClass('Block_Core_Edit');?>
+<?php Ccc::loadClass('Block_Page_Edit_Tab');
+class Block_Page_Edit extends Block_Core_Edit
 {
-	protected $page = null;
-
 	public function __construct()
 	{
-		$this->setTemplate('view/page/edit.php');
+		parent::__construct();
 	}
-
-	public function getPage()
-	{
-		return $this->page;
-	}
-
-	public function setPage($page)
-	{
-		$this->page = $page;
-		return $this;
-	}
-
 }

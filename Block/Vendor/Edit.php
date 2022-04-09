@@ -1,24 +1,10 @@
 <?php
-Ccc::loadClass('Block_Core_Template');
-class Block_Vendor_Edit extends Block_Core_Template
+Ccc::loadClass('Block_Vendor_Edit_Tab');
+Ccc::loadClass('Block_Core_Edit');
+class Block_Vendor_Edit extends Block_Core_Edit
 {
-
-	protected $vendor = null;
-
 	public function __construct()
 	{
-		$this->setTemplate('view/vendor/edit.php');
+		parent::__construct();
 	}
-
-	public function getVendor()
-	{
-		return $this->vendor;
-	}
-
-	public function setVendor($vendor)
-	{
-		$this->vendor = $vendor;
-		return $this;
-	}
-	
 }

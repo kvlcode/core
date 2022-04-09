@@ -11,13 +11,31 @@ class Controller_Category extends Controller_Core_Action{
 		}
     }
 
-	public function gridAction()
+	// public function gridAction()
+	// {
+	// 	$this->setTitle('Category Grid');
+	// 	$categoryGrid = Ccc::getBlock('Category_Grid');
+	// 	$content = $this->getLayout()->getContent();
+	// 	$content->addChild($categoryGrid);
+	// 	$this->renderLayout();
+	// }
+
+	public function indexAction()
 	{
-		$this->setTitle('Category Grid');
-		$categoryGrid = Ccc::getBlock('Category_Grid');
 		$content = $this->getLayout()->getContent();
+		$categoryGrid = Ccc::getBlock('Category_Index');
 		$content->addChild($categoryGrid);
 		$this->renderLayout();
+	}
+	
+	public function gridBlockAction()
+	{
+		$categoryGrid = Ccc::getBlock('Category_Grid')->toHtml();
+		$response = [
+			'status' => 'success',
+			'content' => $categoryGrid
+		];
+		$this->renderJson($response);
 	}
 
 	public function editAction()
@@ -38,16 +56,22 @@ class Controller_Category extends Controller_Core_Action{
 				$this->setTitle('Category Add');
 				$categoryRow = Ccc::getModel('Category');
 			}
-			$categoryEdit = Ccc::getBlock('Category_Edit')->addData('categoryRow', $categoryRow);
-			$content = $this->getLayout()->getContent();
-			$content->addChild($categoryEdit);
-			$this->renderLayout();
+			Ccc::register('category', $categoryRow);
+			$categoryEdit = Ccc::getBlock('Category_Edit')->toHtml();
+			$response = [
+				'status' => 'success',
+				'content' => $categoryEdit
+			];
+			$this->renderJson($response);
+
+
+
 
 		}
 		catch (Exception $e) 
 		{
 			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);	
-			$this->redirect($this->getView()->getUrl(null, null, null, true));
+			$this->redirect($this->getLayout()->getUrl(null, null, null, true));
 		}	
 
 	}
@@ -130,11 +154,11 @@ class Controller_Category extends Controller_Core_Action{
 				}
 			}
 				
-			$this->redirect($this->getView()->getUrl(null, null, null, true));	
+			$this->redirect($this->getLayout()->getUrl('grid', 'category', null, true));	
 		}
 		catch (Exception $e){
 			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);
-			$this->redirect($this->getView()->getUrl(null, null, null, true));	
+			$this->redirect($this->getLayout()->getUrl('grid', 'category', null, true));	
 		}	
 	}
 
@@ -156,13 +180,13 @@ class Controller_Category extends Controller_Core_Action{
 				throw new Exception("System can't delete record.", 1);							
 			}
 			$this->getMessage()->addMessage('Data Deleted.');
-			$this->redirect($this->getView()->getUrl(null, null, null, true));
+			$this->redirect($this->getLayout()->getUrl('grid', 'category', null, true));
 		
 		}
 		catch (Exception $e) 
 		{	
 			$this->getMessage()->addMessage($e->message(), Model_Core_Message::ERROR);	
-			$this->redirect($this->getView()->getUrl(null, null, null, true));
+			$this->redirect($this->getLayout()->getUrl('grid', 'category', null, true));
 		}	
 	}
 }

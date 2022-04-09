@@ -3,7 +3,7 @@ Ccc::loadClass('Block_Core_Template');
 class Block_Cart_Edit extends Block_Core_Template
 {
 	protected $cart = null;
-
+	
 	public function __construct()
 	{
 		$this->setTemplate('view/cart/edit.php');

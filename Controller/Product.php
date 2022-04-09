@@ -11,14 +11,35 @@ class Controller_Product extends Controller_Core_Action{
 		}
     }
 
-	public function gridAction()			
-	{	
-		$this->setTitle('Product Grid');
-		$productGrid = Ccc::getBlock('Product_Grid');
+	// public function gridAction()			
+	// {	
+	// 	$this->setTitle('Product Grid');
+	// 	$productGrid = Ccc::getBlock('Product_Grid');
+	// 	$content = $this->getLayout()->getContent();
+	// 	$content->addChild($productGrid);
+	// 	$this->renderLayout();		
+	// }
+
+
+    public function indexAction()
+	{
 		$content = $this->getLayout()->getContent();
+		$productGrid = Ccc::getBlock('Product_Index');
 		$content->addChild($productGrid);
-		$this->renderLayout();		
+		$this->renderLayout();
+
 	}
+
+	public function gridBlockAction()
+	{
+		$productGrid = Ccc::getBlock('Product_Grid')->toHtml();
+		$response = [
+			'status' => 'success',
+			'content' => $productGrid
+		];
+		$this->renderJson($response);
+	}
+
 
 	public function editAction()
 	{
@@ -38,15 +59,18 @@ class Controller_Product extends Controller_Core_Action{
 				$this->setTitle('Product Add');
 				$product = Ccc::getModel('Product');
 			}	
-			$productEdit = Ccc::getBlock('Product_Edit')->setProduct($product);
-			$content = $this->getLayout()->getContent();
-			$content->addChild($productEdit);
-			$this->renderLayout();
+			Ccc::register('product', $product);
+			$productEdit = Ccc::getBlock('Product_Edit')->toHtml();
+			$response = [
+			'status' => 'success',
+			'content' => $productEdit
+			];
+			$this->renderJson($response);
 		} 
 		catch (Exception $e) 
 		{
-			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-			$this->redirect($this->getView()->getUrl(null, null, null, true)); 	
+			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);
+			$this->redirectPage();
 		}
 	}
 
@@ -73,17 +97,19 @@ class Controller_Product extends Controller_Core_Action{
 				$update = $productRow->save();
 
 				$CategoryProductRow = $categoryProduct->fetchAll("SELECT * FROM `category_product` WHERE `productId` = '{$productId}'");
-
-				foreach ($CategoryProductRow as $key => $value) 
+				if ($CategoryProductRow) 
 				{
-					$categoryModel = Ccc::getModel('category_product');
-					$categoryModel->delete($value->entityId);
-				}
-				$categoryProduct->productId = $productId;
-				foreach ($categoryData['categoryId'] as $key => $id) 
-				{
-					$categoryProduct->categoryId = $id;
-					$categoryProduct->save();
+					foreach ($CategoryProductRow as $key => $value) 
+					{
+						$categoryModel = Ccc::getModel('category_product');
+						$categoryModel->delete($value->entityId);
+					}
+					$categoryProduct->productId = $productId;
+					foreach ($categoryData['categoryId'] as $key => $id) 
+					{
+						$categoryProduct->categoryId = $id;
+						$categoryProduct->save();
+					}
 				}
 
 			  	if (!$update) 
@@ -95,14 +121,18 @@ class Controller_Product extends Controller_Core_Action{
 			}
 			else
 			{
+				$productModel->setData($productData);
 				$productModel->createdDate = date('Y-m-d H:i:s');
 				$insertId = $productModel->save();
 
-				$categoryProduct->productId = $insertId;
-				foreach ($categoryData['categoryId'] as $key => $id) 
+				if ($categoryData) 
 				{
-					$categoryProduct->categoryId = $id;
-					$categoryProduct->save();
+					$categoryProduct->productId = $insertId;
+					foreach ($categoryData['categoryId'] as $key => $id) 
+					{
+						$categoryProduct->categoryId = $id;
+						$categoryProduct->save();
+					}	
 				}
 
 				if (!$insertId) 
@@ -111,13 +141,12 @@ class Controller_Product extends Controller_Core_Action{
 			    }
 			    $this->getMessage()->addMessage('Data Inserted.');
 			}	
-			$this->redirect($this->getView()->getUrl(null, null, null, true)); 				
-		
+			$this->redirectPage();
 		}
 		catch(Exception $e)
 		{
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-	    	$this->redirect($this->getView()->getUrl(null, null, null, true)); 
+	    	$this->redirectPage();
 	    }			
 	}
 
@@ -138,13 +167,25 @@ class Controller_Product extends Controller_Core_Action{
 				throw new Exception("System can't delete record.", 1);
 			}
 			$this->getMessage()->addMessage('Data Deleted.');
-			$this->redirect($this->getView()->getUrl(null, null, null, true)); 
-
+			$this->redirectPage();
 		}
 		catch (Exception $e) 
 		{
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-			$this->redirect($this->getView()->getUrl(null, null, null, true)); 
+			$this->redirectPage();
+
 		}	
+	}
+
+	public function redirectPage()
+	{
+		$productGrid = Ccc::getBlock('Product_Grid')->toHtml();
+ 		$message = Ccc::getBlock('Core_Layout_Header_Message')->toHtml();
+ 		$response = [
+		'status' => 'success',
+		'content' => $productGrid,
+		'message' => $message
+		];
+		$this->renderJson($response); 	
 	}
 }

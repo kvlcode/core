@@ -1,7 +1,22 @@
 <?php $categories = $this->getCategories(); ?>
 
-<button type="button" name="addNew"><a href="<?php echo $this->getUrl('edit')?>"> Add New </a></button>
-<table border="1" width="100%" cellspacing="4">
+<script type="text/javascript">
+	function categoryAction(url)
+	{
+		admin.setUrl(url);
+		alert(admin.getUrl());
+        admin.load();
+	}
+</script>
+<div class="row">
+	<div class="col-md-2">
+    <div class="card card-primary">
+			<button type="button" name="addCategory" class="btn btn-block btn-primary" id="addCategoryBtn">Add New</button>
+		</div>
+	</div>
+</div>
+
+<table class="table table-bordered table-striped">
 	<tr>
     <select onchange="count()" id="count">
         <option selected>select</option>
@@ -27,8 +42,8 @@
 		<th>Created_Date</th>
 		<th>Updated_Date</th>
 		<th>Base</th>
-      <th>Thumbnail</th>
-      <th>Small</th>
+    <th>Thumbnail</th>
+    <th>Small</th>
 		<th>Edit</th>
 		<th>Delete</th>
 		<th>Media</th>
@@ -51,13 +66,22 @@
         <td><img src="<?php echo $category->getBase()->getImageUrl(); ?>" width = "50px" height = "50px" alt = "Image not found"></td>
         <td><img src="<?php echo $category->getThumbnail()->getImageUrl();?>" width = "50px" height = "50px" alt = "Image not found"></td>
         <td><img src="<?php echo $category->getSmall()->getImageUrl(); ?>" width = "50px" height = "50px" alt = "Image not found"></td>
-				<td><a href="<?php echo $this->getUrl('edit', null, ['id' => $category->categoryId], true)?>">Edit</a></td>
-				<td><a href="<?php echo $this->getUrl('delete', null, ['id' => $category->categoryId], true)?>">Delete</a></td>
-				<td><a href="<?php echo $this->getUrl('grid', 'category_media', ['id' => $category->categoryId]);?>">Media</a></td>
+				<td><button class="btn btn-block btn-success" onclick="<?php echo $this->getUrl('edit', null, ['id' => $category->categoryId], true)?>">Edit</button></td>
+				<td><a class="btn btn-block btn-success" href="<?php echo $this->getUrl('delete', null, ['id' => $category->categoryId], true)?>">Delete</a></td>
+				<td><a class="btn btn-block btn-success" href="<?php echo $this->getUrl('grid', 'category_media', ['id' => $category->categoryId]);?>">Media</a></td>
 			</tr>
 		<?php endforeach; ?>
 	<?php endif; ?>	
 </table>
+
+<script type="text/javascript">
+	$("#addCategoryBtn").click(function(){
+		admin.setType("GET");
+		admin.setData({'id' : null});
+	  admin.setUrl("<?php echo $this->getUrl('edit'); ?>");
+	  admin.load();
+	});
+</script>
 
 <script type="text/javascript"> 
 	function count() 

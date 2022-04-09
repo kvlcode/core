@@ -11,14 +11,25 @@ class Controller_Vendor extends Controller_Core_Action{
 		}
     }
 	
-	public function gridAction()
+    public function indexAction()
 	{
-		$this->setTitle('Vendor Grid');
-		$vendorGrid = Ccc::getBlock('Vendor_Grid');
 		$content = $this->getLayout()->getContent();
+		$vendorGrid = Ccc::getBlock('Vendor_Index');
 		$content->addChild($vendorGrid);
 		$this->renderLayout();
+
 	}
+
+	public function gridBlockAction()
+	{
+		$vendorGrid = Ccc::getBlock('Vendor_Grid')->toHtml();
+		$response = [
+			'status' => 'success',
+			'content' => $vendorGrid
+		];
+		$this->renderJson($response);
+	}
+
 
 	public function editAction()
 	{	
@@ -44,30 +55,33 @@ class Controller_Vendor extends Controller_Core_Action{
 				$this->setTitle('Vendor Add');
 				$vendor = Ccc::getModel('Vendor');	
 			}
-			
-			$vendorEdit = Ccc::getBlock('Vendor_Edit')->setVendor($vendor);
-			$content = $this->getLayout()->getContent();
-			$content->addChild($vendorEdit);
-			$this->renderLayout();	
+			Ccc::register('vendor', $vendor);
+			$vendorEdit = Ccc::getBlock('Vendor_Edit')->toHtml();
+			$response = [
+				'status' => 'success',
+				'content' => $vendorEdit
+			];
+			$this->renderJson($response);
 		} 
 		catch (Exception $e) 
 		 {
-			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-			$this->redirect($this->getView()->getUrl(null, null, null, true));	
+			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);
+			$this->gridBlockAction();	
 		}
 	}
 
 	public function saveVendor()
 	{		 
 		$vendorData = $this->getRequest()->getPost('vendor');
+		$vendorId = (int)$this->getRequest()->getRequest('id');
+		$vendorModel = Ccc::getModel('Vendor');
+		
 		if (!$vendorData) 
 		{
 			throw new Exception("Missing Vendor data in request.", 1);
 		}
 		
-		$vendorModel = Ccc::getModel('Vendor');
 		$vendorModel->setData($vendorData);
-		$vendorId = (int)$this->getRequest()->getRequest('id');
 		if($vendorId) 
 		{
 			$vendorModel->updatedDate = date('Y-m-d H:i:s');
@@ -121,12 +135,12 @@ class Controller_Vendor extends Controller_Core_Action{
 		{
 			$vendorRow = $this->saveVendor();
 			$this->saveAddress($vendorRow);
-			$this->redirect($this->getView()->getUrl(null, null, null, true));
+			$this->redirectPage();
 	    }
 	    catch(Exception $e)
 	    {
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
-	    	$this->redirect($this->getView()->getUrl(null, null, null, true));	
+	    	$this->redirectPage();	
 	    }
 	}    	
 
@@ -146,12 +160,24 @@ class Controller_Vendor extends Controller_Core_Action{
 				throw new Exception("System can't delete record.", 1);
 			}
 			$this->getMessage()->addMessage('Data Deleted.', Model_Core_Message::SUCCESS);
-			$this->redirect($this->getView()->getUrl(null, null, null, true));			
+			$this->redirectPage();			
 		} 
 		catch (Exception $e) 
 		{
 			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);		
-			$this->redirect($this->getView()->getUrl(null, null, null, true));	
+			$this->redirectPage();
 		}
+	}
+
+	public function redirectPage()
+	{	
+		$vendorGrid = Ccc::getBlock('Vendor_Grid')->toHtml();
+ 		$message = Ccc::getBlock('Core_Layout_Header_Message')->toHtml();
+ 		$response = [
+		'status' => 'success',
+		'content' => $vendorGrid,
+		'message' => $message
+		];
+		$this->renderJson($response);
 	}
 }

@@ -27,16 +27,16 @@ class Controller_Salesman_Customer extends Controller_Core_Action{
 			$salesmanId = $this->getRequest()->getRequest('id');	
 			$customers = $this->getRequest()->getPost('customer');
 			
-			if (!isset($customers)) {
-				$this->getMessage()->addMessage("Unable to load.", Model_Core_Message::ERROR);
+			if (!$customers) 
+			{
 				throw new Exception("Unable to load customer data.", 1);		
 			}
 
 			$customerModel = Ccc::getModel('Customer');
 			if ($salesmanId != null) {
 				
-				if (!(int) $salesmanId) {
-					$this->getMessage()->addMessage("Invalid request.", Model_Core_Message::ERROR);
+				if (!(int) $salesmanId) 
+				{
 					throw new Exception("Invalid request.", 1);
 				}
 				
@@ -48,20 +48,20 @@ class Controller_Salesman_Customer extends Controller_Core_Action{
 					$update = $customerModel->save();
 				}
 				
-				if (!$update) {
-					$this->getMessage()->addMessage("System Can't update.", Model_Core_Message::ERROR);
+				if (!$update) 
+				{
 					throw new Exception("System Can't update", 1);	
 				}
 				$this->getMessage()->addMessage('Data Updated.', Model_Core_Message::SUCCESS);
 
 			}
 			
-			$this->redirect($this->getView()->getUrl(null, null, ['id' => $salesmanId], true));
-
+			$this->redirect($this->getLayout()->getUrl(null, null, ['id' => $salesmanId], true));
 		} 
 		catch (Exception $e) 
 		{	
-			$this->redirect($this->getView()->getUrl(null, null, ['id' => $salesmanId], true));
+			$this->getMessage()->addMessage($e->getMessage(), Model_Core_Message::ERROR);	
+			$this->redirect($this->getLayout()->getUrl(null, null, ['id' => $salesmanId], true));
 
 		}
 	}
